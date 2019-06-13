@@ -6,9 +6,12 @@ import com.demo.tvshows.di.viewmodel.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import javax.inject.Singleton
 
+@Singleton
 @Component(
-    modules = [NetworkModule::class, UtilityModule::class, AndroidInjectionModule::class, ViewModelModule::class]
+    modules = [NetworkModule::class, UtilityModule::class, AndroidInjectionModule::class, ActivitiesModule::class,
+        ViewModelModule::class]
 )
 interface ApplicationComponent {
 

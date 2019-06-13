@@ -26,10 +26,15 @@ android {
   }
 }
 
+androidExtensions {
+  experimental = true
+}
+
 dependencies {
   implementation deps.picasso
   implementation deps.kotlin
   implementation deps.activity
+  implementation deps.fragment
   implementation deps.appcompat
   implementation deps.card_view
   implementation deps.recycler_view

@@ -8,5 +8,5 @@ import retrofit2.http.Query
 interface MovieDatabaseService {
 
     @GET("tv/popular")
-    fun getPopularTvShows(@Query("page") page: Int): Single<TvShowsResponse>
+    fun getPopularTvShows(@Query("page") pageIndex: Int): Single<TvShowsResponse>
 }
