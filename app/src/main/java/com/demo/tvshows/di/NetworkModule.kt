@@ -2,6 +2,7 @@ package com.demo.tvshows.di
 
 import com.demo.tvshows.BuildConfig
 import com.demo.tvshows.data.BaseUrls.MOVIE_SERVICE_BASE_URL
+import com.demo.tvshows.data.remote.MovieDatabaseService
 import com.demo.tvshows.util.network.DefaultParameterInterceptor
 import com.demo.tvshows.util.network.InternetConnectivityInterceptor
 import com.google.gson.Gson
@@ -20,6 +21,12 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    fun provideMovieDatabaseService(retrofit: Retrofit): MovieDatabaseService {
+        return retrofit.create(MovieDatabaseService::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory,
@@ -31,18 +38,6 @@ class NetworkModule {
             .addCallAdapterFactory(rxJava2CallAdapterFactory)
             .baseUrl(MOVIE_SERVICE_BASE_URL)
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun providesGsonConverterFactory(gson: Gson): GsonConverterFactory {
-        return GsonConverterFactory.create(gson)
-    }
-
-    @Provides
-    @Singleton
-    fun providesRxJavaCallAdapterFactory(): RxJava2CallAdapterFactory {
-        return RxJava2CallAdapterFactory.create()
     }
 
     @Provides
@@ -72,6 +67,18 @@ class NetworkModule {
             loggingInterceptor.level = HttpLoggingInterceptor.Level.NONE
         }
         return loggingInterceptor
+    }
+
+    @Provides
+    @Singleton
+    fun providesGsonConverterFactory(gson: Gson): GsonConverterFactory {
+        return GsonConverterFactory.create(gson)
+    }
+
+    @Provides
+    @Singleton
+    fun providesRxJavaCallAdapterFactory(): RxJava2CallAdapterFactory {
+        return RxJava2CallAdapterFactory.create()
     }
 
     companion object {
