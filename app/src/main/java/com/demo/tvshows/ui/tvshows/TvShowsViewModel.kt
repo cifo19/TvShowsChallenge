@@ -3,8 +3,8 @@ package com.demo.tvshows.ui.tvshows
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.demo.tvshows.data.model.TvShowsModel
-import com.demo.tvshows.data.remote.response.model.TvShow
 import com.demo.tvshows.ui.base.BaseViewModel
+import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
@@ -13,15 +13,36 @@ import javax.inject.Inject
 class TvShowsViewModel @Inject constructor(private val tvShowsModel: TvShowsModel) : BaseViewModel() {
 
     private var pageIndex: Int = 1
+    private var fetchingTvShows = false
 
-    private val _showTvShowsLiveData = MutableLiveData<List<TvShow>>()
-    val showTvShows: LiveData<List<TvShow>> = _showTvShowsLiveData
+    var hasNextPage: Boolean = false
 
-    fun getTvShows() {
+    private val _showTvShowsLiveData = MutableLiveData<MutableList<TvShowAdapterItem>>()
+    val showTvShows: LiveData<MutableList<TvShowAdapterItem>> = _showTvShowsLiveData
+    private val _toggleListLoading = MutableLiveData<Boolean>()
+    val toggleListLoading: LiveData<Boolean> = _toggleListLoading
+
+    fun getTvShows(loadMore: Boolean = false) {
+        if (fetchingTvShows) return
+        fetchingTvShows = true
+        _toggleListLoading.value = true
+
+        if (loadMore) {
+            pageIndex++
+        }
+
         tvShowsModel.fetchTvShows(pageIndex)
+            .doOnSuccess { hasNextPage = it.page != it.totalPages }
+            .flattenAsObservable { it.tvShows }
+            .map { TvShowAdapterItem(it) }
+            .toList()
+            .doOnEvent { _, _ -> fetchingTvShows = false }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe(_showTvShowsLiveData::setValue) {}
+            .subscribe(
+                { _showTvShowsLiveData.value = it },
+                { _toggleListLoading.value = false }
+            )
             .addTo(compositeDisposable)
     }
 }

@@ -39,6 +39,7 @@ dependencies {
   implementation deps.card_view
   implementation deps.recycler_view
   implementation deps.constraint_layout
+  implementation deps.material
 
   // ViewModel and LiveData
   implementation deps.lifecycle_extensions
