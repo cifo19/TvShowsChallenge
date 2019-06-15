@@ -1,4 +1,4 @@
-package com.demo.tvshows
+package com.demo.tvshows.helper
 
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
