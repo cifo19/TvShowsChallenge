@@ -3,6 +3,7 @@ package com.demo.tvshows.data.model
 import com.demo.tvshows.data.remote.MovieDatabaseService
 import com.demo.tvshows.data.remote.response.TvShowsResponse
 import com.demo.tvshows.util.network.errorhandler.ErrorHandler
+import com.demo.tvshows.util.network.errorhandler.handleError
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -13,6 +14,6 @@ class TvShowsModel @Inject constructor(
 
     fun fetchTvShows(pageIndex: Int = 1): Single<TvShowsResponse> {
         return movieDatabaseService.getPopularTvShows(pageIndex)
-            .onErrorResumeNext { Single.error(errorHandler.parseException(it)) }
+            .handleError(errorHandler)
     }
 }
