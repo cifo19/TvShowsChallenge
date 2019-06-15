@@ -6,6 +6,7 @@ import com.demo.tvshows.ui.tvshows.TvShowsActivityModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
+@SuppressWarnings("UnnecessaryAbstractClass")
 @Module
 abstract class ActivitiesModule {
 

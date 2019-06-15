@@ -7,6 +7,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 
+@SuppressWarnings("UnnecessaryAbstractClass")
 @Module
 abstract class TvShowsActivityModule {
 
