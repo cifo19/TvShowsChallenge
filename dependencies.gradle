@@ -27,7 +27,7 @@ ext {
       rx_kotlin = "2.3.0",
       rx_android = "2.1.0",
       rx_binding = "2.2.0",
-      rx_lint = "1.7.3",
+      rx_lint = "1.7.4",
 
       // Test
       test_runner = "1.1.1",
