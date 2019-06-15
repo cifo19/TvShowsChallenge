@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.demo.tvshows.R
 import com.demo.tvshows.ui.base.BaseActivity
 import com.demo.tvshows.util.PagingScrollListener
-import kotlinx.android.synthetic.main.activity_base.activityToolbar
 import kotlinx.android.synthetic.main.activity_tv_shows.tvShowsRecyclerView
 import javax.inject.Inject
 
@@ -18,16 +17,13 @@ class TvShowsActivity : BaseActivity() {
     @Inject
     lateinit var tvShowsListAdapter: TvShowsListAdapter
 
-    override fun getContentView(): Int = R.layout.activity_tv_shows
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_tv_shows)
 
         tvShowsRecyclerView.init()
         tvShowsViewModel.getTvShows()
         observeViewModel()
-
-        activityToolbar.setTitle(R.string.app_name)
     }
 
     private fun observeViewModel() {
