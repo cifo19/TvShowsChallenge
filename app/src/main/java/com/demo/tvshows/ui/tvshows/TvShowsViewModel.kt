@@ -1,5 +1,6 @@
 package com.demo.tvshows.ui.tvshows
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.demo.tvshows.data.model.TvShowsModel
@@ -12,8 +13,10 @@ import javax.inject.Inject
 
 class TvShowsViewModel @Inject constructor(private val tvShowsModel: TvShowsModel) : BaseViewModel() {
 
-    private var pageIndex: Int = 1
-    private var fetchingTvShows = false
+    @VisibleForTesting
+    var pageIndex: Int = 1
+    @VisibleForTesting
+    var fetchingTvShows = false
 
     var hasNextPage: Boolean = false
 
@@ -36,17 +39,14 @@ class TvShowsViewModel @Inject constructor(private val tvShowsModel: TvShowsMode
             .flattenAsObservable { it.tvShows }
             .map { TvShowAdapterItem(it) }
             .toList()
+            .doAfterTerminate { fetchingTvShows = false }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
-                {
-                    _showTvShowsLiveData.value = it
-                    fetchingTvShows = false
-                },
+                { _showTvShowsLiveData.value = it },
                 {
                     _toggleListLoading.value = false
                     onError.value = it
-                    fetchingTvShows = false
                 }
             )
             .addTo(compositeDisposable)
