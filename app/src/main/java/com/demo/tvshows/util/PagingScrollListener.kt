@@ -15,6 +15,7 @@ abstract class PagingScrollListener(private val layoutManager: LinearLayoutManag
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
         if (dy > 0) {
+
             visibleItemCount = recyclerView.childCount
             totalItemCount = layoutManager.itemCount
             firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
@@ -25,7 +26,7 @@ abstract class PagingScrollListener(private val layoutManager: LinearLayoutManag
                     loading = true
                 }
             }
-            if (loading && totalItemCount >= previousTotal) {
+            if (loading && totalItemCount > previousTotal) {
                 loading = false
                 previousTotal = totalItemCount
             }

@@ -36,12 +36,18 @@ class TvShowsViewModel @Inject constructor(private val tvShowsModel: TvShowsMode
             .flattenAsObservable { it.tvShows }
             .map { TvShowAdapterItem(it) }
             .toList()
-            .doOnEvent { _, _ -> fetchingTvShows = false }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(
-                { _showTvShowsLiveData.value = it },
-                { _toggleListLoading.value = false }
+                {
+                    _showTvShowsLiveData.value = it
+                    fetchingTvShows = false
+                },
+                {
+                    _toggleListLoading.value = false
+                    onError.value = it
+                    fetchingTvShows = false
+                }
             )
             .addTo(compositeDisposable)
     }

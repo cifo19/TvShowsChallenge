@@ -7,6 +7,6 @@
   <color name="secondaryLightColor">#ffa06d</color>
   <color name="secondaryDarkColor">#ffa06d</color>
   <color name="primaryTextColor">#fafafa</color>
-  <color name="secondaryTextColor">#fafafa</color>
+  <color name="secondaryTextColor">#000a12</color>
   <color name="windowColor">#e0e0e0</color>
 </resources>

@@ -7,6 +7,8 @@ import com.demo.tvshows.di.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.reactivex.exceptions.UndeliverableException
+import io.reactivex.plugins.RxJavaPlugins
 import javax.inject.Inject
 
 class TvShowsApplication : Application(), HasActivityInjector {
@@ -23,5 +25,17 @@ class TvShowsApplication : Application(), HasActivityInjector {
 
         applicationComponent = DaggerApplicationComponent.builder().application(this).build()
         applicationComponent.inject(this)
+
+        initRxJavaErrorHandler()
+    }
+
+    private fun initRxJavaErrorHandler() {
+        RxJavaPlugins.setErrorHandler {
+            if (it is UndeliverableException) {
+                return@setErrorHandler
+            }
+
+            Thread.currentThread().uncaughtExceptionHandler.uncaughtException(Thread.currentThread(), it)
+        }
     }
 }

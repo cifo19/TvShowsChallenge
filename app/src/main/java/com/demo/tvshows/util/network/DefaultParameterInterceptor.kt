@@ -25,7 +25,7 @@ class DefaultParameterInterceptor @Inject constructor() : Interceptor {
     companion object {
         private const val KEY_API_KEY = "api_key"
         private const val KEY_LANGUAGE = "language"
-        private const val VALUE_API_KEY = "5d967c7c335764f39b1efbe9c5de9760"
+        private const val VALUE_API_KEY = "5d967c7c335764f39b1efbe9c5de976"
         private const val VALUE_LANGUAGE = "en_US"
     }
 }

@@ -40,6 +40,7 @@ dependencies {
   implementation deps.recycler_view
   implementation deps.constraint_layout
   implementation deps.material
+  implementation deps.material_dialogs
 
   // ViewModel and LiveData
   implementation deps.lifecycle_extensions

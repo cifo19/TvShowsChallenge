@@ -31,12 +31,18 @@ class TvShowsActivity : BaseActivity() {
     }
 
     private fun observeViewModel() {
-        tvShowsViewModel.showTvShows.observe(this, Observer {
-            tvShowsListAdapter.showTvShows(it)
-        })
-        tvShowsViewModel.toggleListLoading.observe(this, Observer {
-            tvShowsListAdapter.toggleLoading(it)
-        })
+        val lifeCycleOwner = this
+        with(tvShowsViewModel) {
+            showTvShows.observe(lifeCycleOwner, Observer {
+                tvShowsListAdapter.showTvShows(it)
+            })
+            toggleListLoading.observe(lifeCycleOwner, Observer {
+                tvShowsListAdapter.toggleLoading(it)
+            })
+            onError.observe(lifeCycleOwner, Observer {
+                onError(it) { tvShowsViewModel.getTvShows() }
+            })
+        }
     }
 
     private fun RecyclerView.init() {

@@ -1,3 +1,8 @@
 <resources>
   <string name="app_name">TvShows</string>
+  <string name="unhandled_exception_message">An error has been occurred</string>
+  <string name="no_connection_exception">Your internet connection is not available</string>
+  <string name="ok">OK</string>
+  <string name="try_again">TRY AGAIN</string>
+  <string name="exit">EXIT</string>
 </resources>

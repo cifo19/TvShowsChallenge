@@ -11,6 +11,7 @@ ext {
       recycler_view = "1.0.0",
       constraint_layout = "2.0.0-alpha5",
       card_view = "1.0.0",
+      material_dialogs = "3.0.0-rc3",
 
       // Google
       dagger = "2.20",
@@ -69,7 +70,8 @@ ext {
           rx_android               : "io.reactivex.rxjava2:rxandroid:$rx_android",
           rx_kotlin                : "io.reactivex.rxjava2:rxkotlin:$rx_kotlin",
           rx_binding               : "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rx_binding",
-          rx_lint                  : "nl.littlerobots.rxlint:rxlint:$rx_lint"]
+          rx_lint                  : "nl.littlerobots.rxlint:rxlint:$rx_lint",
+          material_dialogs         : "com.afollestad.material-dialogs:core:$material_dialogs"]
 
   testDeps = [junit            : "junit:junit:$junit",
               test_runner      : "androidx.test:runner:$test_runner",
