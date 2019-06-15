@@ -1,5 +1,7 @@
 package com.demo.tvshows.util.network
 
+import com.demo.tvshows.BuildConfig
+import com.demo.tvshows.BuildConfig.API_KEY
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.Response
@@ -11,8 +13,8 @@ class DefaultParameterInterceptor @Inject constructor() : Interceptor {
         val originalHttpUrl = originalRequest.url()
 
         val paramsAddedHttpUrl = originalHttpUrl.newBuilder()
-            .addQueryParameter(KEY_API_KEY, VALUE_API_KEY)
-            .addQueryParameter(KEY_LANGUAGE, VALUE_LANGUAGE)
+            .addQueryParameter(KEY_API_KEY, API_KEY)
+            .addQueryParameter(KEY_LANGUAGE_CODE, BuildConfig.API_LANGUAGE_CODE)
             .build()
 
         val eventualRequest = originalRequest.newBuilder()
@@ -23,9 +25,7 @@ class DefaultParameterInterceptor @Inject constructor() : Interceptor {
     }
 
     companion object {
-        private const val KEY_API_KEY = "api_key"
-        private const val KEY_LANGUAGE = "language"
-        private const val VALUE_API_KEY = "5d967c7c335764f39b1efbe9c5de9760"
-        private const val VALUE_LANGUAGE = "en_US"
+        const val KEY_API_KEY = "api_key"
+        const val KEY_LANGUAGE_CODE = "language"
     }
 }

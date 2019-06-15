@@ -20,6 +20,11 @@ android {
     }
   }
 
+  buildTypes.each {
+    it.buildConfigField 'String', 'API_KEY', apiKey
+    it.buildConfigField 'String', 'API_LANGUAGE_CODE', apiLanguageCode
+  }
+
   compileOptions {
     sourceCompatibility 1.8
     targetCompatibility 1.8

@@ -18,8 +18,7 @@
       tools:targetApi="n">
 
     <activity
-        android:name=".ui.tvshows.TvShowsActivity"
-        android:label="@string/title_show_shows_activity">
+        android:name=".ui.tvshows.TvShowsActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>

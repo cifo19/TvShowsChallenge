@@ -1,7 +1,7 @@
 package com.demo.tvshows.di
 
 import com.demo.tvshows.BuildConfig
-import com.demo.tvshows.data.BaseUrls.MOVIE_SERVICE_BASE_URL
+import com.demo.tvshows.data.Constants.MOVIE_SERVICE_BASE_URL
 import com.demo.tvshows.data.remote.MovieDatabaseService
 import com.demo.tvshows.util.network.DefaultParameterInterceptor
 import com.demo.tvshows.util.network.InternetConnectivityInterceptor

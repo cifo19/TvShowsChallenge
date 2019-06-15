@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.demo.tvshows.R
+import com.demo.tvshows.data.Constants.PREFIX_IMAGE_URL
 import com.demo.tvshows.data.remote.response.model.TvShow
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
@@ -55,7 +56,7 @@ class TvShowsListAdapter @Inject constructor(private val picasso: Picasso) : Ada
                     picasso
                 )
             }
-            else -> throw IllegalArgumentException("No viewType found at $viewType")
+            else -> throw IllegalArgumentException("No viewType found for $viewType")
         }
     }
 
@@ -79,7 +80,7 @@ class TvShowsListAdapter @Inject constructor(private val picasso: Picasso) : Ada
     class TvShowViewHolder(override val containerView: View, private val picasso: Picasso) : ViewHolder(containerView),
         LayoutContainer {
         fun bind(tvShow: TvShow) {
-            picasso.load("https://image.tmdb.org/t/p/w500/${tvShow.posterPath}")
+            picasso.load("$PREFIX_IMAGE_URL${tvShow.posterPath}")
                 .placeholder(R.drawable.ic_tv_show_place_holder)
                 .into(logoImageView)
             titleTextView.text = tvShow.name

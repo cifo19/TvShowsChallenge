@@ -21,6 +21,7 @@ class TvShowsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tv_shows)
 
+        setTitle(R.string.title_show_shows_activity)
         tvShowsRecyclerView.init()
         tvShowsViewModel.getTvShows()
         observeViewModel()
