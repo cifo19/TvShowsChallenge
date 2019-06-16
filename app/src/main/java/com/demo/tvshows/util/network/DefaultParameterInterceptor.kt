@@ -1,7 +1,7 @@
 package com.demo.tvshows.util.network
 
-import com.demo.tvshows.BuildConfig
 import com.demo.tvshows.BuildConfig.API_KEY
+import com.demo.tvshows.BuildConfig.API_LANGUAGE_CODE
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.Response
@@ -14,7 +14,7 @@ class DefaultParameterInterceptor @Inject constructor() : Interceptor {
 
         val paramsAddedHttpUrl = originalHttpUrl.newBuilder()
             .addQueryParameter(KEY_API_KEY, API_KEY)
-            .addQueryParameter(KEY_LANGUAGE_CODE, BuildConfig.API_LANGUAGE_CODE)
+            .addQueryParameter(KEY_LANGUAGE_CODE, API_LANGUAGE_CODE)
             .build()
 
         val eventualRequest = originalRequest.newBuilder()
