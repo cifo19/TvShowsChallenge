@@ -1,0 +1,10 @@
+ext {
+  androidConfig = [
+      compileSdkVersion: 28,
+      minSdkVersion: 19,
+      targetSdkVersion: 28,
+      versionCode: 1,
+      versionName: "1",
+      applicationId: "com.demo.tvshows"
+  ]
+}
