@@ -4,7 +4,6 @@ import com.demo.tvshows.data.remote.MovieDatabaseService
 import com.demo.tvshows.data.remote.response.TvShowsResponse
 import com.demo.tvshows.helper.TestUtils
 import com.demo.tvshows.helper.parseFile
-import com.demo.tvshows.util.network.errorhandler.ErrorHandler
 import com.demo.tvshows.util.network.errorhandler.UnHandledServiceException
 import com.google.gson.Gson
 import com.nhaarman.mockito_kotlin.verify

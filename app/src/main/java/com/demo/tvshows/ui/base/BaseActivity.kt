@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.DialogCallback
 import com.afollestad.materialdialogs.MaterialDialog
 import com.demo.tvshows.R
-import com.demo.tvshows.util.network.errorhandler.HandledServiceException
 import com.demo.tvshows.util.network.errorhandler.NoConnectionException
 import dagger.android.AndroidInjection
 
@@ -26,10 +25,7 @@ abstract class BaseActivity : AppCompatActivity() {
             return
         }
 
-        val errorMessage = when (throwable) {
-            is HandledServiceException -> throwable.message
-            else -> getString(R.string.unhandled_exception_message)
-        }
+        val errorMessage = throwable.message ?: getString(R.string.unhandled_exception_message)
 
         MaterialDialog(this).show {
             message(text = errorMessage)

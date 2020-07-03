@@ -1,10 +1,11 @@
 package com.demo.tvshows.di
 
 import com.demo.tvshows.BuildConfig
-import com.demo.tvshows.data.Constants.MOVIE_SERVICE_BASE_URL
+import com.demo.tvshows.data.Constants.ServiceEndpoints
 import com.demo.tvshows.data.remote.MovieDatabaseService
-import com.demo.tvshows.util.network.DefaultParameterInterceptor
-import com.demo.tvshows.util.network.InternetConnectivityInterceptor
+import com.demo.tvshows.util.network.interceptors.DefaultParameterInterceptor
+import com.demo.tvshows.util.network.interceptors.ErrorHandlingInterceptor
+import com.demo.tvshows.util.network.interceptors.InternetConnectivityInterceptor
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -36,7 +37,7 @@ class NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .addCallAdapterFactory(rxJava2CallAdapterFactory)
-            .baseUrl(MOVIE_SERVICE_BASE_URL)
+            .baseUrl(ServiceEndpoints.MOVIE_SERVICE_BASE_URL.endpoint)
             .build()
     }
 
@@ -45,7 +46,8 @@ class NetworkModule {
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
         defaultParameterInterceptor: DefaultParameterInterceptor,
-        internetConnectivityInterceptor: InternetConnectivityInterceptor
+        internetConnectivityInterceptor: InternetConnectivityInterceptor,
+        errorHandlingInterceptor: ErrorHandlingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(OK_HTTP_CONNECTION_TIME_OUT, MILLISECONDS)
@@ -54,6 +56,7 @@ class NetworkModule {
             .addInterceptor(internetConnectivityInterceptor)
             .addInterceptor(defaultParameterInterceptor)
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(errorHandlingInterceptor)
             .build()
     }
 

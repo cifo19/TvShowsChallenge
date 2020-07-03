@@ -1,4 +1,4 @@
-package com.demo.tvshows.util.network
+package com.demo.tvshows.util.network.interceptors
 
 import android.net.ConnectivityManager
 import com.demo.tvshows.util.network.errorhandler.NoConnectionException
