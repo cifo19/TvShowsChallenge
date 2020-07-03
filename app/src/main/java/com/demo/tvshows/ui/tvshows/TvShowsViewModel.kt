@@ -25,6 +25,7 @@ class TvShowsViewModel @Inject constructor(private val tvShowsModel: TvShowsMode
     private val _toggleListLoading = MutableLiveData<Boolean>()
     val toggleListLoading: LiveData<Boolean> = _toggleListLoading
 
+    @Suppress("TooGenericExceptionCaught")
     fun getTvShows(loadMore: Boolean = false) {
         if (fetchingTvShows) return
         fetchingTvShows = true

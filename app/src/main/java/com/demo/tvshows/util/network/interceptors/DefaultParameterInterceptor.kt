@@ -1,4 +1,4 @@
-package com.demo.tvshows.util.network
+package com.demo.tvshows.util.network.interceptors
 
 import com.demo.tvshows.BuildConfig.API_KEY
 import com.demo.tvshows.BuildConfig.API_LANGUAGE_CODE
