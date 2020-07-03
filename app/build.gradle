@@ -50,6 +50,7 @@ dependencies {
 
   // ViewModel and LiveData
   implementation deps.lifecycle_extensions
+  implementation deps.lifecycle_viewmodel_ktx
 
   // Reactive libraries
   implementation deps.rx_java
