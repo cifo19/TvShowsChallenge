@@ -30,6 +30,10 @@ android {
     sourceCompatibility 1.8
     targetCompatibility 1.8
   }
+
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
+  }
 }
 
 androidExtensions {
@@ -48,9 +52,13 @@ dependencies {
   implementation deps.material
   implementation deps.material_dialogs
 
+  // ktx
+  implementation deps.fragment_ktx
+  implementation deps.core_ktx
+  implementation deps.lifecycle_viewmodel_ktx
+
   // ViewModel and LiveData
   implementation deps.lifecycle_extensions
-  implementation deps.lifecycle_viewmodel_ktx
 
   // Reactive libraries
   implementation deps.rx_java

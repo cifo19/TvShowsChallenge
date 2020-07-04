@@ -1,25 +1,14 @@
 package com.demo.tvshows.ui.tvshows
 
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import com.demo.tvshows.ui.base.BaseActivity
-import dagger.Binds
+import com.demo.tvshows.di.scope.PerFragment
 import dagger.Module
-import dagger.Provides
+import dagger.android.ContributesAndroidInjector
 
 @SuppressWarnings("UnnecessaryAbstractClass")
 @Module
-abstract class TvShowsActivityModule {
+interface TvShowsActivityModule {
 
-    @Binds
-    abstract fun bindActivity(tvShowsActivity: TvShowsActivity): BaseActivity
-
-    @Module
-    companion object {
-        @JvmStatic
-        @Provides
-        fun provideViewModel(activity: BaseActivity, viewModelFactory: ViewModelProvider.Factory): TvShowsViewModel {
-            return ViewModelProviders.of(activity, viewModelFactory)[TvShowsViewModel::class.java]
-        }
-    }
+    @PerFragment
+    @ContributesAndroidInjector
+    fun contributeTvShowsFragment(): TvShowsFragment
 }

@@ -9,8 +9,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ErrorHandlingInterceptor @Inject constructor(private val errorHandlerFactory: ErrorHandlerFactory) :
-    Interceptor {
+class ErrorHandlingInterceptor @Inject constructor(
+    private val errorHandlerFactory: ErrorHandlerFactory
+) : Interceptor {
     override fun intercept(chain: Chain): Response {
         val response = chain.proceed(chain.request())
 
