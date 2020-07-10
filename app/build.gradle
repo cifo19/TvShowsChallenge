@@ -51,6 +51,7 @@ dependencies {
   implementation deps.constraint_layout
   implementation deps.material
   implementation deps.material_dialogs
+  implementation deps.paging
 
   // ktx
   implementation deps.fragment_ktx

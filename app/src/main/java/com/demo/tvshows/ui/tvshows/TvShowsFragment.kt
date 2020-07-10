@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.demo.tvshows.R
 import com.demo.tvshows.di.viewmodel.ViewModelFactory
 import com.demo.tvshows.ui.base.BaseFragment
-import com.demo.tvshows.util.PagingScrollListener
 import kotlinx.android.synthetic.main.fragment_tv_shows.tvShowsRecyclerView
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
@@ -23,45 +27,41 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
 
     private val tvShowsViewModel by viewModels<TvShowsViewModel> { viewModelFactory }
 
+    private var job: Job? = null
+
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setToolbarTitle(getString(R.string.title_show_shows_activity))
         tvShowsRecyclerView.init()
-        tvShowsViewModel.getTvShows()
+        getTvShows()
         observeViewModel()
     }
 
+    @ExperimentalCoroutinesApi
     private fun observeViewModel() {
         with(tvShowsViewModel) {
-            showTvShows.observe(viewLifecycleOwner, Observer {
-                tvShowsListAdapter.showTvShows(it)
-            })
-            toggleListLoading.observe(viewLifecycleOwner, Observer {
-                tvShowsListAdapter.toggleLoading(it)
-            })
             onError.observe(viewLifecycleOwner, Observer {
-                onError(it) { tvShowsViewModel.getTvShows() }
+                onError(it) {
+                    job?.cancel()
+                    this@TvShowsFragment.getTvShows()
+                }
             })
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun getTvShows() {
+        job = lifecycleScope.launch {
+            tvShowsViewModel.fetchTvShows().collectLatest { tvShows ->
+                tvShowsListAdapter.submitData(tvShows)
+            }
         }
     }
 
     private fun RecyclerView.init() {
         layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        setPagingScrollListener()
-        adapter = tvShowsListAdapter
-    }
-
-    private fun RecyclerView.setPagingScrollListener() {
-        val layoutManager = layoutManager as LinearLayoutManager
-        val tvShowsPagingScrollListener = object : PagingScrollListener(layoutManager) {
-            override fun loadMoreItems() {
-                tvShowsViewModel.getTvShows(loadMore = true)
-            }
-
-            override val isLastPage: Boolean
-                get() = tvShowsViewModel.hasNextPage.not()
-        }
-        addOnScrollListener(tvShowsPagingScrollListener)
+        adapter = tvShowsListAdapter.withLoadStateFooter(TvShowsLoadStateAdapter())
     }
 }
