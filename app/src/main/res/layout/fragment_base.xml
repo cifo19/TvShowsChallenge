@@ -12,6 +12,7 @@
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
       android:visibility="gone"
+      android:background="@color/primaryColor"
       app:layout_constraintTop_toTopOf="parent"
       tools:visibility="visible"
       />
