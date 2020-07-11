@@ -14,7 +14,7 @@ abstract class PagingScrollListener(private val layoutManager: LinearLayoutManag
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
-        if (dy > 0) {
+        if (canLoadMore && dy > 0) {
 
             visibleItemCount = recyclerView.childCount
             totalItemCount = layoutManager.itemCount
@@ -30,10 +30,7 @@ abstract class PagingScrollListener(private val layoutManager: LinearLayoutManag
                 loading = false
                 previousTotal = totalItemCount
             }
-            if (!isLastPage &&
-                !loading &&
-                totalItemCount - visibleItemCount <= firstVisibleItem + VISIBLE_THRESHOLD
-            ) {
+            if (loading.not() && totalItemCount - visibleItemCount <= firstVisibleItem + VISIBLE_THRESHOLD) {
                 loadMoreItems()
                 loading = true
             }
@@ -42,7 +39,7 @@ abstract class PagingScrollListener(private val layoutManager: LinearLayoutManag
 
     protected abstract fun loadMoreItems()
 
-    abstract val isLastPage: Boolean
+    abstract val canLoadMore: Boolean
 
     companion object {
         private const val VISIBLE_THRESHOLD = 6

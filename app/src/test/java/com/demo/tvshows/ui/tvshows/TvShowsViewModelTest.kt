@@ -65,7 +65,7 @@ class TvShowsViewModelTest {
         tvShowsViewModel.getTvShows()
 
         verify(tvShowsModel).fetchTvShows()
-        assertThat(tvShowsViewModel.toggleListLoading.value).isTrue()
+        assertThat(tvShowsViewModel.loadingShownState.value).isTrue()
     }
 
     @Test
@@ -91,7 +91,7 @@ class TvShowsViewModelTest {
         verify(tvShowsModel).fetchTvShows()
 
         assertThat(tvShowsViewModel.onError.value).isEqualTo(throwable)
-        assertThat(tvShowsViewModel.toggleListLoading.value).isFalse()
+        assertThat(tvShowsViewModel.loadingShownState.value).isFalse()
     }
 
     companion object {
