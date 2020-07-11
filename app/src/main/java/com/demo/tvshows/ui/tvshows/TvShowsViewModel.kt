@@ -1,51 +1,55 @@
 package com.demo.tvshows.ui.tvshows
 
-import androidx.annotation.VisibleForTesting
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.demo.tvshows.data.model.TvShowsModel
+import com.demo.tvshows.data.remote.response.TvShowsResponse
 import com.demo.tvshows.ui.base.BaseViewModel
+import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
+import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
+import com.demo.tvshows.util.modifyValue
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TvShowsViewModel @Inject constructor(private val tvShowsModel: TvShowsModel) : BaseViewModel() {
 
-    @VisibleForTesting
+    private var isLoading: Boolean = false
     var pageIndex: Int = 1
-
-    @VisibleForTesting
-    var fetchingTvShows = false
-
     var hasNextPage: Boolean = false
+    val canLoadMore: Boolean
+        get() = hasNextPage && isLoading.not()
 
-    private val _showTvShowsLiveData = MutableLiveData<List<TvShowAdapterItem>>()
-    val showTvShows: LiveData<List<TvShowAdapterItem>> = _showTvShowsLiveData
-    private val _toggleListLoading = MutableLiveData<Boolean>()
-    val toggleListLoading: LiveData<Boolean> = _toggleListLoading
+    private val _showTvShowsLiveData = MutableLiveData<MutableList<AdapterItem>>()
+    val showTvShows: LiveData<MutableList<AdapterItem>> = _showTvShowsLiveData
 
-    @Suppress("TooGenericExceptionCaught")
     fun getTvShows(loadMore: Boolean = false) {
-        if (fetchingTvShows) return
-        fetchingTvShows = true
-        _toggleListLoading.value = true
+        isLoading = true
+        if (loadMore) pageIndex++
+        Log.d("iReqStarted", pageIndex.toString())
 
-        if (loadMore) {
-            pageIndex++
-        }
-
+        _showTvShowsLiveData.modifyValue { add(LoadingAdapterItem) }
         viewModelScope.launch {
-            try {
-                val tvShows = tvShowsModel.fetchTvShows(pageIndex)
-                hasNextPage = tvShows.page != tvShows.totalPages
-                _showTvShowsLiveData.value = tvShows.tvShows.map(::TvShowAdapterItem)
-            } catch (exception: Exception) {
-                _toggleListLoading.value = false
-                onError.value = exception
-            }
-
-            fetchingTvShows = false
+            runCatching { tvShowsModel.fetchTvShows(pageIndex) }
+                .onSuccess(::onTvShowsFetched)
+                .onFailure(::onTvShowsFailed)
+            isLoading = false
         }
+    }
+
+    private fun onTvShowsFetched(tvShowsResponse: TvShowsResponse) {
+        hasNextPage = tvShowsResponse.page != tvShowsResponse.totalPages
+        _showTvShowsLiveData.modifyValue {
+            remove(LoadingAdapterItem)
+            addAll(tvShowsResponse.tvShows.map(::TvShowAdapterItem))
+        }
+    }
+
+    private fun onTvShowsFailed(throwable: Throwable) {
+        Log.d("iReqFailed", throwable.toString())
+        onError.value = throwable
+        _showTvShowsLiveData.modifyValue { remove(LoadingAdapterItem) }
     }
 }

@@ -37,9 +37,6 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
             showTvShows.observe(viewLifecycleOwner, Observer {
                 tvShowsListAdapter.showTvShows(it)
             })
-            toggleListLoading.observe(viewLifecycleOwner, Observer {
-                tvShowsListAdapter.toggleLoading(it)
-            })
             onError.observe(viewLifecycleOwner, Observer {
                 onError(it) { tvShowsViewModel.getTvShows() }
             })
@@ -59,8 +56,8 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
                 tvShowsViewModel.getTvShows(loadMore = true)
             }
 
-            override val isLastPage: Boolean
-                get() = tvShowsViewModel.hasNextPage.not()
+            override val canLoadMore: Boolean
+                get() = tvShowsViewModel.canLoadMore
         }
         addOnScrollListener(tvShowsPagingScrollListener)
     }

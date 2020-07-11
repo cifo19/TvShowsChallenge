@@ -3,6 +3,7 @@ package com.demo.tvshows.ui.tvshows
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.demo.tvshows.R
@@ -22,18 +23,12 @@ class TvShowsListAdapter @Inject constructor(private val picasso: Picasso) : Ada
 
     private var items = mutableListOf<AdapterItem>()
 
-    fun showTvShows(tvShows: List<TvShowAdapterItem>) {
-        hideLoading()
+    fun showTvShows(tvShows: List<AdapterItem>) {
+        val diffUtilCallback = AdapterItemDiffUtilCallback(items, tvShows)
+        val diff = DiffUtil.calculateDiff(diffUtilCallback)
+        items.clear()
         items.addAll(tvShows)
-        notifyItemRangeInserted(items.size, tvShows.size)
-    }
-
-    fun toggleLoading(isShowing: Boolean) {
-        if (isShowing) {
-            showLoading()
-        } else {
-            hideLoading()
-        }
+        diff.dispatchUpdatesTo(this)
     }
 
     override fun getItemCount() = items.size
@@ -65,16 +60,6 @@ class TvShowsListAdapter @Inject constructor(private val picasso: Picasso) : Ada
             val adapterItem = items[position] as TvShowAdapterItem
             holder.bind(adapterItem.tvShow)
         }
-    }
-
-    private fun showLoading() {
-        items.add(LoadingAdapterItem)
-        notifyItemInserted(items.size)
-    }
-
-    private fun hideLoading() {
-        items.remove(items.find { it is LoadingAdapterItem })
-        notifyItemRemoved(items.size)
     }
 
     class TvShowViewHolder(override val containerView: View, private val picasso: Picasso) : ViewHolder(containerView),
