@@ -44,4 +44,9 @@ open class BaseFragment(@LayoutRes val contentLayoutRes: Int) : Fragment() {
         fragmentToolbar.title = title
         fragmentToolbar.isVisible = true
     }
+
+    fun addFragment(fragment: Fragment, tag: String, addToBackStack: Boolean = false) {
+        val activity = requireActivity() as BaseActivity
+        activity.addFragment(fragment, tag, addToBackStack)
+    }
 }

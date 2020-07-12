@@ -2,6 +2,7 @@ package com.demo.tvshows.ui.tvshows
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.demo.tvshows.R
 import com.demo.tvshows.di.viewmodel.ViewModelFactory
 import com.demo.tvshows.ui.base.BaseFragment
+import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment
+import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment.Companion.ARG_TV_SHOW_ID
 import com.demo.tvshows.util.PagingScrollListener
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_tv_shows.tvShowsRecyclerView
 import javax.inject.Inject
 
@@ -19,7 +23,9 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
     lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
-    lateinit var tvShowsListAdapter: TvShowsListAdapter
+    lateinit var picasso: Picasso
+
+    private lateinit var tvShowsListAdapter: TvShowsListAdapter
 
     private val tvShowsViewModel by viewModels<TvShowsViewModel> { viewModelFactory }
 
@@ -27,6 +33,7 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
         super.onViewCreated(view, savedInstanceState)
 
         setToolbarTitle(getString(R.string.title_show_shows_activity))
+        initAdapter()
         tvShowsRecyclerView.init()
         tvShowsViewModel.getTvShows()
         observeViewModel()
@@ -41,6 +48,17 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
                 onError(it) { tvShowsViewModel.getTvShows() }
             })
         }
+    }
+
+    private fun showTvShowDetailFragment(tvShowId: Int) {
+        val tvShowDetailFragment = TvShowDetailFragment().apply {
+            arguments = bundleOf(ARG_TV_SHOW_ID to tvShowId)
+        }
+        addFragment(tvShowDetailFragment, TvShowDetailFragment.TAG, addToBackStack = true)
+    }
+
+    private fun initAdapter() {
+        tvShowsListAdapter = TvShowsListAdapter(picasso, ::showTvShowDetailFragment)
     }
 
     private fun RecyclerView.init() {
@@ -60,5 +78,9 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
                 get() = tvShowsViewModel.canLoadMore
         }
         addOnScrollListener(tvShowsPagingScrollListener)
+    }
+
+    companion object {
+        const val TAG_TV_SHOWS_FRAGMENT = "tvShowsFragment"
     }
 }
