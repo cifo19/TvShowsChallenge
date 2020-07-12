@@ -6,6 +6,9 @@ import com.demo.tvshows.ui.base.BaseActivity
 
 class TvShowsActivity : BaseActivity() {
 
+    override val fragmentContainerId: Int
+        get() = R.id.fragmentContainerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tv_shows)
@@ -16,8 +19,6 @@ class TvShowsActivity : BaseActivity() {
     }
 
     private fun showTvShowsFragment() {
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fragmentContainerView, TvShowsFragment())
-            .commit()
+        addFragment(TvShowsFragment(), TvShowsFragment.TAG_TV_SHOWS_FRAGMENT)
     }
 }

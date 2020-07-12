@@ -2,6 +2,7 @@ package com.demo.tvshows.ui.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.DialogCallback
 import com.afollestad.materialdialogs.MaterialDialog
 import com.demo.tvshows.R
@@ -15,6 +16,8 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    abstract val fragmentContainerId: Int
 
     override fun androidInjector() = androidInjector
 
@@ -44,6 +47,13 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
             })
             negativeButton(res = R.string.exit, click = onErrorDialogNegativeClick)
         }
+    }
+
+    fun addFragment(fragment: Fragment, tag: String, addToBackStack: Boolean = false) {
+        supportFragmentManager.beginTransaction()
+            .add(fragmentContainerId, fragment, tag)
+            .apply { if (addToBackStack) addToBackStack(tag) }
+            .commit()
     }
 
     private fun onNoInternetConnection(onTryAgain: (() -> Unit)? = null) {
