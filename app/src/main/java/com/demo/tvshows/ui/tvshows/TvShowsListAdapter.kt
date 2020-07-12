@@ -19,7 +19,10 @@ import kotlinx.android.synthetic.main.item_tv_show.ratingTextView
 import kotlinx.android.synthetic.main.item_tv_show.titleTextView
 import javax.inject.Inject
 
-class TvShowsListAdapter @Inject constructor(private val picasso: Picasso) : Adapter<ViewHolder>() {
+class TvShowsListAdapter @Inject constructor(
+    private val picasso: Picasso,
+    private val onTvShowClicked: (Int) -> Unit
+) : Adapter<ViewHolder>() {
 
     private var items = mutableListOf<AdapterItem>()
 
@@ -48,7 +51,8 @@ class TvShowsListAdapter @Inject constructor(private val picasso: Picasso) : Ada
             VIEW_TYPE_TV_SHOW -> {
                 TvShowViewHolder(
                     LayoutInflater.from(parent.context).inflate(R.layout.item_tv_show, parent, false),
-                    picasso
+                    picasso,
+                    onTvShowClicked
                 )
             }
             else -> throw IllegalArgumentException("No viewType found for $viewType")
@@ -62,8 +66,11 @@ class TvShowsListAdapter @Inject constructor(private val picasso: Picasso) : Ada
         }
     }
 
-    class TvShowViewHolder(override val containerView: View, private val picasso: Picasso) : ViewHolder(containerView),
-        LayoutContainer {
+    class TvShowViewHolder(
+        override val containerView: View,
+        private val picasso: Picasso,
+        private val onTvShowClicked: (Int) -> Unit
+    ) : ViewHolder(containerView), LayoutContainer {
         fun bind(tvShow: TvShow) {
             picasso.load("$PREFIX_IMAGE_URL${tvShow.posterPath}")
                 .placeholder(R.drawable.ic_tv_show_place_holder)
@@ -71,6 +78,7 @@ class TvShowsListAdapter @Inject constructor(private val picasso: Picasso) : Ada
             titleTextView.text = tvShow.name
             overviewTextView.text = tvShow.overview
             ratingTextView.text = tvShow.voteAverage.toString()
+            containerView.setOnClickListener { onTvShowClicked(tvShow.id) }
         }
     }
 
