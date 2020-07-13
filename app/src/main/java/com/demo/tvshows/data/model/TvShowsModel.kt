@@ -7,7 +7,7 @@ import javax.inject.Inject
 class TvShowsModel @Inject constructor(
     private val movieDatabaseService: MovieDatabaseService
 ) {
-    suspend fun fetchTvShows(pageIndex: Int = 1) : TvShowsResponse {
+    suspend fun fetchTvShows(pageIndex: Int = 1): TvShowsResponse {
         return movieDatabaseService.getPopularTvShows(pageIndex)
     }
 }

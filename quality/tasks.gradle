@@ -3,23 +3,9 @@ repositories {
 }
 
 configurations {
-  detekt
   ktlint
 }
 
-task detekt(type: JavaExec, group: "verification") {
-  main = "io.gitlab.arturbosch.detekt.cli.Main"
-  classpath = configurations.detekt
-  def input = "$projectDir"
-  def config = "$rootDir/quality/detekt-config.yml"
-  def filters = ".*/build/.*,.*/resources/.*"
-  def output = "$buildDir/reports/detekt"
-  def outputName = "detekt-report"
-  def params = ['-i', input, '-c', config, '-f', filters, '-o', output, '-on', outputName]
-  args(params)
-}
-
-check.dependsOn detekt
 task ktlint(type: JavaExec, group: "verification") {
   description = "Check Kotlin code style."
   classpath = configurations.ktlint
@@ -30,6 +16,5 @@ task ktlint(type: JavaExec, group: "verification") {
 check.dependsOn ktlint
 
 dependencies {
-  detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.RC7-3'
   ktlint "com.github.shyiko:ktlint:0.29.0"
 }

@@ -1,59 +1,11 @@
-autoCorrect: true
-failFast: false
-
-test-pattern: # Configure exclusions for test sources
-  active: true
-  patterns: # Test file regexes
-    - '.*/androidTest/.*'
-    - '.*/test/.*'
-    - '.*Test.kt'
-    - '.*Spec.kt'
-  exclude-rule-sets:
-    - 'comments'
-  exclude-rules:
-    - 'NamingRules'
-    - 'WildcardImport'
-    - 'MagicNumber'
-    - 'MaxLineLength'
-    - 'LateinitUsage'
-    - 'StringLiteralDuplication'
-    - 'SpreadOperator'
-    - 'TooManyFunctions'
-    - 'ForEachOnRange'
-    - 'LargeClass'
-
 build:
   maxIssues: 0
-  weights:
-    # complexity: 2
-    # LongParameterList: 1
-    # style: 1
-    # comments: 1
 
 processors:
   active: true
-  exclude:
-  # - 'FunctionCountProcessor'
-  # - 'PropertyCountProcessor'
-  # - 'ClassCountProcessor'
-  # - 'PackageCountProcessor'
-  # - 'KtFileCountProcessor'
 
 console-reports:
   active: true
-  exclude:
-  #  - 'ProjectStatisticsReport'
-  #  - 'ComplexityReport'
-  #  - 'NotificationReport'
-  #  - 'FindingsReport'
-  #  - 'BuildFailureReport'
-
-output-reports:
-  active: true
-  exclude:
-   - 'PlainOutputReport'
-   - 'XmlOutputReport'
-  #  - 'HtmlOutputReport'
 
 comments:
   active: true
@@ -92,8 +44,7 @@ complexity:
     active: true
     threshold: 150
   LongMethod:
-    active: true
-    threshold: 20
+    active: false
   LongParameterList:
     active: true
     threshold: 5
@@ -182,21 +133,21 @@ exceptions:
   TooGenericExceptionCaught:
     active: true
     exceptionNames:
-     - ArrayIndexOutOfBoundsException
-     - Error
-     - Exception
-     - IllegalMonitorStateException
-     - NullPointerException
-     - IndexOutOfBoundsException
-     - RuntimeException
-     - Throwable
+      - ArrayIndexOutOfBoundsException
+      - Error
+      - Exception
+      - IllegalMonitorStateException
+      - NullPointerException
+      - IndexOutOfBoundsException
+      - RuntimeException
+      - Throwable
   TooGenericExceptionThrown:
     active: true
     exceptionNames:
-     - Error
-     - Exception
-     - Throwable
-     - RuntimeException
+      - Error
+      - Exception
+      - Throwable
+      - RuntimeException
 
 formatting:
   active: true
@@ -236,8 +187,6 @@ formatting:
   NoEmptyClassBody:
     active: true
     autoCorrect: true
-  NoItParamInMultilineLambda:
-    active: true
   NoLineBreakAfterElse:
     active: true
     autoCorrect: true
