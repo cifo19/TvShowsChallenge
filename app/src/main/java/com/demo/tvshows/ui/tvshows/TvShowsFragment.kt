@@ -8,26 +8,24 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.demo.tvshows.R
-import com.demo.tvshows.di.viewmodel.ViewModelFactory
 import com.demo.tvshows.ui.base.BaseFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment.Companion.ARG_TV_SHOW_ID
 import com.demo.tvshows.util.PagingScrollListener
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tv_shows.tvShowsRecyclerView
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
     lateinit var picasso: Picasso
 
     private lateinit var tvShowsListAdapter: TvShowsListAdapter
 
-    private val tvShowsViewModel by viewModels<TvShowsViewModel> { viewModelFactory }
+    private val tvShowsViewModel by viewModels<TvShowsViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

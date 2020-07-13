@@ -1,30 +1,15 @@
 package com.demo.tvshows.ui.base
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.DialogCallback
 import com.afollestad.materialdialogs.MaterialDialog
 import com.demo.tvshows.R
 import com.demo.tvshows.util.network.errorhandler.NoConnectionException
-import dagger.android.AndroidInjection
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
 
-abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
-
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+abstract class BaseActivity : AppCompatActivity() {
 
     abstract val fragmentContainerId: Int
-
-    override fun androidInjector() = androidInjector
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-        super.onCreate(savedInstanceState)
-    }
 
     fun onError(
         throwable: Throwable,

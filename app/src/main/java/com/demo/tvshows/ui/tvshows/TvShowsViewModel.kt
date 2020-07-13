@@ -1,5 +1,6 @@
 package com.demo.tvshows.ui.tvshows
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,9 +12,10 @@ import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapter
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
 import com.demo.tvshows.util.modifyValue
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class TvShowsViewModel @Inject constructor(private val tvShowsModel: TvShowsModel) : BaseViewModel() {
+class TvShowsViewModel @ViewModelInject constructor(
+    private val tvShowsModel: TvShowsModel
+) : BaseViewModel() {
 
     var pageIndex: Int = 1
     var hasNextPage: Boolean = false
