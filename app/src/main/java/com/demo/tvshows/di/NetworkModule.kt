@@ -9,6 +9,8 @@ import com.demo.tvshows.util.network.interceptors.InternetConnectivityIntercepto
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,8 +19,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Singleton
 
+@InstallIn(ApplicationComponent::class)
 @Module
-class NetworkModule {
+object NetworkModule {
+
+    private const val OK_HTTP_CONNECTION_TIME_OUT = 150000L
+    private const val OK_HTTP_READ_TIME_OUT = 150000L
+    private const val OK_HTTP_WRITE_TIME_OUT = 150000L
 
     @Provides
     @Singleton
@@ -82,11 +89,5 @@ class NetworkModule {
     @Singleton
     fun providesRxJavaCallAdapterFactory(): RxJava2CallAdapterFactory {
         return RxJava2CallAdapterFactory.create()
-    }
-
-    companion object {
-        private const val OK_HTTP_CONNECTION_TIME_OUT = 150000L
-        private const val OK_HTTP_READ_TIME_OUT = 150000L
-        private const val OK_HTTP_WRITE_TIME_OUT = 150000L
     }
 }

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../quality/tasks.gradle'
 
 android {
@@ -80,12 +81,11 @@ dependencies {
   implementation deps.retrofit_converter_gson
   implementation deps.retrofit_adapter_rxjava
 
-  // Dagger
-  kapt deps.dagger_android_processor
-  kapt deps.dagger_compiler
-  implementation deps.dagger
-  implementation deps.dagger_android
-  implementation deps.dagger_android_support
+  // Dependency Injection
+  kapt deps.hilt_compiler
+  kapt deps.hilt_androidx_compiler
+  implementation deps.hilt
+  implementation deps.hilt_viewmodel
 
   // Force mockito_kotlin to use newest reflect library
   testImplementation testDeps.kotlin_reflect

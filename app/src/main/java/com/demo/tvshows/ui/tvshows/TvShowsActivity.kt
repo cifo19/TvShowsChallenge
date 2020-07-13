@@ -3,7 +3,9 @@ package com.demo.tvshows.ui.tvshows
 import android.os.Bundle
 import com.demo.tvshows.R
 import com.demo.tvshows.ui.base.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TvShowsActivity : BaseActivity() {
 
     override val fragmentContainerId: Int

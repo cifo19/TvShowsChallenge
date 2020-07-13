@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import com.demo.tvshows.R
 import com.demo.tvshows.ui.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TvShowDetailFragment : BaseFragment(R.layout.fragment_tv_show_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
