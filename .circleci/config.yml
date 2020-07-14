@@ -12,8 +12,17 @@ jobs:
       - run:
           command: ./gradlew clean
       - run:
+          command: ./gradlew lintDebug
+          when: always
+      - run:
           command: ./gradlew detekt
+          when: always
       - run:
           command: ./gradlew ktlint
-      - run:
-          command: ./gradlew lintDebug
+          when: always
+      - store_artifacts:
+          path: /home/circleci/project/app/build/reports/detekt/detekt.html
+      - store_artifacts:
+          path: /home/circleci/project/app/build/reports/lint-results-debug.html
+      - store_artifacts:
+          path: /home/circleci/project/app/build/ktlint.xml

@@ -36,6 +36,13 @@ android {
     jvmTarget = JavaVersion.VERSION_1_8.toString()
   }
 
+  lintOptions {
+    warningsAsErrors true
+    abortOnError true
+    disable 'Overdraw'
+    enable 'SyntheticAccessor'
+  }
+
   tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
     kotlinOptions.freeCompilerArgs += ["-Xallow-result-return-type"]
