@@ -10,4 +10,10 @@ jobs:
     steps:
       - checkout
       - run:
-          command: ./gradlew build
+          command: ./gradlew clean
+      - run:
+          command: ./gradlew detekt
+      - run:
+          command: ./gradlew ktlint
+      - run:
+          command: ./gradlew lintDebug
