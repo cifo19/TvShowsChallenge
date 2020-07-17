@@ -6,23 +6,40 @@ orbs:
 jobs:
   build:
     executor: android/android
+    working_directory: ~/code
 
     steps:
       - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Clean
           command: ./gradlew clean
       - run:
+          name: androidLint(debug)
           command: ./gradlew lintDebug
           when: always
       - run:
+          name: detekt
           command: ./gradlew detekt
           when: always
       - run:
+          name: ktlint
           command: ./gradlew ktlint
           when: always
       - store_artifacts:
-          path: /home/circleci/project/app/build/reports/detekt/detekt.html
+          path: /home/circleci/code/app/build/reports/detekt/detekt.html
+          destination: reports/detekt
       - store_artifacts:
-          path: /home/circleci/project/app/build/reports/lint-results-debug.html
+          path: /home/circleci/code/app/build/reports/lint-results-debug.html
+          destination: reports/android_lint
       - store_artifacts:
-          path: /home/circleci/project/app/build/ktlint.xml
+          path: /home/circleci/code/app/build/ktlint.xml
+          destination: reports/ktlint
