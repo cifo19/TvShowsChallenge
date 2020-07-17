@@ -73,20 +73,12 @@ dependencies {
   // ViewModel and LiveData
   implementation deps.lifecycle_extensions
 
-  // Reactive libraries
-  implementation deps.rx_java
-  implementation deps.rx_kotlin
-  implementation deps.rx_android
-  implementation deps.rx_binding
-  implementation deps.rx_lint
-
   // Networking
   implementation deps.okhttp
   implementation deps.okhttp_urlconnection
   implementation deps.okhttp_logging
   implementation deps.retrofit
   implementation deps.retrofit_converter_gson
-  implementation deps.retrofit_adapter_rxjava
 
   // Dependency Injection
   kapt deps.hilt_compiler

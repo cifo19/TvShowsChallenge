@@ -2,17 +2,16 @@
 Project that shows the most popular tv shows all over the world based on TheMovieDB Api.
 
 ## Motivation
-This sample project is mainly focused on how to implement MVVM architecture with Android Architecture Components by using
-Dependency injection framework Dagger2
+This sample project is mainly focused on how to implement MVVM architecture with Android Architecture Components by using dependency injection pattern
 
 ## Technologies / Frameworks
-Build Tool [Gradle 3.4.1](https://gradle.org/)
+Build Tool [Gradle 6.1.1](https://gradle.org/)
 
-Programming Language [Kotlin 1.3.31](https://kotlinlang.org/)
+Programming Language [Kotlin 1.3.72](https://kotlinlang.org/)
 
-Reactive Programming [RxJava](https://github.com/ReactiveX/RxJava)
+Asynchronicity [RxJava](https://github.com/ReactiveX/RxJava) migrated to [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 
-Dependency Injection [Dagger2](https://dagger.dev/)
+Dependency Injection [Dagger2](https://dagger.dev/) migrated to [Hilt](https://dagger.dev/hilt/)
 
 Architecture Design [Android Architecture Components](https://developer.android.com/topic/libraries/architecture)
 
@@ -29,8 +28,6 @@ Makes assertions easy and more readable [AssertJ](https://joel-costigliola.githu
 Kotlin lang static code analysis [Detekt](https://github.com/arturbosch/detekt)
 
 Kotlin lint [Ktlint](https://github.com/pinterest/ktlint)
-
-RxJava lint [RxLint](https://bitbucket.org/littlerobots/rxlint)
 
 ## Coding Conventions
 Kotlin Coding Conventions https://kotlinlang.org/docs/reference/coding-conventions.html
