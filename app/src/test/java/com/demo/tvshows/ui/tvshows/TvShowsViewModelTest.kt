@@ -1,97 +1,123 @@
 package com.demo.tvshows.ui.tvshows
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.demo.tvshows.data.model.TvShowsModel
 import com.demo.tvshows.data.remote.response.TvShowsResponse
-import com.demo.tvshows.helper.TestUtils
-import com.demo.tvshows.helper.parseFile
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
-import com.nhaarman.mockito_kotlin.whenever
-import io.reactivex.Single
+import com.demo.tvshows.util.parseFile
+import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
+import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
+import com.demo.tvshows.util.TestCoroutineRule
+import com.demo.tvshows.util.byPausing
+import com.demo.tvshows.util.network.errorhandler.ServiceException
+import com.demo.tvshows.util.runBlocking
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
+import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
+@ExperimentalCoroutinesApi
 class TvShowsViewModelTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
+    val testCoroutineRule = TestCoroutineRule()
+
+    @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Mock
+    @MockK
     private lateinit var tvShowsModel: TvShowsModel
 
     private lateinit var tvShowsViewModel: TvShowsViewModel
 
-    private val tvShowsResponse = parseFile<TvShowsResponse>(POPULAR_TV_SHOWS_RESPONSE_PATH)
+    private val tvShowsResponse =
+        parseFile<TvShowsResponse>(POPULAR_TV_SHOWS_RESPONSE_PATH)
 
     @Before
     fun setUp() {
-        TestUtils.hookTestRxJavaSchedulers()
+        MockKAnnotations.init(this)
         tvShowsViewModel = TvShowsViewModel(tvShowsModel)
     }
 
     @Test
-    fun `When tv shows are fetching then do not request again`() {
-        tvShowsViewModel.fetchingTvShows = true
+    fun `When the next page is not exist then can not load more`() {
+        tvShowsViewModel.hasNextPage = false
 
-        tvShowsViewModel.getTvShows()
+        val canLoadMore = tvShowsViewModel.canLoadMore
 
-        verifyZeroInteractions(tvShowsModel)
+        assertThat(canLoadMore).isFalse()
     }
 
     @Test
-    fun `When tv shows intended to fetch for load more then increment index count`() {
-        val expectedPageIndex = 2
-        whenever(tvShowsModel.fetchTvShows(expectedPageIndex)).thenReturn(Single.just(tvShowsResponse))
+    fun `When the new tv shows are loading then can not load more`() {
+        tvShowsViewModel.hasNextPage = true
+        tvShowsViewModel._showTvShowsLiveData.value = mutableListOf(LoadingAdapterItem)
+
+        val canLoadMore = tvShowsViewModel.canLoadMore
+
+        assertThat(canLoadMore).isFalse()
+    }
+
+    @Test
+    fun `When the next page is exist and the new tv shows are not loading then can load more`() {
+        tvShowsViewModel.hasNextPage = true
+        tvShowsViewModel._showTvShowsLiveData.value = mutableListOf()
+
+        val canLoadMore = tvShowsViewModel.canLoadMore
+
+        assertThat(canLoadMore).isTrue()
+    }
+
+    @Test
+    fun `When loading more tv show then increase pageIndex`() {
+        coEvery { tvShowsModel.fetchTvShows(any()) } returns tvShowsResponse
 
         tvShowsViewModel.getTvShows(loadMore = true)
 
-        verify(tvShowsModel).fetchTvShows(expectedPageIndex)
-        assertThat(tvShowsViewModel.pageIndex).isEqualTo(expectedPageIndex)
+        assertThat(tvShowsViewModel.pageIndex).isEqualTo(2)
     }
 
     @Test
-    fun `When before fetching tv shows should show loading`() {
-        whenever(tvShowsModel.fetchTvShows()).thenReturn(Single.just(tvShowsResponse))
+    fun `When start to fetch tv shows then should show loading`() = testCoroutineRule.runBlocking {
+        val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
+        tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
+        coEvery { tvShowsModel.fetchTvShows(any()) } returns tvShowsResponse
 
-        tvShowsViewModel.getTvShows()
-
-        verify(tvShowsModel).fetchTvShows()
-        assertThat(tvShowsViewModel.loadingShownState.value).isTrue()
+        testCoroutineRule.testDispatcher.byPausing {
+            tvShowsViewModel.getTvShows()
+            verify { tvShowsObserver.onChanged(mutableListOf(LoadingAdapterItem)) }
+        }
     }
 
     @Test
-    fun `When request is succeeded update hasNextPage and show tv shows()`() {
-        whenever(tvShowsModel.fetchTvShows()).thenReturn(Single.just(tvShowsResponse))
+    fun `When tv shows are fetched successfully then show tv shows`() = testCoroutineRule.runBlocking {
+        val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
+        tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
+        coEvery { tvShowsModel.fetchTvShows(any()) } returns tvShowsResponse
 
         tvShowsViewModel.getTvShows()
 
-        val expectedHasNextPage = tvShowsResponse.page != tvShowsResponse.totalPages
-        val expectedAdapterItems = tvShowsResponse.tvShows.map { TvShowAdapterItem(it) }
-        verify(tvShowsModel).fetchTvShows()
-        assertThat(tvShowsViewModel.hasNextPage).isEqualTo(expectedHasNextPage)
-        assertThat(tvShowsViewModel.showTvShows.value).isEqualTo(expectedAdapterItems)
+        val expectedAdapterItems: MutableList<AdapterItem> = tvShowsResponse.tvShows
+            .map(AdapterItem::TvShowAdapterItem)
+            .toMutableList()
+        verify { tvShowsObserver.onChanged(expectedAdapterItems) }
     }
 
     @Test
-    fun `When request is failed then hide loading and show alert`() {
-        val throwable = Throwable()
-        whenever(tvShowsModel.fetchTvShows()).thenReturn(Single.error(throwable))
+    fun `When tv shows are fetched with failure then show error`() = testCoroutineRule.runBlocking {
+        val errorObserver = mockk<Observer<Throwable>>(relaxed = true)
+        tvShowsViewModel.onError.observeForever(errorObserver)
+        coEvery { tvShowsModel.fetchTvShows(any()) } answers { throw ServiceException() }
 
         tvShowsViewModel.getTvShows()
 
-        verify(tvShowsModel).fetchTvShows()
-
-        assertThat(tvShowsViewModel.onError.value).isEqualTo(throwable)
-        assertThat(tvShowsViewModel.loadingShownState.value).isFalse()
+        verify { errorObserver.onChanged(ServiceException()) }
     }
 
     companion object {

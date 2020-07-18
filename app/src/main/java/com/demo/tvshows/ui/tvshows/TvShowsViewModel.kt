@@ -1,5 +1,6 @@
 package com.demo.tvshows.ui.tvshows
 
+import androidx.annotation.VisibleForTesting
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,11 +18,16 @@ class TvShowsViewModel @ViewModelInject constructor(
     private val tvShowsModel: TvShowsModel
 ) : BaseViewModel() {
 
-    var pageIndex: Int = 1
-    var hasNextPage: Boolean = false
     val canLoadMore: Boolean get() = hasNextPage && isLoading()
 
-    private val _showTvShowsLiveData = MutableLiveData<MutableList<AdapterItem>>()
+    @VisibleForTesting
+    var pageIndex: Int = 1
+    @VisibleForTesting
+    var hasNextPage: Boolean = false
+
+    @VisibleForTesting
+    @Suppress("PropertyName", "VariableNaming")
+    val _showTvShowsLiveData = MutableLiveData<MutableList<AdapterItem>>()
     val showTvShows: LiveData<MutableList<AdapterItem>> = _showTvShowsLiveData
 
     fun getTvShows(loadMore: Boolean = false) {

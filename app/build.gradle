@@ -64,6 +64,8 @@ dependencies {
   implementation deps.constraint_layout
   implementation deps.material
   implementation deps.material_dialogs
+  implementation deps.coroutines_core
+  implementation deps.coroutines_android
 
   // ktx
   implementation deps.fragment_ktx
@@ -86,14 +88,11 @@ dependencies {
   implementation deps.hilt
   implementation deps.hilt_viewmodel
 
-  // Force mockito_kotlin to use newest reflect library
-  testImplementation testDeps.kotlin_reflect
-
+  testImplementation testDeps.mockk
   testImplementation testDeps.junit
-  testImplementation testDeps.mockito_core
-  testImplementation testDeps.mockito_android
-  testImplementation testDeps.mockito_kotlin
   testImplementation testDeps.hamcrest
   testImplementation testDeps.arch_core_testing
   testImplementation testDeps.assertj
+  testImplementation testDeps.coroutines_test
+  testImplementation deps.coroutines_core
 }

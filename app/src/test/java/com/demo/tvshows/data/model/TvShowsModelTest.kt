@@ -2,61 +2,49 @@ package com.demo.tvshows.data.model
 
 import com.demo.tvshows.data.remote.MovieDatabaseService
 import com.demo.tvshows.data.remote.response.TvShowsResponse
-import com.demo.tvshows.helper.TestUtils
-import com.demo.tvshows.helper.parseFile
-import com.demo.tvshows.util.network.errorhandler.UnHandledServiceException
-import com.google.gson.Gson
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
-import io.reactivex.Single
+import com.demo.tvshows.util.parseFile
+import com.demo.tvshows.util.network.errorhandler.ServiceException
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class TvShowsModelTest {
 
-    @Mock
+    @MockK
     private lateinit var movieDatabaseService: MovieDatabaseService
     private lateinit var tvShowsModel: TvShowsModel
 
-    private val errorHandler: ErrorHandler = ErrorHandler(Gson())
-
     @Before
     fun setUp() {
-        TestUtils.hookTestRxJavaSchedulers()
-        tvShowsModel = TvShowsModel(movieDatabaseService, errorHandler)
+        MockKAnnotations.init(this)
+        tvShowsModel = TvShowsModel(movieDatabaseService)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `Whenever request is succeeded then return response`() {
-        val response = parseFile<TvShowsResponse>(POPULAR_TV_SHOWS_RESPONSE_PATH)
-        whenever(movieDatabaseService.getPopularTvShows(1)).thenReturn(Single.just(response))
+    fun `Whenever request is succeeded then return response`() = runBlockingTest {
+        val expectedResponse =
+            parseFile<TvShowsResponse>(POPULAR_TV_SHOWS_RESPONSE_PATH)
+        coEvery { movieDatabaseService.getPopularTvShows(any()) } returns expectedResponse
 
-        val testObserver = tvShowsModel.fetchTvShows().test()
+        val actualResponse = tvShowsModel.fetchTvShows(pageIndex = 1)
 
-        verify(movieDatabaseService).getPopularTvShows(1)
-        with(testObserver) {
-            assertSubscribed()
-            assertNoErrors()
-            assertComplete()
-        }
+        coVerify { movieDatabaseService.getPopularTvShows(any()) }
+        assertThat(actualResponse).isEqualTo(expectedResponse)
     }
 
-    @Test
-    fun `Whenever request is failed then throw exception`() {
-        val throwable = Throwable()
-        whenever(movieDatabaseService.getPopularTvShows(1)).thenReturn(Single.error(throwable))
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test(expected = ServiceException::class)
+    fun `Whenever request is failed then throw exception`() = runBlockingTest {
+        coEvery { movieDatabaseService.getPopularTvShows(any()) } coAnswers { throw ServiceException() }
 
-        val testObserver = tvShowsModel.fetchTvShows().test()
-
-        verify(movieDatabaseService).getPopularTvShows(1)
-        with(testObserver) {
-            assertSubscribed()
-            assertFailure(UnHandledServiceException::class.java)
-        }
+        tvShowsModel.fetchTvShows(pageIndex = 1)
     }
 
     companion object {
