@@ -1,4 +1,4 @@
-package com.demo.tvshows.helper
+package com.demo.tvshows.util
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
