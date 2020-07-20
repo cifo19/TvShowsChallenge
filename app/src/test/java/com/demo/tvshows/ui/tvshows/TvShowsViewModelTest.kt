@@ -4,12 +4,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.demo.tvshows.data.model.TvShowsModel
 import com.demo.tvshows.data.remote.response.TvShowsResponse
-import com.demo.tvshows.util.parseFile
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
 import com.demo.tvshows.util.TestCoroutineRule
 import com.demo.tvshows.util.byPausing
 import com.demo.tvshows.util.network.errorhandler.ServiceException
+import com.demo.tvshows.util.parseFile
 import com.demo.tvshows.util.runBlocking
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
