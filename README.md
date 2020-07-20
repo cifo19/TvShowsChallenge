@@ -18,9 +18,7 @@ Architecture Design [Android Architecture Components](https://developer.android.
 ## Test Technologies / Frameworks
 Test Runner [JUnit 4.12](https://github.com/junit-team/junit4/blob/master/doc/ReleaseNotes4.12.md)
 
-Mocking Library [Mockito](https://site.mockito.org/)
-
-A library that provides helper functions to work with Mockito in Kotlin. [Mockito Kotlin](https://github.com/nhaarman/mockito-kotlin) <3
+Mocking Library [Mockito](https://site.mockito.org/) migrated to [Mockk](https://mockk.io/)
 
 Makes assertions easy and more readable [AssertJ](https://joel-costigliola.github.io/assertj/)
 
