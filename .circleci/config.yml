@@ -7,7 +7,6 @@ jobs:
   build:
     executor: android/android
     working_directory: ~/code
-
     steps:
       - checkout
       - restore_cache:
@@ -22,6 +21,12 @@ jobs:
       - run:
           name: Clean
           command: ./gradlew clean
+
+  static_analyzers:
+    executor: android/android
+    working_directory: ~/code
+    steps:
+      - checkout
       - run:
           name: androidLint(debug)
           command: ./gradlew lintDebug
@@ -34,6 +39,21 @@ jobs:
           name: ktlint
           command: ./gradlew ktlint
           when: always
+      - store_artifacts:
+          path: /home/circleci/code/app/build/reports/detekt/detekt.html
+          destination: reports/detekt
+      - store_artifacts:
+          path: /home/circleci/code/app/build/reports/lint-results-debug.html
+          destination: reports/android_lint
+      - store_artifacts:
+          path: /home/circleci/code/app/build/ktlint.xml
+          destination: reports/ktlint
+
+  unit_tests:
+    executor: android/android
+    working_directory: ~/code
+    steps:
+      - checkout
       - run:
           name: Unit tests
           command: ./gradlew test
@@ -49,12 +69,15 @@ jobs:
       - store_artifacts:
           path: ~/test-results/junit
           destination: tests
-      - store_artifacts:
-          path: /home/circleci/code/app/build/reports/detekt/detekt.html
-          destination: reports/detekt
-      - store_artifacts:
-          path: /home/circleci/code/app/build/reports/lint-results-debug.html
-          destination: reports/android_lint
-      - store_artifacts:
-          path: /home/circleci/code/app/build/ktlint.xml
-          destination: reports/ktlint
+
+workflows:
+  version: 2
+  build-test-and-static_analyzers:
+    jobs:
+      - build
+      - static_analyzers:
+          requires:
+            - build
+      - unit_tests:
+          requires:
+            - build
