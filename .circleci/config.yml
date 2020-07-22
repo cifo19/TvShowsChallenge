@@ -1,11 +1,9 @@
 version: 2.1
 
-orbs:
-  android: circleci/android@0.2.0
-
 jobs:
   build:
-    executor: android/android
+    docker:
+      - image: circleci/android:api-29
     working_directory: ~/code
     steps:
       - checkout
@@ -18,12 +16,10 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Clean
-          command: ./gradlew clean
 
   static_analyzers:
-    executor: android/android
+    docker:
+      - image: circleci/android:api-29
     working_directory: ~/code
     steps:
       - checkout
@@ -50,7 +46,8 @@ jobs:
           destination: reports/ktlint
 
   unit_tests:
-    executor: android/android
+    docker:
+      - image: circleci/android:api-29
     working_directory: ~/code
     steps:
       - checkout
