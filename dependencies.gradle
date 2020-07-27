@@ -24,6 +24,9 @@ ext {
       okhttp = "3.12.2",
       picasso = "2.71828",
 
+      // Firebase
+      firebase = '17.2.2',
+
       // Test
       test_runner = "1.1.1",
       test_rules = "1.1.1",
@@ -63,7 +66,8 @@ ext {
           picasso                  : "com.squareup.picasso:picasso:$picasso",
           material_dialogs         : "com.afollestad.material-dialogs:core:$material_dialogs",
           coroutines_core          : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines",
-          coroutines_android       : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines"]
+          coroutines_android       : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines",
+          firebase                 : "com.google.firebase:firebase-analytics:$firebase"]
 
   testDeps = [junit            : "junit:junit:$junit",
               test_runner      : "androidx.test:runner:$test_runner",
