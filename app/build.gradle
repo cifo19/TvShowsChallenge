@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.appdistribution'
 apply from: '../quality/tasks.gradle'
 
 android {
@@ -16,6 +18,12 @@ android {
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
+    debug {
+      firebaseAppDistribution {
+        releaseNotesFile = "${project.rootDir}/release_notes.txt"
+        testers = "caferkaya1989@gmail.com"
+      }
+    }
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -87,6 +95,9 @@ dependencies {
   kapt deps.hilt_androidx_compiler
   implementation deps.hilt
   implementation deps.hilt_viewmodel
+
+  // Firebase
+  implementation deps.firebase
 
   testImplementation testDeps.mockk
   testImplementation testDeps.junit
