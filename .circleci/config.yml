@@ -94,7 +94,6 @@ workflows:
           requires:
             - build
       - distribution:
-          context: tvshows
           requires:
             - static_analyzers
             - unit_tests
