@@ -17,6 +17,13 @@ android {
     versionName androidConfig.versionName
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
+
+  signingConfigs {
+    debug {
+      storeFile file('../debug.keystore')
+    }
+  }
+
   buildTypes {
     debug {
       firebaseAppDistribution {
