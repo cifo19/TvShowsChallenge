@@ -97,3 +97,7 @@ workflows:
           requires:
             - static_analyzers
             - unit_tests
+          filters:
+            branches:
+              only:
+                - master
