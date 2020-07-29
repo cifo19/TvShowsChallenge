@@ -52,6 +52,7 @@ android {
   }
 
   lintOptions {
+    baseline "./app/lint-baseline.xml"
     warningsAsErrors true
     abortOnError true
     disable 'Overdraw'
