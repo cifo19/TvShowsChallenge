@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="5" by="lint 4.0.1">
+
+  <issue
+      id="UnusedResources"
+      severity="Warning"
+      message="The resource `R.xml.network_security_config` appears to be unused"
+      category="Performance"
+      priority="3"
+      summary="Unused resources"
+      explanation="Unused resources make applications larger and slow down builds.&#xA;&#xA;The unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.&#xA;&#xA;You can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+      errorLine1="&lt;network-security-config>"
+      errorLine2="^"
+      includedVariants="release"
+      excludedVariants="debug">
+    <location
+        file="/Users/cafer.kaya/AndroidProjects/TvShowsChallenge/app/src/main/res/xml/network_security_config.xml"
+        line="2"
+        column="1"/>
+  </issue>
+
+  <issue
+      id="SyntheticAccessor"
+      severity="Warning"
+      message="Access to `private` method `getTvShowsViewModel` of class `TvShowsFragment` requires synthetic accessor"
+      category="Performance"
+      priority="2"
+      summary="Synthetic Accessor"
+      explanation="A private inner class which is accessed from the outer class will force the compiler to insert a synthetic accessor; this means that you are causing extra overhead. This is not important in small projects, but is important for large apps running up against the 64K method handle limit, and especially for **libraries** where you want to make sure your library is as small as possible for the cases where your library is used in an app running up against the 64K limit."
+      errorLine1="                tvShowsViewModel.getTvShows(loadMore = true)"
+      errorLine2="                ~~~~~~~~~~~~~~~~">
+    <location
+        file="/Users/cafer.kaya/AndroidProjects/TvShowsChallenge/app/src/main/java/com/demo/tvshows/ui/tvshows/TvShowsFragment.kt"
+        line="72"
+        column="17"/>
+  </issue>
+
+  <issue
+      id="SyntheticAccessor"
+      severity="Warning"
+      message="Access to `private` method `getTvShowsViewModel` of class `TvShowsFragment` requires synthetic accessor"
+      category="Performance"
+      priority="2"
+      summary="Synthetic Accessor"
+      explanation="A private inner class which is accessed from the outer class will force the compiler to insert a synthetic accessor; this means that you are causing extra overhead. This is not important in small projects, but is important for large apps running up against the 64K method handle limit, and especially for **libraries** where you want to make sure your library is as small as possible for the cases where your library is used in an app running up against the 64K limit."
+      errorLine1="                get() = tvShowsViewModel.canLoadMore"
+      errorLine2="                        ~~~~~~~~~~~~~~~~">
+    <location
+        file="/Users/cafer.kaya/AndroidProjects/TvShowsChallenge/app/src/main/java/com/demo/tvshows/ui/tvshows/TvShowsFragment.kt"
+        line="76"
+        column="25"/>
+  </issue>
+
+</issues>
