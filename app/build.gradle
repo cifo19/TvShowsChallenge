@@ -52,9 +52,10 @@ android {
   }
 
   lintOptions {
-    baseline "./app/lint-baseline.xml"
+    baseline "${project.rootDir}/app/lint-baseline.xml"
     warningsAsErrors true
     abortOnError true
+    absolutePaths false
     disable 'Overdraw'
     enable 'SyntheticAccessor'
   }
