@@ -3,6 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/node:4.8.2
+      - image: circleci/android:api-29
     steps:
-      - run: echo "hello circleci world"
+      - checkout
+      - run: ./gradlew build
