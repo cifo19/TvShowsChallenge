@@ -7,11 +7,14 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Analyze with detekt
           command: ./gradlew detekt
           when: always
       - run:
+          name: Analyze with ktlint
           command: ./gradlew ktlint
           when: always
       - run:
+          name: Analyze with lint on debug build
           command: ./gradlew lintDebug
           when: always
