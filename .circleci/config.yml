@@ -6,4 +6,6 @@ jobs:
       - image: circleci/android:api-29
     steps:
       - checkout
-      - run: ./gradlew build
+      - run: ./gradlew detekt
+      - run: ./gradlew ktlint
+      - run: ./gradlew lintDebug
