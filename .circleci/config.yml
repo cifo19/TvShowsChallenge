@@ -18,3 +18,12 @@ jobs:
           name: Analyze with lint on debug build
           command: ./gradlew lintDebug
           when: always
+      - store_artifacts:
+          path: /home/circleci/project/app/build/reports/detekt/detekt.html
+          destination: reports/detekt
+      - store_artifacts:
+          path: /home/circleci/project/app/build/ktlint.xml
+          destination: reports/ktlint
+      - store_artifacts:
+          path: /home/circleci/project/app/build/reports/lint-results-debug.html
+          destination: reports/android_lint
