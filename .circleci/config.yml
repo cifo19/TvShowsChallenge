@@ -6,4 +6,4 @@ jobs:
       - image: circleci/android:api-29
     steps:
       - checkout
-      - run: echo "hello circleci world"
+      - run: ./gradlew build
