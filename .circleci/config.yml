@@ -22,6 +22,12 @@ jobs:
           name: Unit tests
           command: ./gradlew test
           when: always
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
       - store_artifacts:
           path: /home/circleci/project/app/build/reports/detekt/detekt.html
           destination: reports/detekt
@@ -31,3 +37,8 @@ jobs:
       - store_artifacts:
           path: /home/circleci/project/app/build/reports/lint-results-debug.html
           destination: reports/android_lint
+      - store_artifacts:
+          path: ~/test-results/junit
+          destination: tests
+      - store_test_results:
+          path: ~/test-results
