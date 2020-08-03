@@ -18,6 +18,10 @@ jobs:
           name: Analyze with lint on debug build
           command: ./gradlew lintDebug
           when: always
+      - run:
+          name: Unit tests
+          command: ./gradlew test
+          when: always
       - store_artifacts:
           path: /home/circleci/project/app/build/reports/detekt/detekt.html
           destination: reports/detekt
