@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  static_analyzers:
     docker:
       - image: circleci/android:api-29
     steps:
@@ -18,6 +18,21 @@ jobs:
           name: Analyze with lint on debug build
           command: ./gradlew lintDebug
           when: always
+      - store_artifacts:
+          path: /home/circleci/project/app/build/reports/detekt/detekt.html
+          destination: reports/detekt
+      - store_artifacts:
+          path: /home/circleci/project/app/build/ktlint.xml
+          destination: reports/ktlint
+      - store_artifacts:
+          path: /home/circleci/project/app/build/reports/lint-results-debug.html
+          destination: reports/android_lint
+
+  unit_tests:
+    docker:
+      - image: circleci/android:api-29
+    steps:
+      - checkout
       - run:
           name: Unit tests
           command: ./gradlew test
@@ -29,16 +44,14 @@ jobs:
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
       - store_artifacts:
-          path: /home/circleci/project/app/build/reports/detekt/detekt.html
-          destination: reports/detekt
-      - store_artifacts:
-          path: /home/circleci/project/app/build/ktlint.xml
-          destination: reports/ktlint
-      - store_artifacts:
-          path: /home/circleci/project/app/build/reports/lint-results-debug.html
-          destination: reports/android_lint
-      - store_artifacts:
           path: ~/test-results/junit
           destination: tests
       - store_test_results:
           path: ~/test-results
+
+workflows:
+  version: 2.1
+  on_commits:
+    jobs:
+      - static_analyzers
+      - unit_tests
