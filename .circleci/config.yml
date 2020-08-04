@@ -49,9 +49,26 @@ jobs:
       - store_test_results:
           path: ~/test-results
 
+  distribution:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29
+    steps:
+      - checkout
+      - run:
+          name: Distribute
+          command: |
+            export FIREBASE_TOKEN=$FIREBASE_TOKEN
+            ./gradlew assembleDebug appDistributionUploadDebug
+          when: always
+
 workflows:
   version: 2.1
   on_commits:
     jobs:
       - static_analyzers
       - unit_tests
+      - distribution:
+          requires:
+            - static_analyzers
+            - unit_tests
