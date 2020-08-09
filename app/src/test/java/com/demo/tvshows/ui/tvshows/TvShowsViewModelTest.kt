@@ -2,13 +2,13 @@ package com.demo.tvshows.ui.tvshows
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.demo.tvshows.data.model.TvShowsModel
-import com.demo.tvshows.data.remote.response.TvShowsResponse
+import com.demo.tvshows.model.TvShowsRepository
+import com.demo.tvshows.remote.response.TvShowsResponse
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
 import com.demo.tvshows.util.TestCoroutineRule
 import com.demo.tvshows.util.byPausing
-import com.demo.tvshows.util.network.errorhandler.ServiceException
+import com.demo.tvshows.errorhandler.ServiceException
 import com.demo.tvshows.util.parseFile
 import com.demo.tvshows.util.runBlocking
 import io.mockk.MockKAnnotations
@@ -32,7 +32,7 @@ class TvShowsViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    private lateinit var tvShowsModel: TvShowsModel
+    private lateinit var tvShowsRepository: TvShowsRepository
 
     private lateinit var tvShowsViewModel: TvShowsViewModel
 
@@ -42,7 +42,7 @@ class TvShowsViewModelTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        tvShowsViewModel = TvShowsViewModel(tvShowsModel)
+        tvShowsViewModel = TvShowsViewModel(tvShowsRepository)
     }
 
     @Test
@@ -76,7 +76,7 @@ class TvShowsViewModelTest {
 
     @Test
     fun `When loading more tv show then increase pageIndex`() {
-        coEvery { tvShowsModel.fetchTvShows(any()) } returns tvShowsResponse
+        coEvery { tvShowsRepository.fetchTvShows(any()) } returns tvShowsResponse
 
         tvShowsViewModel.getTvShows(loadMore = true)
 
@@ -87,7 +87,7 @@ class TvShowsViewModelTest {
     fun `When start to fetch tv shows then should show loading`() = testCoroutineRule.runBlocking {
         val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
         tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
-        coEvery { tvShowsModel.fetchTvShows(any()) } returns tvShowsResponse
+        coEvery { tvShowsRepository.fetchTvShows(any()) } returns tvShowsResponse
 
         testCoroutineRule.testDispatcher.byPausing {
             tvShowsViewModel.getTvShows()
@@ -99,7 +99,7 @@ class TvShowsViewModelTest {
     fun `When tv shows are fetched successfully then show tv shows`() = testCoroutineRule.runBlocking {
         val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
         tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
-        coEvery { tvShowsModel.fetchTvShows(any()) } returns tvShowsResponse
+        coEvery { tvShowsRepository.fetchTvShows(any()) } returns tvShowsResponse
 
         tvShowsViewModel.getTvShows()
 
@@ -113,7 +113,7 @@ class TvShowsViewModelTest {
     fun `When tv shows are fetched with failure then show error`() = testCoroutineRule.runBlocking {
         val errorObserver = mockk<Observer<Throwable>>(relaxed = true)
         tvShowsViewModel.onError.observeForever(errorObserver)
-        coEvery { tvShowsModel.fetchTvShows(any()) } answers { throw ServiceException() }
+        coEvery { tvShowsRepository.fetchTvShows(any()) } answers { throw ServiceException() }
 
         tvShowsViewModel.getTvShows()
 

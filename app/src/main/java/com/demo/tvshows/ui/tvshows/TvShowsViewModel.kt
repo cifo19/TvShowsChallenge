@@ -5,8 +5,8 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.demo.tvshows.data.model.TvShowsModel
-import com.demo.tvshows.data.remote.response.TvShowsResponse
+import com.demo.tvshows.model.TvShowsRepository
+import com.demo.tvshows.remote.response.TvShowsResponse
 import com.demo.tvshows.ui.base.BaseViewModel
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
@@ -15,7 +15,7 @@ import com.demo.tvshows.util.modifyValue
 import kotlinx.coroutines.launch
 
 class TvShowsViewModel @ViewModelInject constructor(
-    private val tvShowsModel: TvShowsModel
+    private val tvShowsRepository: TvShowsRepository
 ) : BaseViewModel() {
 
     val canLoadMore: Boolean get() = hasNextPage && isLoading()
@@ -35,7 +35,7 @@ class TvShowsViewModel @ViewModelInject constructor(
 
         _showTvShowsLiveData.modifyValue { add(LoadingAdapterItem) }
         viewModelScope.launch {
-            runCatching { tvShowsModel.fetchTvShows(pageIndex) }
+            runCatching { tvShowsRepository.fetchTvShows(pageIndex) }
                 .onSuccess(::onTvShowsFetched)
                 .onFailure(::onTvShowsFailed)
         }

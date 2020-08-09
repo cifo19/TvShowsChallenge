@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.DialogCallback
 import com.afollestad.materialdialogs.MaterialDialog
 import com.demo.tvshows.R
-import com.demo.tvshows.util.network.errorhandler.NoConnectionException
+import com.demo.tvshows.errorhandler.NoConnectionException
 
 abstract class BaseActivity : AppCompatActivity() {
 

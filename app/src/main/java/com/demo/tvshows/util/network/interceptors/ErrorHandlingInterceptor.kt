@@ -1,7 +1,7 @@
 package com.demo.tvshows.util.network.interceptors
 
-import com.demo.tvshows.util.network.errorhandler.ErrorHandlerFactory
-import com.demo.tvshows.util.network.errorhandler.ServiceException
+import com.demo.tvshows.errorhandler.ErrorHandlerFactory
+import com.demo.tvshows.errorhandler.ServiceException
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.Response
