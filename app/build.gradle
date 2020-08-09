@@ -71,6 +71,8 @@ androidExtensions {
 }
 
 dependencies {
+  implementation project(':data')
+
   implementation deps.picasso
   implementation deps.kotlin
   implementation deps.activity

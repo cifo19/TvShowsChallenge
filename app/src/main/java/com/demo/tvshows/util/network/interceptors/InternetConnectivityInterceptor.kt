@@ -1,7 +1,7 @@
 package com.demo.tvshows.util.network.interceptors
 
 import android.net.ConnectivityManager
-import com.demo.tvshows.util.network.errorhandler.NoConnectionException
+import com.demo.tvshows.errorhandler.NoConnectionException
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.Response

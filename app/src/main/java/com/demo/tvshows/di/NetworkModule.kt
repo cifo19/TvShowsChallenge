@@ -1,8 +1,8 @@
 package com.demo.tvshows.di
 
 import com.demo.tvshows.BuildConfig
-import com.demo.tvshows.data.Constants.ServiceEndpoints
-import com.demo.tvshows.data.remote.MovieDatabaseService
+import com.demo.tvshows.Constants.ServiceEndpoints
+import com.demo.tvshows.remote.MovieDatabaseService
 import com.demo.tvshows.util.network.interceptors.DefaultParameterInterceptor
 import com.demo.tvshows.util.network.interceptors.ErrorHandlingInterceptor
 import com.demo.tvshows.util.network.interceptors.InternetConnectivityInterceptor

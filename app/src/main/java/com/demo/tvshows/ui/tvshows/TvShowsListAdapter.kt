@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.demo.tvshows.Constants.PREFIX_IMAGE_URL
 import com.demo.tvshows.R
-import com.demo.tvshows.data.Constants.PREFIX_IMAGE_URL
-import com.demo.tvshows.data.remote.response.model.TvShow
+import com.demo.tvshows.remote.response.model.TvShow
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
 import com.squareup.picasso.Picasso
