@@ -10,7 +10,7 @@ import javax.inject.Inject
 class DefaultParameterInterceptor @Inject constructor() : Interceptor {
     override fun intercept(chain: Chain): Response {
         val originalRequest = chain.request()
-        val originalHttpUrl = originalRequest.url()
+        val originalHttpUrl = originalRequest.url
 
         val paramsAddedHttpUrl = originalHttpUrl.newBuilder()
             .addQueryParameter(KEY_API_KEY, API_KEY)

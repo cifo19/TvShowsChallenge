@@ -17,11 +17,11 @@ class ErrorHandlingInterceptor @Inject constructor(
 
         if (response.isSuccessful) return response
 
-        val url = chain.request().url().host()
+        val url = chain.request().url.host
         val errorHandler = errorHandlerFactory.getErrorHandler(url) ?: throw ServiceException()
 
-        throw if (errorHandler.canHandle(response.code())) {
-            errorHandler.handle(response.body()?.string())
+        throw if (errorHandler.canHandle(response.code)) {
+            errorHandler.handle(response.body?.string())
         } else {
             ServiceException()
         }

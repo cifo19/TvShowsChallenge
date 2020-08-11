@@ -21,7 +21,7 @@ ext {
 
       // Square
       retrofit = "2.6.0",
-      okhttp = "3.12.2",
+      okhttp = "4.8.1",
       picasso = "2.71828",
 
       // Firebase
@@ -69,13 +69,14 @@ ext {
           coroutines_android       : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines",
           firebase                 : "com.google.firebase:firebase-analytics:$firebase"]
 
-  testDeps = [junit            : "junit:junit:$junit",
-              test_runner      : "androidx.test:runner:$test_runner",
-              test_rules       : "androidx.test:rules:$test_rules",
-              arch_core_testing: "androidx.arch.core:core-testing:$arch_core_testing",
-              assertj          : "org.assertj:assertj-core:$assertj",
-              hamcrest         : "org.hamcrest:hamcrest-all:$hamcrest",
-              mockk            : "io.mockk:mockk:$mockk",
-              coroutines_test  : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_coroutines",
-              archCoreTesting  : "androidx.arch.core:core-testing:$archCoreTesting"]
+  testDeps = [junit                 : "junit:junit:$junit",
+              test_runner           : "androidx.test:runner:$test_runner",
+              test_rules            : "androidx.test:rules:$test_rules",
+              arch_core_testing     : "androidx.arch.core:core-testing:$arch_core_testing",
+              assertj               : "org.assertj:assertj-core:$assertj",
+              hamcrest              : "org.hamcrest:hamcrest-all:$hamcrest",
+              mockk                 : "io.mockk:mockk:$mockk",
+              coroutines_test       : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_coroutines",
+              archCoreTesting       : "androidx.arch.core:core-testing:$archCoreTesting",
+              okhttp_mock_web_server: "com.squareup.okhttp3:mockwebserver:$okhttp"]
 }
