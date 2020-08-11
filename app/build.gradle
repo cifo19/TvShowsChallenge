@@ -116,5 +116,6 @@ dependencies {
   testImplementation testDeps.arch_core_testing
   testImplementation testDeps.assertj
   testImplementation testDeps.coroutines_test
+  testImplementation testDeps.okhttp_mock_web_server
   testImplementation deps.coroutines_core
 }

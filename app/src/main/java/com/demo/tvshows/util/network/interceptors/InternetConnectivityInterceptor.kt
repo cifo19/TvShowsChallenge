@@ -17,7 +17,7 @@ class InternetConnectivityInterceptor @Inject constructor(
     override fun intercept(chain: Chain): Response {
         val noConnection = connectivityManager.activeNetworkInfo?.isConnected != true
         if (noConnection) {
-            throw NoConnectionException(chain.request().url().toString())
+            throw NoConnectionException(chain.request().url.toString())
         }
 
         return chain.proceed(chain.request())
