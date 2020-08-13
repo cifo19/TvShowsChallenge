@@ -21,6 +21,6 @@ class TvShowsActivity : BaseActivity() {
     }
 
     private fun showTvShowsFragment() {
-        addFragment(TvShowsFragment(), TvShowsFragment.TAG_TV_SHOWS_FRAGMENT)
+        addFragment(TvShowsFragment(), TvShowsFragment.TAG_TV_SHOWS_FRAGMENT, addToBackStack = false)
     }
 }

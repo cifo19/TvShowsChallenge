@@ -1,21 +1,58 @@
-apply plugin: 'kotlin'
-apply from: '../quality/tasks.gradle'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
+android {
+  compileSdkVersion 29
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-  kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
-  kotlinOptions.freeCompilerArgs += ["-Xallow-result-return-type"]
+  defaultConfig {
+    minSdkVersion 21
+    targetSdkVersion 29
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles "consumer-rules.pro"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  buildTypes.each {
+    it.buildConfigField 'String', 'API_KEY', apiKey
+    it.buildConfigField 'String', 'API_LANGUAGE_CODE', apiLanguageCode
+  }
+
+  compileOptions {
+    sourceCompatibility 1.8
+    targetCompatibility 1.8
+  }
+
+  tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
+    kotlinOptions.freeCompilerArgs += ["-Xallow-result-return-type"]
+  }
 }
 
 dependencies {
+  implementation project(':remote')
+  implementation project(':cache')
+  implementation project(':domain')
+
   implementation fileTree(dir: 'libs', include: ['*.jar'])
   implementation deps.kotlin
 
+  kapt deps.hilt_compiler
+  kapt deps.hilt_androidx_compiler
   implementation deps.hilt
   implementation deps.retrofit
   implementation deps.retrofit_converter_gson
+  implementation deps.okhttp_logging
 
   testImplementation testDeps.mockk
   testImplementation testDeps.junit

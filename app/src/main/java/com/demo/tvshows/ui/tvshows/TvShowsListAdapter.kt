@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.demo.tvshows.Constants.PREFIX_IMAGE_URL
 import com.demo.tvshows.R
-import com.demo.tvshows.remote.response.model.TvShow
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
 import com.squareup.picasso.Picasso
@@ -17,9 +16,8 @@ import kotlinx.android.synthetic.main.item_tv_show.logoImageView
 import kotlinx.android.synthetic.main.item_tv_show.overviewTextView
 import kotlinx.android.synthetic.main.item_tv_show.ratingTextView
 import kotlinx.android.synthetic.main.item_tv_show.titleTextView
-import javax.inject.Inject
 
-class TvShowsListAdapter @Inject constructor(
+class TvShowsListAdapter constructor(
     private val picasso: Picasso,
     private val onTvShowClicked: (Int) -> Unit
 ) : Adapter<ViewHolder>() {
@@ -62,7 +60,7 @@ class TvShowsListAdapter @Inject constructor(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (holder is TvShowViewHolder) {
             val adapterItem = items[position] as TvShowAdapterItem
-            holder.bind(adapterItem.tvShow)
+            holder.bind(adapterItem)
         }
     }
 
@@ -71,14 +69,14 @@ class TvShowsListAdapter @Inject constructor(
         private val picasso: Picasso,
         private val onTvShowClicked: (Int) -> Unit
     ) : ViewHolder(containerView), LayoutContainer {
-        fun bind(tvShow: TvShow) {
-            picasso.load("$PREFIX_IMAGE_URL${tvShow.posterPath}")
+        fun bind(tvShowAdapterItem: TvShowAdapterItem) {
+            picasso.load("$PREFIX_IMAGE_URL${tvShowAdapterItem.posterPath}")
                 .placeholder(R.drawable.ic_tv_show_place_holder)
                 .into(logoImageView)
-            titleTextView.text = tvShow.name
-            overviewTextView.text = tvShow.overview
-            ratingTextView.text = tvShow.voteAverage.toString()
-            containerView.setOnClickListener { onTvShowClicked(tvShow.id) }
+            titleTextView.text = tvShowAdapterItem.name
+            overviewTextView.text = tvShowAdapterItem.overview
+            ratingTextView.text = tvShowAdapterItem.voteAverage.toString()
+            containerView.setOnClickListener { onTvShowClicked(tvShowAdapterItem.id) }
         }
     }
 
@@ -86,7 +84,13 @@ class TvShowsListAdapter @Inject constructor(
 
     sealed class AdapterItem {
         object LoadingAdapterItem : AdapterItem()
-        data class TvShowAdapterItem(val tvShow: TvShow) : AdapterItem()
+        data class TvShowAdapterItem(
+            val id: Int,
+            val name: String,
+            val overview: String,
+            val posterPath: String,
+            val voteAverage: Double
+        ) : AdapterItem()
     }
 
     companion object {

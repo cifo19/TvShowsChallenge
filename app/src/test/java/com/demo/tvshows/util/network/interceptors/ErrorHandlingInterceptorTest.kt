@@ -4,6 +4,7 @@ import com.demo.tvshows.errorhandler.ErrorHandlerFactory
 import com.demo.tvshows.errorhandler.ServiceException
 import com.demo.tvshows.errorhandler.moviedb.MovieDbErrorHandler
 import com.demo.tvshows.errorhandler.moviedb.MovieDbServiceErrorModel
+import com.demo.tvshows.interceptors.ErrorHandlingInterceptor
 import com.demo.tvshows.remote.response.TvShowsResponse
 import com.demo.tvshows.util.parseFile
 import com.google.gson.Gson
