@@ -34,7 +34,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun addFragment(fragment: Fragment, tag: String, addToBackStack: Boolean = false) {
+    fun addFragment(fragment: Fragment, tag: String, addToBackStack: Boolean = true) {
         supportFragmentManager.beginTransaction()
             .add(fragmentContainerId, fragment, tag)
             .apply { if (addToBackStack) addToBackStack(tag) }

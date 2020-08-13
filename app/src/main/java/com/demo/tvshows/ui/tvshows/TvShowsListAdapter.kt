@@ -17,9 +17,8 @@ import kotlinx.android.synthetic.main.item_tv_show.logoImageView
 import kotlinx.android.synthetic.main.item_tv_show.overviewTextView
 import kotlinx.android.synthetic.main.item_tv_show.ratingTextView
 import kotlinx.android.synthetic.main.item_tv_show.titleTextView
-import javax.inject.Inject
 
-class TvShowsListAdapter @Inject constructor(
+class TvShowsListAdapter constructor(
     private val picasso: Picasso,
     private val onTvShowClicked: (Int) -> Unit
 ) : Adapter<ViewHolder>() {
