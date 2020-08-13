@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.demo.tvshows.R
 import com.demo.tvshows.ui.base.BaseFragment
+import com.demo.tvshows.ui.tvshows.search.TvShowsSearchFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment.Companion.ARG_TV_SHOW_ID
 import com.demo.tvshows.util.PagingScrollListener
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_tv_shows.searchFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_tv_shows.tvShowsRecyclerView
 import javax.inject.Inject
 
@@ -25,14 +27,14 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
 
     private lateinit var tvShowsListAdapter: TvShowsListAdapter
 
-    private val tvShowsViewModel by viewModels<TvShowsViewModel>()
+    /*synthetic*/ internal val tvShowsViewModel by viewModels<TvShowsViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setToolbarTitle(getString(R.string.title_show_shows_activity))
         initAdapter()
-        tvShowsRecyclerView.init()
+        initView()
         tvShowsViewModel.getTvShows()
         observeViewModel()
     }
@@ -52,11 +54,18 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
         val tvShowDetailFragment = TvShowDetailFragment().apply {
             arguments = bundleOf(ARG_TV_SHOW_ID to tvShowId)
         }
-        addFragment(tvShowDetailFragment, TvShowDetailFragment.TAG, addToBackStack = true)
+        addFragment(tvShowDetailFragment, TvShowDetailFragment.TAG)
     }
 
     private fun initAdapter() {
         tvShowsListAdapter = TvShowsListAdapter(picasso, ::showTvShowDetailFragment)
+    }
+
+    private fun initView() {
+        tvShowsRecyclerView.init()
+        searchFloatingActionButton.setOnClickListener {
+            addFragment(TvShowsSearchFragment(), TvShowsSearchFragment.TAG)
+        }
     }
 
     private fun RecyclerView.init() {

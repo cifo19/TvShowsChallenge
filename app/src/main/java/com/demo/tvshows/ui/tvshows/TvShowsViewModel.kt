@@ -5,23 +5,25 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.demo.tvshows.model.TvShowsRepository
-import com.demo.tvshows.remote.response.TvShowsResponse
+import com.demo.tvshows.entity.TvShowsResponseEntity
 import com.demo.tvshows.ui.base.BaseViewModel
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
+import com.demo.tvshows.ui.tvshows.mapper.TvShowAdapterItemMapper
+import com.demo.tvshows.usecase.FetchPopularTvShowsUseCase
 import com.demo.tvshows.util.modifyValue
 import kotlinx.coroutines.launch
 
 class TvShowsViewModel @ViewModelInject constructor(
-    private val tvShowsRepository: TvShowsRepository
+    private val fetchPopularTvShowsUseCase: FetchPopularTvShowsUseCase,
+    private val tvShowAdapterItemMapper: TvShowAdapterItemMapper
 ) : BaseViewModel() {
 
     val canLoadMore: Boolean get() = hasNextPage && isLoading()
 
     @VisibleForTesting
     var pageIndex: Int = 1
+
     @VisibleForTesting
     var hasNextPage: Boolean = false
 
@@ -35,17 +37,17 @@ class TvShowsViewModel @ViewModelInject constructor(
 
         _showTvShowsLiveData.modifyValue { add(LoadingAdapterItem) }
         viewModelScope.launch {
-            runCatching { tvShowsRepository.fetchTvShows(pageIndex) }
+            runCatching { fetchPopularTvShowsUseCase(pageIndex) }
                 .onSuccess(::onTvShowsFetched)
                 .onFailure(::onTvShowsFailed)
         }
     }
 
-    private fun onTvShowsFetched(tvShowsResponse: TvShowsResponse) {
-        hasNextPage = tvShowsResponse.page != tvShowsResponse.totalPages
+    private fun onTvShowsFetched(tvShowsResponseEntity: TvShowsResponseEntity) {
+        hasNextPage = tvShowsResponseEntity.page != tvShowsResponseEntity.totalPages
         _showTvShowsLiveData.modifyValue {
             remove(LoadingAdapterItem)
-            addAll(tvShowsResponse.tvShows.map(::TvShowAdapterItem))
+            addAll(tvShowAdapterItemMapper.map(tvShowsResponseEntity.tvShowEntities))
         }
     }
 
