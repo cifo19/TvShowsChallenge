@@ -1,4 +1,4 @@
-package com.demo.tvshows.di
+package com.demo.tvshows.cache.di
 
 import com.demo.tvshows.BuildConfig
 import com.demo.tvshows.Constants.ServiceEndpoints

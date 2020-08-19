@@ -1,4 +1,4 @@
-package com.demo.tvshows.model
+package com.demo.tvshows.repository
 
 import com.demo.tvshows.util.parseFile
 import com.demo.tvshows.remote.MovieDatabaseService

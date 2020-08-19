@@ -2,7 +2,7 @@ package com.demo.tvshows.ui.tvshows
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.demo.tvshows.model.TvShowsRepository
+import com.demo.tvshows.repository.TvShowsRepository
 import com.demo.tvshows.remote.response.TvShowsResponse
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem

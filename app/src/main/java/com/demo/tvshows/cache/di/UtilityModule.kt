@@ -1,4 +1,4 @@
-package com.demo.tvshows.di
+package com.demo.tvshows.cache.di
 
 import android.app.Application
 import android.content.Context
