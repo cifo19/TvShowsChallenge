@@ -72,6 +72,8 @@ androidExtensions {
 
 dependencies {
   implementation project(':data')
+  implementation project(':cache')
+  implementation project(':remote')
 
   implementation deps.picasso
   implementation deps.kotlin

@@ -6,22 +6,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.demo.tvshows.repository.TvShowsRepository
-import com.demo.tvshows.remote.response.TvShowsResponse
+import com.demo.tvshows.response.TvShowsResponse
 import com.demo.tvshows.ui.base.BaseViewModel
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
+import com.demo.tvshows.ui.tvshows.mapper.TvShowAdapterItemMapper
 import com.demo.tvshows.util.modifyValue
 import kotlinx.coroutines.launch
 
 class TvShowsViewModel @ViewModelInject constructor(
-    private val tvShowsRepository: TvShowsRepository
+    private val tvShowsRepository: TvShowsRepository,
+    private val tvShowAdapterItemMapper: TvShowAdapterItemMapper
 ) : BaseViewModel() {
 
     val canLoadMore: Boolean get() = hasNextPage && isLoading()
 
     @VisibleForTesting
     var pageIndex: Int = 1
+
     @VisibleForTesting
     var hasNextPage: Boolean = false
 
@@ -45,7 +47,7 @@ class TvShowsViewModel @ViewModelInject constructor(
         hasNextPage = tvShowsResponse.page != tvShowsResponse.totalPages
         _showTvShowsLiveData.modifyValue {
             remove(LoadingAdapterItem)
-            addAll(tvShowsResponse.tvShows.map(::TvShowAdapterItem))
+            addAll(tvShowAdapterItemMapper.map(tvShowsResponse.tvShows))
         }
     }
 

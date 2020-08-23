@@ -1,7 +1,7 @@
 package com.demo.tvshows.repository
 
 import com.demo.tvshows.util.parseFile
-import com.demo.tvshows.remote.MovieDatabaseService
+import com.demo.tvshows.service.MovieDbService
 import com.demo.tvshows.remote.response.TvShowsResponse
 import com.demo.tvshows.errorhandler.ServiceException
 import io.mockk.MockKAnnotations
@@ -17,13 +17,13 @@ import org.junit.Test
 class TvShowsRepositoryTest {
 
     @MockK
-    private lateinit var movieDatabaseService: MovieDatabaseService
+    private lateinit var movieDbService: MovieDbService
     private lateinit var tvShowsRepository: TvShowsRepository
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        tvShowsRepository = TvShowsRepository(movieDatabaseService)
+        tvShowsRepository = TvShowsRepository(movieDbService)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -31,18 +31,18 @@ class TvShowsRepositoryTest {
     fun `Whenever request is succeeded then return response`() = runBlockingTest {
         val expectedResponse =
             parseFile<TvShowsResponse>(POPULAR_TV_SHOWS_RESPONSE_PATH)
-        coEvery { movieDatabaseService.getPopularTvShows(any()) } returns expectedResponse
+        coEvery { movieDbService.getPopularTvShows(any()) } returns expectedResponse
 
         val actualResponse = tvShowsRepository.fetchTvShows(pageIndex = 1)
 
-        coVerify { movieDatabaseService.getPopularTvShows(any()) }
+        coVerify { movieDbService.getPopularTvShows(any()) }
         assertThat(actualResponse).isEqualTo(expectedResponse)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test(expected = ServiceException::class)
     fun `Whenever request is failed then throw exception`() = runBlockingTest {
-        coEvery { movieDatabaseService.getPopularTvShows(any()) } coAnswers { throw ServiceException() }
+        coEvery { movieDbService.getPopularTvShows(any()) } coAnswers { throw ServiceException() }
 
         tvShowsRepository.fetchTvShows(pageIndex = 1)
     }

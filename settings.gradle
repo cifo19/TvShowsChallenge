@@ -1,1 +1,2 @@
+include ':remote'
 include ':data', ':app', ':cache'

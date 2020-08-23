@@ -23,6 +23,11 @@ android {
     }
   }
 
+  buildTypes.each {
+    it.buildConfigField 'String', 'API_KEY', apiKey
+    it.buildConfigField 'String', 'API_LANGUAGE_CODE', apiLanguageCode
+  }
+
   compileOptions {
     sourceCompatibility 1.8
     targetCompatibility 1.8
@@ -35,14 +40,18 @@ android {
 }
 
 dependencies {
+  implementation project(':remote')
   implementation project(':cache')
 
   implementation fileTree(dir: 'libs', include: ['*.jar'])
   implementation deps.kotlin
 
+  kapt deps.hilt_compiler
+  kapt deps.hilt_androidx_compiler
   implementation deps.hilt
   implementation deps.retrofit
   implementation deps.retrofit_converter_gson
+  implementation deps.okhttp_logging
 
   testImplementation testDeps.mockk
   testImplementation testDeps.junit
