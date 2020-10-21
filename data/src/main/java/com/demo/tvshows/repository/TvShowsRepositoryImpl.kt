@@ -11,7 +11,7 @@ class TvShowsRepositoryImpl @Inject constructor(
 ) : TvShowsRepository {
     override suspend fun fetchPopularTvShows(pageIndex: Int): TvShowsResponseEntity {
         return cacheTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(pageIndex)
-            ?: remoteTvShowsDataStoreImpl.getPopularTvShowsEntity(pageIndex)
+            ?: remoteTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(pageIndex)
                 .also { cacheTvShowsDataStoreImpl.insertTvShowsResponseEntity(it) }
     }
 }

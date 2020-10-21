@@ -1,11 +1,10 @@
-package com.demo.tvshows.util.network.interceptors
+package com.demo.tvshows.interceptors
 
 import com.demo.tvshows.errorhandler.ErrorHandlerFactory
 import com.demo.tvshows.errorhandler.ServiceException
 import com.demo.tvshows.errorhandler.moviedb.MovieDbErrorHandler
 import com.demo.tvshows.errorhandler.moviedb.MovieDbServiceErrorModel
-import com.demo.tvshows.interceptors.ErrorHandlingInterceptor
-import com.demo.tvshows.remote.response.TvShowsResponse
+import com.demo.tvshows.response.TvShowsResponse
 import com.demo.tvshows.util.parseFile
 import com.google.gson.Gson
 import io.mockk.MockKAnnotations
@@ -45,13 +44,13 @@ class ErrorHandlingInterceptorTest {
 
         val response = okHttpClient.newCall(Request.Builder().url(mockWebServer.url("/")).build()).execute()
 
-        assertThat(response.isSuccessful).isTrue()
+        assertThat(response.isSuccessful).isTrue
         assertThat(response.body!!.string()).isEqualTo(Gson().toJson(popularShowsSuccessResponse))
         mockWebServer.shutdown()
     }
 
     @Test(expected = ServiceException::class)
-    fun `When the error is not handled then throw ServiceException`() {
+    fun `Throw ServiceException when the error is not handled`() {
         val mockWebServer = MockWebServer()
         val okHttpClient = OkHttpClient().newBuilder().addInterceptor(errorHandlingInterceptor).build()
         mockWebServer.start()
@@ -64,7 +63,7 @@ class ErrorHandlingInterceptorTest {
     }
 
     @Test
-    fun `When the error is handled then throw ServiceException with relative message`() {
+    fun `Throw ServiceException with relative message when the error is handled`() {
         val popularShowsErrorResponse = parseFile<MovieDbServiceErrorModel>("get_popular_tv_shows_error.json")
         val mockWebServer = MockWebServer()
         val okHttpClient = OkHttpClient().newBuilder().addInterceptor(errorHandlingInterceptor).build()

@@ -2,14 +2,16 @@ package com.demo.tvshows.ui.tvshows
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.demo.tvshows.repository.TvShowsRepositoryImpl
-import com.demo.tvshows.remote.response.TvShowsResponse
+import com.demo.tvshows.entity.TvShowEntity
+import com.demo.tvshows.entity.TvShowsResponseEntity
+import com.demo.tvshows.errorhandler.ServiceException
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
 import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
+import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
+import com.demo.tvshows.ui.tvshows.mapper.TvShowAdapterItemMapper
+import com.demo.tvshows.usecase.FetchPopularTvShowsUseCase
 import com.demo.tvshows.util.TestCoroutineRule
 import com.demo.tvshows.util.byPausing
-import com.demo.tvshows.errorhandler.ServiceException
-import com.demo.tvshows.util.parseFile
 import com.demo.tvshows.util.runBlocking
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -32,51 +34,50 @@ class TvShowsViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    private lateinit var tvShowsRepositoryImpl: TvShowsRepositoryImpl
+    private lateinit var fetchPopularTvShowsUseCase: FetchPopularTvShowsUseCase
 
     private lateinit var tvShowsViewModel: TvShowsViewModel
 
-    private val tvShowsResponse =
-        parseFile<TvShowsResponse>(POPULAR_TV_SHOWS_RESPONSE_PATH)
+    private val tvShowAdapterItemMapper = TvShowAdapterItemMapper()
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        tvShowsViewModel = TvShowsViewModel(tvShowsRepositoryImpl)
+        tvShowsViewModel = TvShowsViewModel(fetchPopularTvShowsUseCase, tvShowAdapterItemMapper)
     }
 
     @Test
-    fun `When the next page is not exist then can not load more`() {
+    fun `Could not load more when the next page is not exist`() {
         tvShowsViewModel.hasNextPage = false
 
         val canLoadMore = tvShowsViewModel.canLoadMore
 
-        assertThat(canLoadMore).isFalse()
+        assertThat(canLoadMore).isFalse
     }
 
     @Test
-    fun `When the new tv shows are loading then can not load more`() {
+    fun `Could not load more when the new tv shows are loading`() {
         tvShowsViewModel.hasNextPage = true
         tvShowsViewModel._showTvShowsLiveData.value = mutableListOf(LoadingAdapterItem)
 
         val canLoadMore = tvShowsViewModel.canLoadMore
 
-        assertThat(canLoadMore).isFalse()
+        assertThat(canLoadMore).isFalse
     }
 
     @Test
-    fun `When the next page is exist and the new tv shows are not loading then can load more`() {
+    fun `Could load more when the next page is exist and the new tv shows are not loading`() {
         tvShowsViewModel.hasNextPage = true
         tvShowsViewModel._showTvShowsLiveData.value = mutableListOf()
 
         val canLoadMore = tvShowsViewModel.canLoadMore
 
-        assertThat(canLoadMore).isTrue()
+        assertThat(canLoadMore).isTrue
     }
 
     @Test
-    fun `When loading more tv show then increase pageIndex`() {
-        coEvery { tvShowsRepositoryImpl.fetchPopularTvShows(any()) } returns tvShowsResponse
+    fun `Increase pageIndex when loading more tv show`() {
+        coEvery { fetchPopularTvShowsUseCase(any()) } returns getDummyTvShowsResponseEntity()
 
         tvShowsViewModel.getTvShows(loadMore = true)
 
@@ -84,10 +85,10 @@ class TvShowsViewModelTest {
     }
 
     @Test
-    fun `When start to fetch tv shows then should show loading`() = testCoroutineRule.runBlocking {
+    fun `Show loading when starts to fetch tv shows`() = testCoroutineRule.runBlocking {
         val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
         tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
-        coEvery { tvShowsRepositoryImpl.fetchPopularTvShows(any()) } returns tvShowsResponse
+        coEvery { fetchPopularTvShowsUseCase(any()) } returns getDummyTvShowsResponseEntity()
 
         testCoroutineRule.testDispatcher.byPausing {
             tvShowsViewModel.getTvShows()
@@ -96,31 +97,49 @@ class TvShowsViewModelTest {
     }
 
     @Test
-    fun `When tv shows are fetched successfully then show tv shows`() = testCoroutineRule.runBlocking {
+    fun `Show tv shows when tv shows are fetched successfully`() = testCoroutineRule.runBlocking {
+        val tvShowsResponseEntity = getDummyTvShowsResponseEntity()
         val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
         tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
-        coEvery { tvShowsRepositoryImpl.fetchPopularTvShows(any()) } returns tvShowsResponse
+        coEvery { fetchPopularTvShowsUseCase(any()) } returns tvShowsResponseEntity
 
         tvShowsViewModel.getTvShows()
 
-        val expectedAdapterItems: MutableList<AdapterItem> = tvShowsResponse.tvShows
-            .map(AdapterItem::TvShowAdapterItem)
+        val expectedAdapterItems: MutableList<AdapterItem> = tvShowsResponseEntity.tvShowEntities
+            .map { TvShowAdapterItem(it.id, it.name, it.overview, it.posterPath, it.voteAverage) }
             .toMutableList()
         verify { tvShowsObserver.onChanged(expectedAdapterItems) }
     }
 
     @Test
-    fun `When tv shows are fetched with failure then show error`() = testCoroutineRule.runBlocking {
+    fun `Show error when tv shows are fetched with failure`() = testCoroutineRule.runBlocking {
         val errorObserver = mockk<Observer<Throwable>>(relaxed = true)
         tvShowsViewModel.onError.observeForever(errorObserver)
-        coEvery { tvShowsRepositoryImpl.fetchPopularTvShows(any()) } answers { throw ServiceException() }
+        coEvery { fetchPopularTvShowsUseCase(any()) } answers { throw ServiceException() }
 
         tvShowsViewModel.getTvShows()
 
         verify { errorObserver.onChanged(ServiceException()) }
     }
 
-    companion object {
-        private const val POPULAR_TV_SHOWS_RESPONSE_PATH = "get_popular_tv_shows_success.json"
+    private fun getDummyTvShowsResponseEntity(): TvShowsResponseEntity {
+        val tvShowEntities = listOf(
+            TvShowEntity(
+                backdropPath = "backdropPath",
+                firstAirDate = "firstAirDate",
+                genreIds = emptyList(),
+                id = 1,
+                name = "name",
+                originCountry = emptyList(),
+                originalLanguage = "originalLanguage",
+                originalName = "originalName",
+                overview = "overview",
+                popularity = 0.0,
+                posterPath = "posterPath",
+                voteAverage = 0.0,
+                voteCount = 0
+            )
+        )
+        return TvShowsResponseEntity(page = 1, tvShowEntities = tvShowEntities, totalPages = 0, totalResults = 0)
     }
 }

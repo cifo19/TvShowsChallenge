@@ -1,9 +1,10 @@
 package com.demo.tvshows.repository
 
-import com.demo.tvshows.util.parseFile
-import com.demo.tvshows.service.MovieDbService
-import com.demo.tvshows.remote.response.TvShowsResponse
-import com.demo.tvshows.errorhandler.ServiceException
+import com.demo.tvshows.datastore.CacheTvShowsDataStore
+import com.demo.tvshows.datastore.RemoteTvShowsDataStore
+import com.demo.tvshows.entity.TvShowEntity
+import com.demo.tvshows.entity.TvShowsResponseEntity
+import io.mockk.Called
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -14,40 +15,67 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class TvShowsRepositoryImplTest {
 
     @MockK
-    private lateinit var movieDbService: MovieDbService
+    private lateinit var remoteTvShowsDataStoreImpl: RemoteTvShowsDataStore
+
+    @MockK
+    private lateinit var cacheTvShowsDataStoreImpl: CacheTvShowsDataStore
+
     private lateinit var tvShowsRepositoryImpl: TvShowsRepositoryImpl
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        tvShowsRepositoryImpl = TvShowsRepositoryImpl(movieDbService)
+        tvShowsRepositoryImpl = TvShowsRepositoryImpl(remoteTvShowsDataStoreImpl, cacheTvShowsDataStoreImpl)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `Whenever request is succeeded then return response`() = runBlockingTest {
-        val expectedResponse =
-            parseFile<TvShowsResponse>(POPULAR_TV_SHOWS_RESPONSE_PATH)
-        coEvery { movieDbService.getPopularTvShows(any()) } returns expectedResponse
+    fun `Return cached entities when the cache exist`() = runBlockingTest {
+        val expectedResponse = getDummyTvShowsResponseEntity()
+        coEvery { cacheTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(any()) } returns expectedResponse
 
         val actualResponse = tvShowsRepositoryImpl.fetchPopularTvShows(pageIndex = 1)
 
-        coVerify { movieDbService.getPopularTvShows(any()) }
+        coVerify { cacheTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(any()) }
+        coVerify { remoteTvShowsDataStoreImpl wasNot Called }
         assertThat(actualResponse).isEqualTo(expectedResponse)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test(expected = ServiceException::class)
-    fun `Whenever request is failed then throw exception`() = runBlockingTest {
-        coEvery { movieDbService.getPopularTvShows(any()) } coAnswers { throw ServiceException() }
+    @Test
+    fun `Return remote entities and insert them to cache when the cache does not exist`() = runBlockingTest {
+        val expectedResponse = getDummyTvShowsResponseEntity()
+        coEvery { cacheTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(any()) } returns null
+        coEvery { cacheTvShowsDataStoreImpl.insertTvShowsResponseEntity(any()) } returns Unit
+        coEvery { remoteTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(any()) } returns expectedResponse
 
-        tvShowsRepositoryImpl.fetchPopularTvShows(pageIndex = 1)
+        val actualResponse = tvShowsRepositoryImpl.fetchPopularTvShows(pageIndex = 1)
+
+        coVerify { remoteTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(any()) }
+        coVerify { cacheTvShowsDataStoreImpl.insertTvShowsResponseEntity(expectedResponse) }
+        assertThat(actualResponse).isEqualTo(expectedResponse)
     }
 
-    companion object {
-        private const val POPULAR_TV_SHOWS_RESPONSE_PATH = "get_popular_tv_shows_success.json"
+    private fun getDummyTvShowsResponseEntity(): TvShowsResponseEntity {
+        val tvShowEntities = listOf(
+            TvShowEntity(
+                backdropPath = "backdropPath",
+                firstAirDate = "firstAirDate",
+                genreIds = emptyList(),
+                id = 1,
+                name = "name",
+                originCountry = emptyList(),
+                originalLanguage = "originalLanguage",
+                originalName = "originalName",
+                overview = "overview",
+                popularity = 0.0,
+                posterPath = "posterPath",
+                voteAverage = 0.0,
+                voteCount = 0
+            )
+        )
+        return TvShowsResponseEntity(page = 1, tvShowEntities = tvShowEntities, totalPages = 0, totalResults = 0)
     }
 }

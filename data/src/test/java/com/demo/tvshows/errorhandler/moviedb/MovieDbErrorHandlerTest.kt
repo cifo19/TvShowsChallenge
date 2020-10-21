@@ -21,35 +21,35 @@ class MovieDbErrorHandlerTest {
     }
 
     @Test
-    fun `When the error code is HTTP_UNAUTHORIZED then should handle`() {
+    fun `Handle error when the code is HTTP_UNAUTHORIZED`() {
         val canHandle = movieDbErrorHandler.canHandle(HTTP_UNAUTHORIZED)
 
-        assertThat(canHandle).isTrue()
+        assertThat(canHandle).isTrue
     }
 
     @Test
-    fun `When the error code is HTTP_NOT_FOUND then should handle`() {
+    fun `Handle error when the code is HTTP_NOT_FOUND`() {
         val canHandle = movieDbErrorHandler.canHandle(HTTP_NOT_FOUND)
 
-        assertThat(canHandle).isTrue()
+        assertThat(canHandle).isTrue
     }
 
     @Test
-    fun `When the error code is unknown then should not handle`() {
+    fun `Does not handle error when the code is unknown`() {
         val canHandle = movieDbErrorHandler.canHandle(1)
 
-        assertThat(canHandle).isFalse()
+        assertThat(canHandle).isFalse
     }
 
     @Test
-    fun `When the response body is null then should return ServiceException`() {
+    fun `Return ServiceException when the response body is null`() {
         val exception = movieDbErrorHandler.handle(null)
 
         assertThat(exception).isInstanceOf(ServiceException::class.java)
     }
 
     @Test
-    fun `When the response body is in expected format then should return ServiceException with message`() {
+    fun `Return ServiceException with message when the response body is in expected format`() {
         val error = parseFile<MovieDbServiceErrorModel>("get_popular_tv_shows_error.json")
 
         val exception = movieDbErrorHandler.handle(gson.toJson(error))
@@ -59,7 +59,7 @@ class MovieDbErrorHandlerTest {
     }
 
     @Test
-    fun `When the response body is in unexpected format then should return ServiceException with no message`() {
+    fun `Return ServiceException with no message when the response body is in unexpected format`() {
         val exception = movieDbErrorHandler.handle("unexpected response body")
 
         assertThat(exception).isEqualTo(ServiceException())

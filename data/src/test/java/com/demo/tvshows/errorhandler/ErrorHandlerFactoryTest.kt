@@ -18,14 +18,14 @@ class ErrorHandlerFactoryTest {
     }
 
     @Test
-    fun `When the url is undefined then should return null`() {
+    fun `Return null when the url is undefined`() {
         val actualErrorHandler = errorHandlerFactory.getErrorHandler("undefinedUrl")
 
         assertThat(actualErrorHandler).isNull()
     }
 
     @Test
-    fun `When the url is defined then should return relative errorHandler`() {
+    fun `Return relative errorHandler when the url is defined`() {
         val actualErrorHandler = errorHandlerFactory.getErrorHandler("https://api.themoviedb.org/3/")
 
         assertThat(actualErrorHandler).isInstanceOf(MovieDbErrorHandler::class.java)

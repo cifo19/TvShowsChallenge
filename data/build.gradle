@@ -59,6 +59,7 @@ dependencies {
   testImplementation testDeps.hamcrest
   testImplementation testDeps.arch_core_testing
   testImplementation testDeps.assertj
+  testImplementation testDeps.okhttp_mock_web_server
   testImplementation testDeps.coroutines_test
   testImplementation deps.coroutines_core
 }
