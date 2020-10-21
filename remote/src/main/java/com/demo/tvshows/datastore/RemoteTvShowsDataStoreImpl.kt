@@ -10,7 +10,7 @@ class RemoteTvShowsDataStoreImpl @Inject constructor(
     private val tvShowsResponseRemoteToEntityMapper: TvShowsResponseRemoteToEntityMapper
 ) : RemoteTvShowsDataStore {
 
-    override suspend fun getPopularTvShowsEntity(pageIndex: Int): TvShowsResponseEntity {
+    override suspend fun getPopularTvShowsResponseEntity(pageIndex: Int): TvShowsResponseEntity {
         return movieDbService.getPopularTvShows(pageIndex)
             .let(tvShowsResponseRemoteToEntityMapper::map)
     }
