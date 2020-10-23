@@ -13,17 +13,12 @@ import com.demo.tvshows.ui.tvshows.search.TvShowsSearchFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment.Companion.ARG_TV_SHOW_ID
 import com.demo.tvshows.util.PagingScrollListener
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tv_shows.searchFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_tv_shows.tvShowsRecyclerView
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
-
-    @Inject
-    lateinit var picasso: Picasso
 
     private lateinit var tvShowsListAdapter: TvShowsListAdapter
 
@@ -58,7 +53,7 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
     }
 
     private fun initAdapter() {
-        tvShowsListAdapter = TvShowsListAdapter(picasso, ::showTvShowDetailFragment)
+        tvShowsListAdapter = TvShowsListAdapter(::showTvShowDetailFragment)
     }
 
     private fun initView() {

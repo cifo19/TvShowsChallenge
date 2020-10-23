@@ -3,24 +3,18 @@ package com.demo.tvshows.ui.tvshows
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.demo.tvshows.Constants.PREFIX_IMAGE_URL
 import com.demo.tvshows.R
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
-import com.squareup.picasso.Picasso
+import com.demo.tvshows.databinding.ItemTvShowBinding
+import com.demo.tvshows.ui.tvshows.adapteritem.LoadingAdapterItem
+import com.demo.tvshows.ui.tvshows.adapteritem.TvShowAdapterItem
+import com.demo.tvshows.util.AdapterItem
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_tv_show.logoImageView
-import kotlinx.android.synthetic.main.item_tv_show.overviewTextView
-import kotlinx.android.synthetic.main.item_tv_show.ratingTextView
-import kotlinx.android.synthetic.main.item_tv_show.titleTextView
 
-class TvShowsListAdapter constructor(
-    private val picasso: Picasso,
-    private val onTvShowClicked: (Int) -> Unit
-) : Adapter<ViewHolder>() {
+class TvShowsListAdapter(private val onTvShowClicked: (Int) -> Unit) : Adapter<ViewHolder>() {
 
     private var items = mutableListOf<AdapterItem>()
 
@@ -38,20 +32,21 @@ class TvShowsListAdapter constructor(
         return when (items[position]) {
             LoadingAdapterItem -> VIEW_TYPE_LOADING
             is TvShowAdapterItem -> VIEW_TYPE_TV_SHOW
+            else -> throw IllegalArgumentException("No adapterItem found for position: $position")
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             VIEW_TYPE_LOADING -> {
-                LoadingViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_loading, parent, false))
+                LoadingViewHolder(inflater.inflate(R.layout.item_loading, parent, false))
             }
             VIEW_TYPE_TV_SHOW -> {
-                TvShowViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.item_tv_show, parent, false),
-                    picasso,
-                    onTvShowClicked
+                val binding = DataBindingUtil.inflate<ItemTvShowBinding>(
+                    inflater, R.layout.item_tv_show, parent, false
                 )
+                TvShowViewHolder(binding, onTvShowClicked)
             }
             else -> throw IllegalArgumentException("No viewType found for $viewType")
         }
@@ -65,33 +60,20 @@ class TvShowsListAdapter constructor(
     }
 
     class TvShowViewHolder(
-        override val containerView: View,
-        private val picasso: Picasso,
+        private val itemTvShowBinding: ItemTvShowBinding,
         private val onTvShowClicked: (Int) -> Unit
-    ) : ViewHolder(containerView), LayoutContainer {
+    ) : ViewHolder(itemTvShowBinding.root), LayoutContainer {
+
         fun bind(tvShowAdapterItem: TvShowAdapterItem) {
-            picasso.load("$PREFIX_IMAGE_URL${tvShowAdapterItem.posterPath}")
-                .placeholder(R.drawable.ic_tv_show_place_holder)
-                .into(logoImageView)
-            titleTextView.text = tvShowAdapterItem.name
-            overviewTextView.text = tvShowAdapterItem.overview
-            ratingTextView.text = tvShowAdapterItem.voteAverage.toString()
+            itemTvShowBinding.tvShowAdapterItem = tvShowAdapterItem
+            itemTvShowBinding.executePendingBindings()
             containerView.setOnClickListener { onTvShowClicked(tvShowAdapterItem.id) }
         }
+
+        override val containerView: View = itemTvShowBinding.root
     }
 
     class LoadingViewHolder(override val containerView: View) : ViewHolder(containerView), LayoutContainer
-
-    sealed class AdapterItem {
-        object LoadingAdapterItem : AdapterItem()
-        data class TvShowAdapterItem(
-            val id: Int,
-            val name: String,
-            val overview: String,
-            val posterPath: String,
-            val voteAverage: Double
-        ) : AdapterItem()
-    }
 
     companion object {
         private const val VIEW_TYPE_LOADING = 0
