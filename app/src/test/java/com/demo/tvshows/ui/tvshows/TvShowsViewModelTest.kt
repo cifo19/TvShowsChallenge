@@ -5,11 +5,11 @@ import androidx.lifecycle.Observer
 import com.demo.tvshows.entity.TvShowEntity
 import com.demo.tvshows.entity.TvShowsResponseEntity
 import com.demo.tvshows.errorhandler.ServiceException
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
+import com.demo.tvshows.ui.tvshows.adapteritem.LoadingAdapterItem
+import com.demo.tvshows.ui.tvshows.adapteritem.TvShowAdapterItem
 import com.demo.tvshows.ui.tvshows.mapper.TvShowAdapterItemMapper
 import com.demo.tvshows.usecase.FetchPopularTvShowsUseCase
+import com.demo.tvshows.util.AdapterItem
 import com.demo.tvshows.util.TestCoroutineRule
 import com.demo.tvshows.util.byPausing
 import com.demo.tvshows.util.runBlocking
@@ -106,7 +106,7 @@ class TvShowsViewModelTest {
         tvShowsViewModel.getTvShows()
 
         val expectedAdapterItems: MutableList<AdapterItem> = tvShowsResponseEntity.tvShowEntities
-            .map { TvShowAdapterItem(it.id, it.name, it.overview, it.posterPath, it.voteAverage) }
+            .map { TvShowAdapterItem(it.id, it.name, it.overview, it.posterPath, it.voteAverage.toString()) }
             .toMutableList()
         verify { tvShowsObserver.onChanged(expectedAdapterItems) }
     }

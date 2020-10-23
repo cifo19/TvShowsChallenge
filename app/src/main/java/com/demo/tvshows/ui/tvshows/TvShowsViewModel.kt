@@ -7,10 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.demo.tvshows.entity.TvShowsResponseEntity
 import com.demo.tvshows.ui.base.BaseViewModel
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.LoadingAdapterItem
+import com.demo.tvshows.ui.tvshows.adapteritem.LoadingAdapterItem
 import com.demo.tvshows.ui.tvshows.mapper.TvShowAdapterItemMapper
 import com.demo.tvshows.usecase.FetchPopularTvShowsUseCase
+import com.demo.tvshows.util.AdapterItem
 import com.demo.tvshows.util.modifyValue
 import kotlinx.coroutines.launch
 

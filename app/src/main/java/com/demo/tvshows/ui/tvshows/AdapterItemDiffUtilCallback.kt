@@ -1,7 +1,7 @@
 package com.demo.tvshows.ui.tvshows
 
 import androidx.recyclerview.widget.DiffUtil
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem
+import com.demo.tvshows.util.AdapterItem
 
 class AdapterItemDiffUtilCallback(
     private val oldList: List<AdapterItem>,

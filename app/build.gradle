@@ -60,6 +60,10 @@ android {
     enable 'SyntheticAccessor'
   }
 
+  buildFeatures {
+    dataBinding = true
+  }
+
   tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
     kotlinOptions.freeCompilerArgs += ["-Xallow-result-return-type"]

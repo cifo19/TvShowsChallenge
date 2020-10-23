@@ -1,7 +1,7 @@
 package com.demo.tvshows.ui.tvshows.mapper
 
 import com.demo.tvshows.entity.TvShowEntity
-import com.demo.tvshows.ui.tvshows.TvShowsListAdapter.AdapterItem.TvShowAdapterItem
+import com.demo.tvshows.ui.tvshows.adapteritem.TvShowAdapterItem
 import javax.inject.Inject
 
 class TvShowAdapterItemMapper @Inject constructor() {
@@ -13,7 +13,7 @@ class TvShowAdapterItemMapper @Inject constructor() {
                 it.name,
                 it.overview,
                 it.posterPath,
-                it.voteAverage
+                it.voteAverage.toString()
             )
         }
     }
