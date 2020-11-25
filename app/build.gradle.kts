@@ -10,7 +10,7 @@ plugins {
     id("com.google.firebase.appdistribution")
 }
 
-apply(from = "../quality/tasks.gradle")
+apply(from = "../quality/ktlint.gradle.kts")
 
 android {
     compileSdkVersion(Config.COMPILE_SDK_VERSION)
