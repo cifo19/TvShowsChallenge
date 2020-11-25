@@ -25,11 +25,14 @@ abstract class BaseActivity : AppCompatActivity() {
 
         MaterialDialog(this).show {
             message(text = errorMessage)
-            positiveButton(res = R.string.ok, click = object : DialogCallback {
-                override fun invoke(materialDialog: MaterialDialog) {
-                    onPositiveButtonClick?.invoke()
+            positiveButton(
+                res = R.string.ok,
+                click = object : DialogCallback {
+                    override fun invoke(materialDialog: MaterialDialog) {
+                        onPositiveButtonClick?.invoke()
+                    }
                 }
-            })
+            )
             negativeButton(res = R.string.exit, click = onErrorDialogNegativeClick)
         }
     }
@@ -44,11 +47,14 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun onNoInternetConnection(onTryAgain: (() -> Unit)? = null) {
         MaterialDialog(this).show {
             message(res = R.string.no_connection_exception)
-            positiveButton(res = R.string.try_again, click = object : DialogCallback {
-                override fun invoke(materialDialog: MaterialDialog) {
-                    onTryAgain?.invoke()
+            positiveButton(
+                res = R.string.try_again,
+                click = object : DialogCallback {
+                    override fun invoke(materialDialog: MaterialDialog) {
+                        onTryAgain?.invoke()
+                    }
                 }
-            })
+            )
             negativeButton(res = R.string.exit, click = onErrorDialogNegativeClick)
             cancelable(false)
         }

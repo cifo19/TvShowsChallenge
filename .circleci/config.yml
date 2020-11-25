@@ -27,7 +27,7 @@ jobs:
           path: /home/circleci/code/app/build/reports/lint-results-debug.html
           destination: reports/android_lint
       - store_artifacts:
-          path: /home/circleci/code/app/build/ktlint.xml
+          path: /home/circleci/code/app/build/reports/ktlint.xml
           destination: reports/ktlint
 
   unit_tests:

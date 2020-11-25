@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.demo.tvshows.R
@@ -36,12 +35,14 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
 
     private fun observeViewModel() {
         with(tvShowsViewModel) {
-            showTvShows.observe(viewLifecycleOwner, Observer {
-                tvShowsListAdapter.showTvShows(it)
-            })
-            onError.observe(viewLifecycleOwner, Observer {
-                onError(it) { tvShowsViewModel.getTvShows() }
-            })
+            showTvShows.observe(
+                viewLifecycleOwner,
+                { tvShowsListAdapter.showTvShows(it) }
+            )
+            onError.observe(
+                viewLifecycleOwner,
+                { onError(it) { tvShowsViewModel.getTvShows() } }
+            )
         }
     }
 
