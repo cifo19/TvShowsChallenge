@@ -81,8 +81,6 @@ androidExtensions {
 
 dependencies {
     implementation(project(":data"))
-    implementation(project(":cache"))
-    implementation(project(":remote"))
     implementation(project(":domain"))
 
     implementation(Dependencies.picasso)
