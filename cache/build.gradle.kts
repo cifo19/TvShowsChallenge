@@ -20,8 +20,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
     implementation(fileTree("libs").include("*.jar"))
+
+    implementation(project(":domain"))
+
     implementation(Dependencies.kotlin)
     implementation(Dependencies.coreKtx)
     implementation(Dependencies.appcompat)

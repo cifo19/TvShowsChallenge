@@ -43,8 +43,8 @@ android {
 dependencies {
     implementation(fileTree("libs").include("*.jar"))
 
-    implementation(project(":remote"))
-    implementation(project(":cache"))
+    api(project(":remote"))
+    api(project(":cache"))
     implementation(project(":domain"))
 
     implementation(Dependencies.kotlin)
