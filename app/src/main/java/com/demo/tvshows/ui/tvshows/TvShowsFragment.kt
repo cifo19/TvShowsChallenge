@@ -2,22 +2,21 @@ package com.demo.tvshows.ui.tvshows
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.demo.tvshows.R
+import com.demo.tvshows.databinding.FragmentTvShowsBinding
 import com.demo.tvshows.ui.base.BaseFragment
 import com.demo.tvshows.ui.tvshows.search.TvShowsSearchFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment
-import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment.Companion.ARG_TV_SHOW_ID
 import com.demo.tvshows.util.PagingScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tv_shows.searchFloatingActionButton
 import kotlinx.android.synthetic.main.fragment_tv_shows.tvShowsRecyclerView
 
 @AndroidEntryPoint
-class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
+class TvShowsFragment : BaseFragment<FragmentTvShowsBinding>(R.layout.fragment_tv_shows) {
 
     private lateinit var tvShowsListAdapter: TvShowsListAdapter
 
@@ -35,29 +34,24 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
 
     private fun observeViewModel() {
         with(tvShowsViewModel) {
-            showTvShows.observe(
-                viewLifecycleOwner,
-                { tvShowsListAdapter.showTvShows(it) }
-            )
-            onError.observe(
-                viewLifecycleOwner,
-                { onError(it) { tvShowsViewModel.getTvShows() } }
-            )
+            showTvShows.observe(viewLifecycleOwner, {
+                tvShowsListAdapter.showTvShows(it)
+            })
+            onError.observe(viewLifecycleOwner, {
+                onError(it) { tvShowsViewModel.getTvShows() }
+            })
         }
     }
 
     private fun showTvShowDetailFragment(tvShowId: Int) {
-        val tvShowDetailFragment = TvShowDetailFragment().apply {
-            arguments = bundleOf(ARG_TV_SHOW_ID to tvShowId)
-        }
-        addFragment(tvShowDetailFragment, TvShowDetailFragment.TAG)
+        addFragment(TvShowDetailFragment.newInstance(tvShowId), TvShowDetailFragment.TAG)
     }
 
     private fun initAdapter() {
         tvShowsListAdapter = TvShowsListAdapter(::showTvShowDetailFragment)
     }
 
-    private fun initView() {
+    private fun initView() = with(binding) {
         tvShowsRecyclerView.init()
         searchFloatingActionButton.setOnClickListener {
             addFragment(TvShowsSearchFragment(), TvShowsSearchFragment.TAG)
@@ -84,6 +78,7 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
     }
 
     companion object {
+
         const val TAG_TV_SHOWS_FRAGMENT = "tvShowsFragment"
     }
 }

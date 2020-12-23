@@ -6,23 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.demo.tvshows.R
+import com.demo.tvshows.databinding.FragmentBaseBinding
 import com.demo.tvshows.ui.tvshows.TvShowsActivity
-import kotlinx.android.synthetic.main.fragment_base.fragmentContent
 import kotlinx.android.synthetic.main.fragment_base.fragmentToolbar
 
-open class BaseFragment(@LayoutRes val contentLayoutRes: Int) : Fragment() {
+open class BaseFragment<DB : ViewDataBinding>(@LayoutRes val contentLayoutRes: Int) : Fragment() {
+
+    lateinit var binding : DB
+    private lateinit var baseBinding: FragmentBaseBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_base, container, false)
+        baseBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_base, container, false)
+        return baseBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fragmentContent.layoutResource = contentLayoutRes
-        fragmentContent.inflate()
+        with(baseBinding){
+            fragmentContent.viewStub?.layoutResource = contentLayoutRes
+            fragmentContent.viewStub?.inflate()
+            binding = fragmentContent.binding as DB
+        }
     }
 
     fun onError(
