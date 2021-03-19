@@ -58,7 +58,7 @@ class TvShowsViewModelTest {
     @Test
     fun `Could not load more when the new tv shows are loading`() {
         tvShowsViewModel.hasNextPage = true
-        tvShowsViewModel._showTvShowsLiveData.value = mutableListOf(LoadingAdapterItem)
+        tvShowsViewModel._showTvShowsFlow.value = mutableListOf(LoadingAdapterItem)
 
         val canLoadMore = tvShowsViewModel.canLoadMore
 
@@ -68,7 +68,7 @@ class TvShowsViewModelTest {
     @Test
     fun `Could load more when the next page is exist and the new tv shows are not loading`() {
         tvShowsViewModel.hasNextPage = true
-        tvShowsViewModel._showTvShowsLiveData.value = mutableListOf()
+        tvShowsViewModel._showTvShowsFlow.value = mutableListOf()
 
         val canLoadMore = tvShowsViewModel.canLoadMore
 
@@ -87,7 +87,7 @@ class TvShowsViewModelTest {
     @Test
     fun `Show loading when starts to fetch tv shows`() = testCoroutineRule.runBlocking {
         val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
-        tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
+        tvShowsViewModel.states.observeForever(tvShowsObserver)
         coEvery { fetchPopularTvShowsUseCase(any()) } returns getDummyTvShowsResponseEntity()
 
         testCoroutineRule.testDispatcher.byPausing {
@@ -100,7 +100,7 @@ class TvShowsViewModelTest {
     fun `Show tv shows when tv shows are fetched successfully`() = testCoroutineRule.runBlocking {
         val tvShowsResponseEntity = getDummyTvShowsResponseEntity()
         val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
-        tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
+        tvShowsViewModel.states.observeForever(tvShowsObserver)
         coEvery { fetchPopularTvShowsUseCase(any()) } returns tvShowsResponseEntity
 
         tvShowsViewModel.getTvShows()

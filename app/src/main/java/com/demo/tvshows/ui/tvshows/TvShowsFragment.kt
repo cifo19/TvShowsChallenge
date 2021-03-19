@@ -11,10 +11,11 @@ import com.demo.tvshows.ui.base.BaseFragment
 import com.demo.tvshows.ui.tvshows.search.TvShowsSearchFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment.Companion.ARG_TV_SHOW_ID
+import com.demo.tvshows.ui.tvshows.event.TvShowsEvent
 import com.demo.tvshows.util.PagingScrollListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_tv_shows.searchFloatingActionButton
-import kotlinx.android.synthetic.main.fragment_tv_shows.tvShowsRecyclerView
+import kotlinx.android.synthetic.main.fragment_tv_shows.*
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
@@ -34,14 +35,23 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
     }
 
     private fun observeViewModel() {
-        with(tvShowsViewModel) {
-            showTvShows.observe(
-                viewLifecycleOwner,
-                { tvShowsListAdapter.showTvShows(it) }
-            )
-            onError.observe(
-                viewLifecycleOwner,
-                { onError(it) { tvShowsViewModel.getTvShows() } }
+        launchWhenStarted {
+            tvShowsViewModel.states.collect(::render)
+        }
+        launchWhenStarted {
+            tvShowsViewModel.events.collect(::onEvent)
+        }
+    }
+
+    private fun render(tvShowsState: TvShowsState) {
+        tvShowsListAdapter.showTvShows(tvShowsState.adapterItems)
+    }
+
+    private fun onEvent(tvShowsEvent: TvShowsEvent) {
+        when (tvShowsEvent) {
+            is TvShowsEvent.FailureEvent -> onError(
+                tvShowsEvent.throwable,
+                tvShowsViewModel::getTvShows
             )
         }
     }
