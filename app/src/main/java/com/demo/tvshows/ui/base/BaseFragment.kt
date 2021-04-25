@@ -9,12 +9,15 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.demo.tvshows.R
 import com.demo.tvshows.ui.tvshows.TvShowsActivity
-import kotlinx.android.synthetic.main.fragment_base.fragmentContent
-import kotlinx.android.synthetic.main.fragment_base.fragmentToolbar
+import kotlinx.android.synthetic.main.fragment_base.*
 
 open class BaseFragment(@LayoutRes val contentLayoutRes: Int) : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_base, container, false)
     }
 

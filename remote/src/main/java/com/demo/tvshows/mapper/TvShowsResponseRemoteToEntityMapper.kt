@@ -13,7 +13,7 @@ class TvShowsResponseRemoteToEntityMapper @Inject constructor() : Mapper<TvShows
             val tvShowEntities = tvShows.map {
                 TvShowEntity(
                     it.backdropPath,
-                    it.firstAirDate,
+                    it.firstAirDate.orEmpty(),
                     it.genreIds,
                     it.id,
                     it.name,
@@ -22,7 +22,7 @@ class TvShowsResponseRemoteToEntityMapper @Inject constructor() : Mapper<TvShows
                     it.originalName,
                     it.overview,
                     it.popularity,
-                    it.posterPath,
+                    it.posterPath.orEmpty(),
                     it.voteAverage,
                     it.voteCount
                 )
