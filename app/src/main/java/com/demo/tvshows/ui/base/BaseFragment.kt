@@ -7,16 +7,11 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.demo.tvshows.R
 import com.demo.tvshows.ui.tvshows.TvShowsActivity
 import kotlinx.android.synthetic.main.fragment_base.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 
 open class BaseFragment(@LayoutRes val contentLayoutRes: Int) : Fragment() {
-
-    private var jobs: MutableList<Job> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,15 +26,6 @@ open class BaseFragment(@LayoutRes val contentLayoutRes: Int) : Fragment() {
 
         fragmentContent.layoutResource = contentLayoutRes
         fragmentContent.inflate()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        jobs.forEach { it.cancel() }
-    }
-
-    fun launchWhenStarted(block: suspend CoroutineScope.() -> Unit) {
-        lifecycleScope.launchWhenStarted(block).also(jobs::add)
     }
 
     fun onError(

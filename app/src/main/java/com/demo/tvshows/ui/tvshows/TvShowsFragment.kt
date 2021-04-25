@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.demo.tvshows.R
 import com.demo.tvshows.ui.base.BaseFragment
+import com.demo.tvshows.ui.tvshows.event.TvShowsEvent
 import com.demo.tvshows.ui.tvshows.search.TvShowsSearchFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment
 import com.demo.tvshows.ui.tvshows.tvshowdetail.TvShowDetailFragment.Companion.ARG_TV_SHOW_ID
-import com.demo.tvshows.ui.tvshows.event.TvShowsEvent
 import com.demo.tvshows.util.PagingScrollListener
+import com.demo.tvshows.util.ext.observeOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tv_shows.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
@@ -35,12 +35,8 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
     }
 
     private fun observeViewModel() {
-        launchWhenStarted {
-            tvShowsViewModel.states.collect(::render)
-        }
-        launchWhenStarted {
-            tvShowsViewModel.events.collect(::onEvent)
-        }
+        tvShowsViewModel.states.observeOnLifecycle(viewLifecycleOwner, ::render)
+        tvShowsViewModel.events.observeOnLifecycle(viewLifecycleOwner, ::onEvent)
     }
 
     private fun render(tvShowsState: TvShowsState) {
@@ -50,8 +46,8 @@ class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
     private fun onEvent(tvShowsEvent: TvShowsEvent) {
         when (tvShowsEvent) {
             is TvShowsEvent.FailureEvent -> onError(
-                tvShowsEvent.throwable,
-                tvShowsViewModel::getTvShows
+                throwable = tvShowsEvent.throwable,
+                onPositiveButtonClick = tvShowsViewModel::getTvShows
             )
         }
     }
