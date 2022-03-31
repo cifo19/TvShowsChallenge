@@ -13,11 +13,11 @@ plugins {
 apply(from = "../quality/ktlint.gradle.kts")
 
 android {
-    compileSdkVersion(Config.COMPILE_SDK_VERSION)
+    compileSdk = Config.COMPILE_SDK_VERSION
     defaultConfig {
         applicationId = Config.APPLICATION_ID
-        minSdkVersion(Config.MIN_SDK_VERSION)
-        targetSdkVersion(Config.TARGET_SDK_VERSION)
+        minSdk = Config.MIN_SDK_VERSION
+        targetSdk = Config.TARGET_SDK_VERSION
         versionCode = Config.VERSION_CODE
         versionName = Config.VERSION_NAME
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
