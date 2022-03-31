@@ -34,8 +34,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":domain"))
+
+    // this dependency should be broken
+    implementation(project(":common:remote")) {
+        because("BaseActivity knows NoConnectionException")
+    }
 
     implementation(Dependencies.picasso)
     implementation(Dependencies.kotlin)

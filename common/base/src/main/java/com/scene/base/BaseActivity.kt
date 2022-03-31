@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.DialogCallback
 import com.afollestad.materialdialogs.MaterialDialog
-import com.scene.data.errorhandler.NoConnectionException
+import com.scene.remote.errorhandler.NoConnectionException
 
 abstract class BaseActivity : AppCompatActivity() {
 

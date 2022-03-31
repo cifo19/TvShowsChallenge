@@ -37,8 +37,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":domain"))
 
     implementation(Dependencies.picasso)
     implementation(Dependencies.kotlin)

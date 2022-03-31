@@ -16,7 +16,7 @@
       tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
     <activity
-        android:name="com.scene.home.presentation.TvShowsActivity"
+        android:name="com.scene.homepresentation.TvShowsActivity"
         android:screenOrientation="portrait"
         android:exported="true">
       <intent-filter>

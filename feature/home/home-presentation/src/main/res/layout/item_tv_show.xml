@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+  <data>
+    <variable
+        name="tvShowAdapterItem"
+        type="com.scene.homepresentation.adapteritem.TvShowAdapterItem"
+        />
+  </data>
+  <androidx.cardview.widget.CardView
+      android:layout_width="match_parent"
+      android:layout_height="180dp"
+      android:layout_marginRight="@dimen/spacing_small"
+      android:layout_marginTop="@dimen/spacing_small"
+      app:cardCornerRadius="@dimen/spacing_small"
+      app:cardElevation="@dimen/spacing_small"
+      >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+      <ImageView
+          android:id="@+id/logoImageView"
+          android:layout_width="120dp"
+          android:layout_height="0dp"
+          android:adjustViewBounds="true"
+          android:scaleType="fitXY"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:imageUrl="@{tvShowAdapterItem.posterPath}"
+          tools:ignore="ContentDescription"
+          tools:src="@drawable/ic_tv_show_place_holder"
+          />
+
+      <TextView
+          android:id="@+id/titleTextView"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="@dimen/spacing_normal"
+          android:layout_marginStart="@dimen/spacing_normal"
+          android:layout_marginTop="@dimen/spacing_normal"
+          android:gravity="center"
+          android:textColor="?attr/colorPrimaryDark"
+          android:textSize="@dimen/text_big"
+          android:text="@{tvShowAdapterItem.name}"
+          app:layout_constraintLeft_toRightOf="@+id/logoImageView"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          tools:text="@tools:sample/lorem"
+          />
+
+      <TextView
+          android:id="@+id/overviewTextView"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/spacing_normal"
+          android:ellipsize="end"
+          android:gravity="start|center"
+          android:maxLines="4"
+          android:textColor="?attr/colorPrimaryVariant"
+          android:textSize="@dimen/text_normal"
+          android:text="@{tvShowAdapterItem.overview}"
+          app:layout_constraintBottom_toTopOf="@+id/ratingTextView"
+          app:layout_constraintLeft_toRightOf="@+id/logoImageView"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+          tools:text="@tools:sample/lorem/random"
+          />
+
+      <TextView
+          android:id="@+id/ratingTextView"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="@dimen/spacing_normal"
+          android:layout_marginEnd="@dimen/spacing_normal"
+          android:layout_marginStart="@dimen/spacing_normal"
+          android:gravity="end"
+          android:textColor="?attr/colorPrimaryDark"
+          android:textSize="@dimen/text_small"
+          android:text="@{tvShowAdapterItem.voteAverage}"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintLeft_toRightOf="@+id/logoImageView"
+          app:layout_constraintRight_toRightOf="parent"
+          tools:text="8.7"
+          />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </androidx.cardview.widget.CardView>
+</layout>
