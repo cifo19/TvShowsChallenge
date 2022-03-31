@@ -4,11 +4,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.scene.domain.entity.TvShowEntity
 import com.scene.domain.entity.TvShowsResponseEntity
-import com.scene.data.errorhandler.ServiceException
+import com.scene.remote.errorhandler.ServiceException
 import com.scene.home.presentation.adapteritem.LoadingAdapterItem
 import com.scene.home.presentation.adapteritem.TvShowAdapterItem
 import com.scene.home.presentation.mapper.TvShowAdapterItemMapper
-import com.scene.domain.usecase.FetchPopularTvShowsUseCase
 import com.scene.util.AdapterItem
 import com.scene.app.util.TestCoroutineRule
 import com.scene.app.util.byPausing
@@ -34,7 +33,7 @@ class TvShowsViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    private lateinit var fetchPopularTvShowsUseCase: FetchPopularTvShowsUseCase
+    private lateinit var fetchPopularTvShowsUseCase: com.scene.homedomain.usecase.FetchPopularTvShowsUseCase
 
     private lateinit var tvShowsViewModel: com.scene.home.presentation.TvShowsViewModel
 
@@ -126,11 +125,11 @@ class TvShowsViewModelTest {
     fun `Show error when tv shows are fetched with failure`() = testCoroutineRule.runBlocking {
         val errorObserver = mockk<Observer<Throwable>>(relaxed = true)
         tvShowsViewModel.onError.observeForever(errorObserver)
-        coEvery { fetchPopularTvShowsUseCase(any()) } answers { throw ServiceException() }
+        coEvery { fetchPopularTvShowsUseCase(any()) } answers { throw com.scene.remote.errorhandler.ServiceException() }
 
         tvShowsViewModel.getTvShows()
 
-        verify { errorObserver.onChanged(ServiceException()) }
+        verify { errorObserver.onChanged(com.scene.remote.errorhandler.ServiceException()) }
     }
 
     private fun getDummyTvShowsResponseEntity(): TvShowsResponseEntity {

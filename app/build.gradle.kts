@@ -79,9 +79,10 @@ androidExtensions {
 }
 
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":domain"))
-    implementation(project(":feature:home"))
+    implementation(project(":common:remote"))
+    implementation(project(":feature:home:home-presentation"))
+    implementation(project(":feature:home:home-data"))
+    implementation(project(":feature:home:home-domain"))
     implementation(project(":feature:scene-detail"))
     implementation(project(":feature:scene-search"))
 

@@ -38,8 +38,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
-    implementation(project(":domain"))
     implementation(project(":common:util"))
     implementation(project(":common:base"))
 
