@@ -6,7 +6,7 @@
   <data>
     <variable
         name="tvShowAdapterItem"
-        type="com.demo.tvshows.ui.tvshows.adapteritem.TvShowAdapterItem"
+        type="com.scene.app.ui.tvshows.adapteritem.TvShowAdapterItem"
         />
   </data>
   <androidx.cardview.widget.CardView
