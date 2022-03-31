@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="exit">EXIT</string>
+    <string name="try_again">TRY AGAIN</string>
+    <string name="unhandled_exception_message">An error has been occurred</string>
+    <string name="no_connection_exception">Your internet connection is not available</string>
+</resources>

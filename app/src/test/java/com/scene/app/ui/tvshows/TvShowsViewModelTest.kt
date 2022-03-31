@@ -5,11 +5,11 @@ import androidx.lifecycle.Observer
 import com.scene.domain.entity.TvShowEntity
 import com.scene.domain.entity.TvShowsResponseEntity
 import com.scene.data.errorhandler.ServiceException
-import com.scene.app.ui.tvshows.adapteritem.LoadingAdapterItem
-import com.scene.app.ui.tvshows.adapteritem.TvShowAdapterItem
-import com.scene.app.ui.tvshows.mapper.TvShowAdapterItemMapper
+import com.scene.home.presentation.adapteritem.LoadingAdapterItem
+import com.scene.home.presentation.adapteritem.TvShowAdapterItem
+import com.scene.home.presentation.mapper.TvShowAdapterItemMapper
 import com.scene.domain.usecase.FetchPopularTvShowsUseCase
-import com.scene.app.util.AdapterItem
+import com.scene.util.AdapterItem
 import com.scene.app.util.TestCoroutineRule
 import com.scene.app.util.byPausing
 import com.scene.app.util.runBlocking
@@ -36,14 +36,17 @@ class TvShowsViewModelTest {
     @MockK
     private lateinit var fetchPopularTvShowsUseCase: FetchPopularTvShowsUseCase
 
-    private lateinit var tvShowsViewModel: TvShowsViewModel
+    private lateinit var tvShowsViewModel: com.scene.home.presentation.TvShowsViewModel
 
     private val tvShowAdapterItemMapper = TvShowAdapterItemMapper()
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        tvShowsViewModel = TvShowsViewModel(fetchPopularTvShowsUseCase, tvShowAdapterItemMapper)
+        tvShowsViewModel = com.scene.home.presentation.TvShowsViewModel(
+            fetchPopularTvShowsUseCase,
+            tvShowAdapterItemMapper
+        )
     }
 
     @Test
@@ -58,7 +61,7 @@ class TvShowsViewModelTest {
     @Test
     fun `Could not load more when the new tv shows are loading`() {
         tvShowsViewModel.hasNextPage = true
-        tvShowsViewModel._showTvShowsLiveData.value = mutableListOf(LoadingAdapterItem)
+        tvShowsViewModel._showTvShowsLiveData.value = mutableListOf(com.scene.home.presentation.adapteritem.LoadingAdapterItem)
 
         val canLoadMore = tvShowsViewModel.canLoadMore
 
@@ -86,27 +89,35 @@ class TvShowsViewModelTest {
 
     @Test
     fun `Show loading when starts to fetch tv shows`() = testCoroutineRule.runBlocking {
-        val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
+        val tvShowsObserver = mockk<Observer<MutableList<com.scene.util.AdapterItem>>>(relaxed = true)
         tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
         coEvery { fetchPopularTvShowsUseCase(any()) } returns getDummyTvShowsResponseEntity()
 
         testCoroutineRule.testDispatcher.byPausing {
             tvShowsViewModel.getTvShows()
-            verify { tvShowsObserver.onChanged(mutableListOf(LoadingAdapterItem)) }
+            verify { tvShowsObserver.onChanged(mutableListOf(com.scene.home.presentation.adapteritem.LoadingAdapterItem)) }
         }
     }
 
     @Test
     fun `Show tv shows when tv shows are fetched successfully`() = testCoroutineRule.runBlocking {
         val tvShowsResponseEntity = getDummyTvShowsResponseEntity()
-        val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
+        val tvShowsObserver = mockk<Observer<MutableList<com.scene.util.AdapterItem>>>(relaxed = true)
         tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
         coEvery { fetchPopularTvShowsUseCase(any()) } returns tvShowsResponseEntity
 
         tvShowsViewModel.getTvShows()
 
-        val expectedAdapterItems: MutableList<AdapterItem> = tvShowsResponseEntity.tvShowEntities
-            .map { TvShowAdapterItem(it.id, it.name, it.overview, it.posterPath, it.voteAverage.toString()) }
+        val expectedAdapterItems: MutableList<com.scene.util.AdapterItem> = tvShowsResponseEntity.tvShowEntities
+            .map {
+                com.scene.home.presentation.adapteritem.TvShowAdapterItem(
+                    it.id,
+                    it.name,
+                    it.overview,
+                    it.posterPath,
+                    it.voteAverage.toString()
+                )
+            }
             .toMutableList()
         verify { tvShowsObserver.onChanged(expectedAdapterItems) }
     }

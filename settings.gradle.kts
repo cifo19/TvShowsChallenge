@@ -1,1 +1,6 @@
 include(":app", ":data", ":domain", ":cache", ":remote")
+include(":feature:home")
+include(":common:base")
+include(":common:util")
+include(":feature:scene-detail")
+include(":feature:scene-search")

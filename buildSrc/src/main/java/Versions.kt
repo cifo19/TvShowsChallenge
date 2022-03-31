@@ -13,7 +13,7 @@ object Versions {
     const val RECYCLER_VIEW = "1.0.0"
     const val CONSTRAINT_LAYOUT = "2.0.0-beta8"
     const val CARD_VIEW = "1.0.0"
-    const val MATERIAL_DIALOGS = "3.0.0-rc3"
+    const val MATERIAL_DIALOGS = "3.3.0"
     const val ROOM = "2.2.5"
     const val MATERIAL = "1.1.0-alpha07"
     const val HILT_ANDROIDX = "1.0.0-alpha01"
