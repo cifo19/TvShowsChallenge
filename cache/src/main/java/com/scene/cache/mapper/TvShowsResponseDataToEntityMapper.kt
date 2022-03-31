@@ -1,0 +1,34 @@
+package com.scene.cache.mapper
+
+import com.scene.domain.Mapper
+import com.scene.domain.entity.TvShowEntity
+import com.scene.domain.entity.TvShowsResponseEntity
+import com.scene.cache.entity.TvShowsResponseData
+import javax.inject.Inject
+
+class TvShowsResponseDataToEntityMapper @Inject constructor() :
+    Mapper<TvShowsResponseData, TvShowsResponseEntity> {
+
+    override fun map(input: TvShowsResponseData): TvShowsResponseEntity {
+        return with(input) {
+            val tvShowEntities = tvShowData.map {
+                TvShowEntity(
+                    it.backdropPath,
+                    it.firstAirDate,
+                    it.genreIds,
+                    it.id,
+                    it.name,
+                    it.originCountry,
+                    it.originalLanguage,
+                    it.originalName,
+                    it.overview,
+                    it.popularity,
+                    it.posterPath,
+                    it.voteAverage,
+                    it.voteCount
+                )
+            }
+            TvShowsResponseEntity(page, tvShowEntities, totalPages, totalResults)
+        }
+    }
+}

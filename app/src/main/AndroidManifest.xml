@@ -1,12 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.demo.tvshows">
+    package="com.scene.app">
 
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
   <application
-      android:name=".application.TvShowsApplication"
+      android:name="com.scene.app.application.TvShowsApplication"
       android:allowBackup="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
@@ -16,7 +16,7 @@
       tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
     <activity
-        android:name=".ui.tvshows.TvShowsActivity"
+        android:name="com.scene.app.ui.tvshows.TvShowsActivity"
         android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

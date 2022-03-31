@@ -54,17 +54,16 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    lintOptions {
-        baseline("${project.rootDir}/app/lint-baseline.xml")
-        isWarningsAsErrors = true
-        isAbortOnError = true
-        isAbsolutePaths = false
-        disable("Overdraw", "LockedOrientationActivity")
-        enable("SyntheticAccessor")
-    }
-
     buildFeatures {
         dataBinding = true
+    }
+    lint {
+        abortOnError = true
+        absolutePaths = false
+        baseline = file("rootDir/app/lint-baseline.xml")
+        disable += setOf("Overdraw", "LockedOrientationActivity")
+        enable += setOf("SyntheticAccessor")
+        warningsAsErrors = true
     }
 
     tasks.withType<KotlinCompile> {
