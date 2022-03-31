@@ -4,7 +4,7 @@ import io.gitlab.arturbosch.detekt.detekt
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:${Versions.ANDROID_GRADLE_PLUGIN}")
@@ -33,6 +33,6 @@ subprojects {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }

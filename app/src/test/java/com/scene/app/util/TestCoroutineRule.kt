@@ -1,6 +1,6 @@
 package com.scene.app.util
 
-import com.scene.app.util.coroutine.dispatchers.CoroutineDispatchers
+import com.scene.util.coroutine.dispatchers.CoroutineDispatchers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -15,7 +15,11 @@ class TestCoroutineRule(
     val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 ) : TestWatcher() {
 
-    val testDispatchers = CoroutineDispatchers(testDispatcher, testDispatcher, testDispatcher)
+    val testDispatchers = com.scene.util.coroutine.dispatchers.CoroutineDispatchers(
+        testDispatcher,
+        testDispatcher,
+        testDispatcher
+    )
 
     override fun starting(description: Description?) {
         super.starting(description)
