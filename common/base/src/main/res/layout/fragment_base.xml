@@ -13,7 +13,7 @@
       android:id="@+id/fragmentToolbar"
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
-      android:background="@color/primaryColor"
+      android:background="?attr/colorPrimary"
       android:visibility="gone"
       app:layout_constraintTop_toTopOf="parent"
       tools:visibility="visible"

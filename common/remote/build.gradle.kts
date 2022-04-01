@@ -41,15 +41,21 @@ android {
 }
 
 dependencies {
-    implementation(fileTree("libs").include("*.jar"))
+    api(Dependencies.picasso) {
+        because("Added via api since Application should know to draw dependency graph")
+    }
+    api(Dependencies.retrofit) {
+        because("Added via api since Application should know to draw dependency graph")
+    }
+    api(Dependencies.retrofitGsonConverter) {
+        because("Added via api since Application should know to draw dependency graph")
+    }
+    api(Dependencies.okHttpLogging) {
+        because("Added via api since Application should know to draw dependency graph")
+    }
 
-    implementation(Dependencies.picasso)
-
-    implementation(Dependencies.kotlin)
     implementation(Dependencies.hilt)
-    implementation(Dependencies.retrofit)
-    implementation(Dependencies.retrofitGsonConverter)
-    implementation(Dependencies.okHttpLogging)
+    kapt(Dependencies.hiltCompiler)
 
     testImplementation(TestDependencies.mockk)
     testImplementation(TestDependencies.junit)
@@ -59,7 +65,4 @@ dependencies {
     testImplementation(TestDependencies.okHttpMockWebServer)
     testImplementation(TestDependencies.kotlinxCoroutinesTest)
     testImplementation(Dependencies.coroutinesCore)
-
-    kapt(Dependencies.hiltCompiler)
-    kapt(Dependencies.hiltAndroidxCompiler)
 }

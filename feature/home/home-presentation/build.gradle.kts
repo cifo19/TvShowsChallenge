@@ -45,7 +45,6 @@ dependencies {
     implementation(project(":feature:scene-search"))
 
     implementation(Dependencies.picasso)
-    implementation(Dependencies.kotlin)
     implementation(Dependencies.activity)
     implementation(Dependencies.fragment)
     implementation(Dependencies.appcompat)
@@ -65,21 +64,11 @@ dependencies {
     // ViewModel and LiveData
     implementation(Dependencies.lifecycleExtensions)
 
-    // Networking
-    implementation(Dependencies.okHttp)
-    implementation(Dependencies.okHttpUrlConnection)
-    implementation(Dependencies.okHttpLogging)
-    implementation(Dependencies.retrofit)
-    implementation(Dependencies.retrofitGsonConverter)
-
     // Dependency Injection
     kapt(Dependencies.hiltCompiler)
     kapt(Dependencies.hiltAndroidxCompiler)
     implementation(Dependencies.hilt)
     implementation(Dependencies.hiltViewModel)
-
-    // Firebase
-    implementation(Dependencies.firebase)
 
     testImplementation(TestDependencies.mockk)
     testImplementation(TestDependencies.junit)
