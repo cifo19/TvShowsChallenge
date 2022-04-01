@@ -1,8 +1,7 @@
 package com.scene.remote.errorhandler
 
-import com.scene.remote.errorhandler.MovieDbErrorHandler
 import com.google.gson.Gson
-import com.scene.remote.errorhandler.ErrorHandlerFactory
+import com.scene.remote.errorhandler.moviedb.MovieDbErrorHandler
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -11,11 +10,11 @@ class ErrorHandlerFactoryTest {
 
     private var gson: Gson = Gson()
 
-    private lateinit var errorHandlerFactory: com.scene.remote.errorhandler.ErrorHandlerFactory
+    private lateinit var errorHandlerFactory: ErrorHandlerFactory
 
     @Before
     fun setUp() {
-        errorHandlerFactory = com.scene.remote.errorhandler.ErrorHandlerFactory(gson)
+        errorHandlerFactory = ErrorHandlerFactory(gson)
     }
 
     @Test
@@ -29,6 +28,6 @@ class ErrorHandlerFactoryTest {
     fun `Return relative errorHandler when the url is defined`() {
         val actualErrorHandler = errorHandlerFactory.getErrorHandler("https://api.themoviedb.org/3/")
 
-        assertThat(actualErrorHandler).isInstanceOf(com.scene.remote.errorhandler.MovieDbErrorHandler::class.java)
+        assertThat(actualErrorHandler).isInstanceOf(MovieDbErrorHandler::class.java)
     }
 }

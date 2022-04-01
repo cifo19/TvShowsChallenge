@@ -1,4 +1,4 @@
-package com.scene.app.util
+package com.scene.remote.util
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

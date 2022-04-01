@@ -1,4 +1,4 @@
-package com.scene.app.util
+package com.scene.homepresentation.util
 
 import com.scene.util.coroutine.dispatchers.CoroutineDispatchers
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ class TestCoroutineRule(
     val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 ) : TestWatcher() {
 
-    val testDispatchers = com.scene.util.coroutine.dispatchers.CoroutineDispatchers(
+    val testDispatchers = CoroutineDispatchers(
         testDispatcher,
         testDispatcher,
         testDispatcher

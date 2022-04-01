@@ -1,10 +1,11 @@
 package com.scene.remote.interceptor
 
-import com.scene.remote.errorhandler.MovieDbErrorHandler
-import com.scene.remote.errorhandler.MovieDbServiceErrorModel
-import com.scene.remote.response.TvShowsResponse
-import com.scene.app.util.parseFile
 import com.google.gson.Gson
+import com.scene.remote.util.parseFile
+import com.scene.remote.errorhandler.ServiceException
+import com.scene.remote.errorhandler.moviedb.MovieDbErrorHandler
+import com.scene.remote.errorhandler.moviedb.MovieDbServiceErrorModel
+import com.scene.remote.util.TestSuccessData
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -24,41 +25,47 @@ class ErrorHandlingInterceptorTest {
     @MockK
     private lateinit var errorHandlerFactor: com.scene.remote.errorhandler.ErrorHandlerFactory
 
-    private lateinit var errorHandlingInterceptor: com.scene.remote.interceptor.ErrorHandlingInterceptor
+    private lateinit var errorHandlingInterceptor: ErrorHandlingInterceptor
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
         errorHandlingInterceptor =
-            com.scene.remote.interceptor.ErrorHandlingInterceptor(errorHandlerFactor)
+            ErrorHandlingInterceptor(errorHandlerFactor)
     }
 
     @Test
     fun `Proceed response when response is succeeded`() {
-        val popularShowsSuccessResponse = parseFile<TvShowsResponse>("get_popular_tv_shows_success.json")
+        val popularShowsSuccessResponse =
+            parseFile<TestSuccessData>("test_success.json")
         val mockWebServer = MockWebServer()
-        val okHttpClient = OkHttpClient().newBuilder().addInterceptor(errorHandlingInterceptor).build()
+        val okHttpClient =
+            OkHttpClient().newBuilder().addInterceptor(errorHandlingInterceptor).build()
         mockWebServer.start()
-        mockWebServer.enqueue(MockResponse().apply { setBody(Gson().toJson(popularShowsSuccessResponse)) })
+        mockWebServer.enqueue(MockResponse().apply {
+            setBody(
+                Gson().toJson(
+                    popularShowsSuccessResponse
+                )
+            )
+        })
 
-        val response = okHttpClient.newCall(Request.Builder().url(mockWebServer.url("/")).build()).execute()
+        val response =
+            okHttpClient.newCall(Request.Builder().url(mockWebServer.url("/")).build()).execute()
 
         assertThat(response.isSuccessful).isTrue
         assertThat(response.body!!.string()).isEqualTo(Gson().toJson(popularShowsSuccessResponse))
         mockWebServer.shutdown()
     }
 
-    @Test(expected = com.scene.remote.errorhandler.ServiceException::class)
+    @Test(expected = ServiceException::class)
     fun `Throw ServiceException when the error is not handled`() {
         val mockWebServer = MockWebServer()
-        val okHttpClient = OkHttpClient().newBuilder().addInterceptor(errorHandlingInterceptor).build()
+        val okHttpClient =
+            OkHttpClient().newBuilder().addInterceptor(errorHandlingInterceptor).build()
         mockWebServer.start()
         mockWebServer.enqueue(MockResponse().apply { setResponseCode(HTTP_BAD_REQUEST) })
-        every { errorHandlerFactor.getErrorHandler(any()) }.returns(
-            com.scene.remote.errorhandler.MovieDbErrorHandler(
-                Gson()
-            )
-        )
+        every { errorHandlerFactor.getErrorHandler(any()) }.returns(MovieDbErrorHandler(Gson()))
 
         okHttpClient.newCall(Request.Builder().url(mockWebServer.url("/")).build()).execute()
 
@@ -67,26 +74,24 @@ class ErrorHandlingInterceptorTest {
 
     @Test
     fun `Throw ServiceException with relative message when the error is handled`() {
-        val popularShowsErrorResponse = parseFile<com.scene.remote.errorhandler.MovieDbServiceErrorModel>("get_popular_tv_shows_error.json")
+        val popularShowsErrorResponse =
+            parseFile<MovieDbServiceErrorModel>("get_popular_tv_shows_error.json")
         val mockWebServer = MockWebServer()
-        val okHttpClient = OkHttpClient().newBuilder().addInterceptor(errorHandlingInterceptor).build()
+        val okHttpClient =
+            OkHttpClient().newBuilder().addInterceptor(errorHandlingInterceptor).build()
         mockWebServer.start()
         mockWebServer.enqueue(
             MockResponse()
                 .apply { setResponseCode(HTTP_NOT_FOUND) }
                 .apply { setBody(Gson().toJson(popularShowsErrorResponse)) }
         )
-        every { errorHandlerFactor.getErrorHandler(any()) }.returns(
-            com.scene.remote.errorhandler.MovieDbErrorHandler(
-                Gson()
-            )
-        )
+        every { errorHandlerFactor.getErrorHandler(any()) }.returns(MovieDbErrorHandler(Gson()))
 
         val throwable = catchThrowable {
             okHttpClient.newCall(Request.Builder().url(mockWebServer.url("/")).build()).execute()
         }
 
-        assertThat(throwable).isInstanceOf(com.scene.remote.errorhandler.ServiceException::class.java)
+        assertThat(throwable).isInstanceOf(ServiceException::class.java)
         assertThat(throwable.message).isEqualTo(popularShowsErrorResponse.statusMessage)
         mockWebServer.shutdown()
     }

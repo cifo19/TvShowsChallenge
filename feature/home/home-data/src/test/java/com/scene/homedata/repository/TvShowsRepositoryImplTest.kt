@@ -1,10 +1,9 @@
 package com.scene.homedata.repository
 
-import com.scene.homedomain.datastore.CacheTvShowsDataStore
-import com.scene.domain.datastore.RemoteTvShowsDataStore
-import com.scene.domain.entity.TvShowEntity
-import com.scene.domain.entity.TvShowsResponseEntity
-import com.scene.homedata.repository.TvShowsRepositoryImpl
+import com.scene.homedomain.datastore.LocalTvShowsDataStore
+import com.scene.homedomain.datastore.RemoteTvShowsDataStore
+import com.scene.homedomain.entity.TvShowEntity
+import com.scene.homedomain.entity.TvShowsResponseEntity
 import io.mockk.Called
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -23,27 +22,27 @@ class TvShowsRepositoryImplTest {
     private lateinit var remoteTvShowsDataStoreImpl: RemoteTvShowsDataStore
 
     @MockK
-    private lateinit var cacheTvShowsDataStoreImpl: com.scene.homedomain.datastore.CacheTvShowsDataStore
+    private lateinit var localTvShowsDataStore: LocalTvShowsDataStore
 
-    private lateinit var tvShowsRepositoryImpl: com.scene.homedata.repository.TvShowsRepositoryImpl
+    private lateinit var tvShowsRepositoryImpl: TvShowsRepositoryImpl
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        tvShowsRepositoryImpl = com.scene.homedata.repository.TvShowsRepositoryImpl(
+        tvShowsRepositoryImpl = TvShowsRepositoryImpl(
             remoteTvShowsDataStoreImpl,
-            cacheTvShowsDataStoreImpl
+            localTvShowsDataStore
         )
     }
 
     @Test
     fun `Return cached entities when the cache exist`() = runBlockingTest {
         val expectedResponse = getDummyTvShowsResponseEntity()
-        coEvery { cacheTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(any()) } returns expectedResponse
+        coEvery { localTvShowsDataStore.getPopularTvShowsResponseEntity(any()) } returns expectedResponse
 
         val actualResponse = tvShowsRepositoryImpl.fetchPopularTvShows(pageIndex = 1)
 
-        coVerify { cacheTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(any()) }
+        coVerify { localTvShowsDataStore.getPopularTvShowsResponseEntity(any()) }
         coVerify { remoteTvShowsDataStoreImpl wasNot Called }
         assertThat(actualResponse).isEqualTo(expectedResponse)
     }
@@ -51,14 +50,14 @@ class TvShowsRepositoryImplTest {
     @Test
     fun `Return remote entities and insert them to cache when the cache does not exist`() = runBlockingTest {
         val expectedResponse = getDummyTvShowsResponseEntity()
-        coEvery { cacheTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(any()) } returns null
-        coEvery { cacheTvShowsDataStoreImpl.insertTvShowsResponseEntity(any()) } returns Unit
+        coEvery { localTvShowsDataStore.getPopularTvShowsResponseEntity(any()) } returns null
+        coEvery { localTvShowsDataStore.insertTvShowsResponseEntity(any()) } returns Unit
         coEvery { remoteTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(any()) } returns expectedResponse
 
         val actualResponse = tvShowsRepositoryImpl.fetchPopularTvShows(pageIndex = 1)
 
         coVerify { remoteTvShowsDataStoreImpl.getPopularTvShowsResponseEntity(any()) }
-        coVerify { cacheTvShowsDataStoreImpl.insertTvShowsResponseEntity(expectedResponse) }
+        coVerify { localTvShowsDataStore.insertTvShowsResponseEntity(expectedResponse) }
         assertThat(actualResponse).isEqualTo(expectedResponse)
     }
 
