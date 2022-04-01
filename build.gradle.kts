@@ -21,7 +21,7 @@ plugins {
 
 subprojects {
     tasks {
-        withType<Detekt> { jvmTarget = "1.8" }
+        withType<Detekt> { jvmTarget = JavaVersion.VERSION_11.toString() }
     }
     apply(plugin = "io.gitlab.arturbosch.detekt")
     detekt {

@@ -1,7 +1,6 @@
 package com.scene.homepresentation
 
 import androidx.annotation.VisibleForTesting
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,9 +10,12 @@ import com.scene.homedomain.usecase.FetchPopularTvShowsUseCase
 import com.scene.homepresentation.adapteritem.LoadingAdapterItem
 import com.scene.homepresentation.mapper.TvShowAdapterItemMapper
 import com.scene.util.modifyValue
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TvShowsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class TvShowsViewModel @Inject constructor(
     private val fetchPopularTvShowsUseCase: FetchPopularTvShowsUseCase,
     private val tvShowAdapterItemMapper: TvShowAdapterItemMapper
 ) : BaseViewModel() {
