@@ -1,17 +1,17 @@
-package com.scene.app.ui.tvshows
+package com.scene.homepresentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.scene.domain.entity.TvShowEntity
-import com.scene.domain.entity.TvShowsResponseEntity
-import com.scene.remote.errorhandler.ServiceException
-import com.scene.home.presentation.adapteritem.LoadingAdapterItem
-import com.scene.home.presentation.adapteritem.TvShowAdapterItem
-import com.scene.home.presentation.mapper.TvShowAdapterItemMapper
 import com.scene.util.AdapterItem
-import com.scene.app.util.TestCoroutineRule
-import com.scene.app.util.byPausing
-import com.scene.app.util.runBlocking
+import com.scene.homedomain.entity.TvShowEntity
+import com.scene.homedomain.entity.TvShowsResponseEntity
+import com.scene.homedomain.usecase.FetchPopularTvShowsUseCase
+import com.scene.homepresentation.adapteritem.LoadingAdapterItem
+import com.scene.homepresentation.adapteritem.TvShowAdapterItem
+import com.scene.homepresentation.mapper.TvShowAdapterItemMapper
+import com.scene.homepresentation.util.TestCoroutineRule
+import com.scene.homepresentation.util.byPausing
+import com.scene.homepresentation.util.runBlocking
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -22,6 +22,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.lang.IllegalStateException
 
 @ExperimentalCoroutinesApi
 class TvShowsViewModelTest {
@@ -33,16 +34,16 @@ class TvShowsViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    private lateinit var fetchPopularTvShowsUseCase: com.scene.homedomain.usecase.FetchPopularTvShowsUseCase
+    private lateinit var fetchPopularTvShowsUseCase: FetchPopularTvShowsUseCase
 
-    private lateinit var tvShowsViewModel: com.scene.home.presentation.TvShowsViewModel
+    private lateinit var tvShowsViewModel: TvShowsViewModel
 
     private val tvShowAdapterItemMapper = TvShowAdapterItemMapper()
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        tvShowsViewModel = com.scene.home.presentation.TvShowsViewModel(
+        tvShowsViewModel = TvShowsViewModel(
             fetchPopularTvShowsUseCase,
             tvShowAdapterItemMapper
         )
@@ -60,7 +61,7 @@ class TvShowsViewModelTest {
     @Test
     fun `Could not load more when the new tv shows are loading`() {
         tvShowsViewModel.hasNextPage = true
-        tvShowsViewModel._showTvShowsLiveData.value = mutableListOf(com.scene.home.presentation.adapteritem.LoadingAdapterItem)
+        tvShowsViewModel._showTvShowsLiveData.value = mutableListOf(LoadingAdapterItem)
 
         val canLoadMore = tvShowsViewModel.canLoadMore
 
@@ -94,22 +95,22 @@ class TvShowsViewModelTest {
 
         testCoroutineRule.testDispatcher.byPausing {
             tvShowsViewModel.getTvShows()
-            verify { tvShowsObserver.onChanged(mutableListOf(com.scene.home.presentation.adapteritem.LoadingAdapterItem)) }
+            verify { tvShowsObserver.onChanged(mutableListOf(LoadingAdapterItem)) }
         }
     }
 
     @Test
     fun `Show tv shows when tv shows are fetched successfully`() = testCoroutineRule.runBlocking {
         val tvShowsResponseEntity = getDummyTvShowsResponseEntity()
-        val tvShowsObserver = mockk<Observer<MutableList<com.scene.util.AdapterItem>>>(relaxed = true)
+        val tvShowsObserver = mockk<Observer<MutableList<AdapterItem>>>(relaxed = true)
         tvShowsViewModel.showTvShows.observeForever(tvShowsObserver)
         coEvery { fetchPopularTvShowsUseCase(any()) } returns tvShowsResponseEntity
 
         tvShowsViewModel.getTvShows()
 
-        val expectedAdapterItems: MutableList<com.scene.util.AdapterItem> = tvShowsResponseEntity.tvShowEntities
+        val expectedAdapterItems: MutableList<AdapterItem> = tvShowsResponseEntity.tvShowEntities
             .map {
-                com.scene.home.presentation.adapteritem.TvShowAdapterItem(
+                TvShowAdapterItem(
                     it.id,
                     it.name,
                     it.overview,
@@ -124,12 +125,13 @@ class TvShowsViewModelTest {
     @Test
     fun `Show error when tv shows are fetched with failure`() = testCoroutineRule.runBlocking {
         val errorObserver = mockk<Observer<Throwable>>(relaxed = true)
+        val exception = IllegalStateException()
         tvShowsViewModel.onError.observeForever(errorObserver)
-        coEvery { fetchPopularTvShowsUseCase(any()) } answers { throw com.scene.remote.errorhandler.ServiceException() }
+        coEvery { fetchPopularTvShowsUseCase(any()) } answers { throw exception }
 
         tvShowsViewModel.getTvShows()
 
-        verify { errorObserver.onChanged(com.scene.remote.errorhandler.ServiceException()) }
+        verify { errorObserver.onChanged(exception) }
     }
 
     private fun getDummyTvShowsResponseEntity(): TvShowsResponseEntity {
