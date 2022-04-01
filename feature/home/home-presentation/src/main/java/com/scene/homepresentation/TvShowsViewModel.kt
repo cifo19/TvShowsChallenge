@@ -5,6 +5,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.scene.base.BaseViewModel
 import com.scene.homedomain.entity.TvShowsResponseEntity
 import com.scene.homedomain.usecase.FetchPopularTvShowsUseCase
 import com.scene.homepresentation.adapteritem.LoadingAdapterItem
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 class TvShowsViewModel @ViewModelInject constructor(
     private val fetchPopularTvShowsUseCase: FetchPopularTvShowsUseCase,
     private val tvShowAdapterItemMapper: TvShowAdapterItemMapper
-) : com.scene.base.BaseViewModel() {
+) : BaseViewModel() {
 
     val canLoadMore: Boolean get() = hasNextPage && isLoading()
 
