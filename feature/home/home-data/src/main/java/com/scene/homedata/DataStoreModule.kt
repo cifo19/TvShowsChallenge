@@ -7,10 +7,10 @@ import com.scene.homedomain.datastore.RemoteTvShowsDataStore
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 interface DataStoreModule {
     @Binds
     fun bindsCacheTvShowsDataStore(cacheTvShowsDataStoreImpl: LocalTvShowsDataStoreImpl): LocalTvShowsDataStore

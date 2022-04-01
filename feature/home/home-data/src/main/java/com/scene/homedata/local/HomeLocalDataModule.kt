@@ -7,13 +7,13 @@ import com.scene.homedata.local.db.TvShowsDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 private const val TV_SHOW_DATABASE_NAME = "tv_show_database"
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 object HomeLocalDataModule {
 

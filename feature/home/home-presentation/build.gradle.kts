@@ -1,39 +1,13 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
+    id("android-library.blueprint")
     id("kotlin-android-extensions")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
 }
 
 android {
-    compileSdk = Config.COMPILE_SDK_VERSION
-
-    defaultConfig {
-        minSdk = Config.MIN_SDK_VERSION
-        targetSdk = Config.TARGET_SDK_VERSION
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
     buildFeatures {
         dataBinding = true
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 }
 
@@ -66,9 +40,7 @@ dependencies {
 
     // Dependency Injection
     kapt(Dependencies.hiltCompiler)
-    kapt(Dependencies.hiltAndroidxCompiler)
     implementation(Dependencies.hilt)
-    implementation(Dependencies.hiltViewModel)
 
     testImplementation(TestDependencies.mockk)
     testImplementation(TestDependencies.junit)
@@ -78,4 +50,8 @@ dependencies {
     testImplementation(TestDependencies.kotlinxCoroutinesTest)
     testImplementation(TestDependencies.okHttpMockWebServer)
     testImplementation(Dependencies.coroutinesCore)
+}
+
+kapt {
+    correctErrorTypes = true
 }
