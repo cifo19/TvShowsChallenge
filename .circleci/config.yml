@@ -38,7 +38,7 @@ jobs:
       - checkout
       - run:
           name: Unit tests
-          command: ./gradlew test
+          command: ./gradlew testDebugUnitTest
           when: always
       - run:
           name: Save test results

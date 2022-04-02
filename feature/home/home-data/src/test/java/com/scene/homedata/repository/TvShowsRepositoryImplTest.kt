@@ -1,7 +1,6 @@
 package com.scene.homedata.repository
 
-import com.scene.homedomain.datastore.LocalTvShowsDataStore
-import com.scene.homedomain.datastore.RemoteTvShowsDataStore
+import com.scene.homedomain.datastore.TvShowsDataStore
 import com.scene.homedomain.entity.TvShowEntity
 import com.scene.homedomain.entity.TvShowsResponseEntity
 import io.mockk.Called
@@ -19,10 +18,10 @@ import org.junit.Test
 class TvShowsRepositoryImplTest {
 
     @MockK
-    private lateinit var remoteTvShowsDataStoreImpl: RemoteTvShowsDataStore
+    private lateinit var remoteTvShowsDataStoreImpl: TvShowsDataStore.Remote
 
     @MockK
-    private lateinit var localTvShowsDataStore: LocalTvShowsDataStore
+    private lateinit var localTvShowsDataStore: TvShowsDataStore.Local
 
     private lateinit var tvShowsRepositoryImpl: TvShowsRepositoryImpl
 
