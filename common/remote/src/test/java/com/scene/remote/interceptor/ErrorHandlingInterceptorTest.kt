@@ -1,11 +1,11 @@
 package com.scene.remote.interceptor
 
 import com.google.gson.Gson
-import com.scene.remote.util.parseFile
 import com.scene.remote.errorhandler.ServiceException
 import com.scene.remote.errorhandler.moviedb.MovieDbErrorHandler
 import com.scene.remote.errorhandler.moviedb.MovieDbServiceErrorModel
 import com.scene.remote.util.TestSuccessData
+import com.scene.remote.util.parseFile
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -42,13 +42,11 @@ class ErrorHandlingInterceptorTest {
         val okHttpClient =
             OkHttpClient().newBuilder().addInterceptor(errorHandlingInterceptor).build()
         mockWebServer.start()
-        mockWebServer.enqueue(MockResponse().apply {
-            setBody(
-                Gson().toJson(
-                    popularShowsSuccessResponse
-                )
-            )
-        })
+        mockWebServer.enqueue(
+            MockResponse().apply {
+                setBody(Gson().toJson(popularShowsSuccessResponse))
+            }
+        )
 
         val response =
             okHttpClient.newCall(Request.Builder().url(mockWebServer.url("/")).build()).execute()
