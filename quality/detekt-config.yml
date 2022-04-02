@@ -47,7 +47,8 @@ complexity:
     active: false
   LongParameterList:
     active: true
-    threshold: 5
+    functionThreshold: 5
+    constructorThreshold: 15
     ignoreDefaultParameters: false
   MethodOverloading:
     active: true
@@ -90,7 +91,7 @@ empty-blocks:
     active: true
   EmptyFunctionBlock:
     active: true
-    ignoreOverriddenFunctions: false
+    ignoreOverridden: false
   EmptyIfBlock:
     active: true
   EmptyInitBlock:
@@ -262,7 +263,7 @@ naming:
     active: true
   MemberNameEqualsClassName:
     active: false
-    ignoreOverriddenFunction: true
+    ignoreOverridden: true
   ObjectPropertyNaming:
     active: true
     propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
@@ -314,7 +315,6 @@ potential-bugs:
     active: false
   LateinitUsage:
     active: false
-    excludeAnnotatedProperties: ""
     ignoreOnClassesPattern: ""
   UnconditionalJumpStatementInLoop:
     active: false
@@ -424,7 +424,6 @@ style:
     allowedNames: "(_|ignored|expected)"
   UseDataClass:
     active: false
-    excludeAnnotatedClasses: ""
   UtilityClassWithPublicConstructor:
     active: true
   WildcardImport:

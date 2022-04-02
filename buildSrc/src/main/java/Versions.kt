@@ -19,7 +19,7 @@ object Versions {
     const val HILT_ANDROIDX = "1.0.0-alpha01"
     const val GOOGLE_SERVICES = "4.3.3"
     const val APP_DISTRIBUTION = "2.0.0"
-    const val DETEKT = "1.15.0-RC1"
+    const val DETEKT = "1.20.0-RC1"
 
     // Square
     const val RETROFIT = "2.6.0"

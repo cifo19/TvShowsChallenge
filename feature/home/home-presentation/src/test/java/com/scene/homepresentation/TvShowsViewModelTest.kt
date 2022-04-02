@@ -2,7 +2,6 @@ package com.scene.homepresentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.scene.util.AdapterItem
 import com.scene.homedomain.entity.TvShowEntity
 import com.scene.homedomain.entity.TvShowsResponseEntity
 import com.scene.homedomain.usecase.FetchPopularTvShowsUseCase
@@ -12,6 +11,7 @@ import com.scene.homepresentation.mapper.TvShowAdapterItemMapper
 import com.scene.homepresentation.util.TestCoroutineRule
 import com.scene.homepresentation.util.byPausing
 import com.scene.homepresentation.util.runBlocking
+import com.scene.util.AdapterItem
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -22,7 +22,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.lang.IllegalStateException
 
 @ExperimentalCoroutinesApi
 class TvShowsViewModelTest {

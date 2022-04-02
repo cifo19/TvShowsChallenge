@@ -1,5 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 
 buildscript {
     repositories {
@@ -21,12 +21,18 @@ plugins {
 
 subprojects {
     tasks {
-        withType<Detekt> { jvmTarget = JavaVersion.VERSION_11.toString() }
+        withType<Detekt> { jvmTarget = JavaVersion.VERSION_1_8.toString() }
+    }
+    tasks.withType<DetektCreateBaselineTask>().configureEach {
+        jvmTarget = "1.8"
     }
     apply(plugin = "io.gitlab.arturbosch.detekt")
     detekt {
         parallel = true
         config = files("$rootDir/quality/detekt-config.yml")
+    }
+    dependencies {
+        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${Versions.DETEKT}")
     }
 }
 

@@ -1,9 +1,9 @@
 package com.scene.homedata.local.converters
 
 import androidx.room.TypeConverter
-import com.scene.homedata.local.entity.TvShowData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.scene.homedata.local.entity.TvShowData
 import java.lang.reflect.Type
 
 class Converters {

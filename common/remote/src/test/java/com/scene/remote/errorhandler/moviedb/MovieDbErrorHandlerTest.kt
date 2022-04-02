@@ -1,8 +1,8 @@
 package com.scene.remote.errorhandler.moviedb
 
-import com.scene.remote.util.parseFile
 import com.google.gson.Gson
 import com.scene.remote.errorhandler.ServiceException
+import com.scene.remote.util.parseFile
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
