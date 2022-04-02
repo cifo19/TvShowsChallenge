@@ -2,17 +2,6 @@
 <issues format="6" by="lint 7.1.2" type="baseline" client="gradle" dependencies="false" name="AGP (7.1.2)" variant="all" version="7.1.2">
 
     <issue
-        id="Instantiatable"
-        message="`TvShowsActivity` must extend android.app.Activity"
-        errorLine1="        android:name=&quot;com.scene.homepresentation.TvShowsActivity&quot;"
-        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/AndroidManifest.xml"
-            line="19"
-            column="23"/>
-    </issue>
-
-    <issue
         id="UnusedResources"
         message="The resource `R.color.primaryLightColor` appears to be unused"
         errorLine1="  &lt;color name=&quot;primaryLightColor&quot;>#4f5b62&lt;/color>"
