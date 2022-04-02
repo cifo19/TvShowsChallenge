@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.1.2" type="baseline" client="gradle" dependencies="false" name="AGP (7.1.2)" variant="all" version="7.1.2">
+
+    <issue
+        id="Instantiatable"
+        message="`TvShowsActivity` must extend android.app.Activity"
+        errorLine1="        android:name=&quot;com.scene.homepresentation.TvShowsActivity&quot;"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="19"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primaryLightColor` appears to be unused"
+        errorLine1="  &lt;color name=&quot;primaryLightColor&quot;>#4f5b62&lt;/color>"
+        errorLine2="         ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="4"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.spacing_normal` appears to be unused"
+        errorLine1="  &lt;dimen name=&quot;spacing_normal&quot;>12dp&lt;/dimen>"
+        errorLine2="         ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="3"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.spacing_small` appears to be unused"
+        errorLine1="  &lt;dimen name=&quot;spacing_small&quot;>8dp&lt;/dimen>"
+        errorLine2="         ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="4"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.text_big` appears to be unused"
+        errorLine1="  &lt;dimen name=&quot;text_big&quot;>18sp&lt;/dimen>"
+        errorLine2="         ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="5"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.text_normal` appears to be unused"
+        errorLine1="  &lt;dimen name=&quot;text_normal&quot;>14sp&lt;/dimen>"
+        errorLine2="         ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="6"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.text_small` appears to be unused"
+        errorLine1="  &lt;dimen name=&quot;text_small&quot;>12sp&lt;/dimen>"
+        errorLine2="         ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="7"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.title_show_shows_activity` appears to be unused"
+        errorLine1="  &lt;string name=&quot;title_show_shows_activity&quot;>Popular Tv Shows&lt;/string>"
+        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="3"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.unhandled_exception_message` appears to be unused"
+        errorLine1="  &lt;string name=&quot;unhandled_exception_message&quot;>An error has been occurred&lt;/string>"
+        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="4"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.no_connection_exception` appears to be unused"
+        errorLine1="  &lt;string name=&quot;no_connection_exception&quot;>Your internet connection is not available&lt;/string>"
+        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="5"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.ok` appears to be unused"
+        errorLine1="  &lt;string name=&quot;ok&quot;>OK&lt;/string>"
+        errorLine2="          ~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="6"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.try_again` appears to be unused"
+        errorLine1="  &lt;string name=&quot;try_again&quot;>TRY AGAIN&lt;/string>"
+        errorLine2="          ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="7"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.exit` appears to be unused"
+        errorLine1="  &lt;string name=&quot;exit&quot;>EXIT&lt;/string>"
+        errorLine2="          ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="8"
+            column="11"/>
+    </issue>
+
+</issues>
