@@ -1,4 +1,4 @@
-package com.scene.homedata
+package com.scene.homedata.di
 
 import com.scene.homedata.repository.TvShowsRepositoryImpl
 import com.scene.homedomain.repository.TvShowsRepository
