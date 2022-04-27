@@ -20,7 +20,6 @@ android {
         targetSdk = Config.TARGET_SDK_VERSION
         versionCode = Config.VERSION_CODE
         versionName = Config.VERSION_NAME
-        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         named("debug").configure {

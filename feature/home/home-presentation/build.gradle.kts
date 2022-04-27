@@ -39,8 +39,8 @@ dependencies {
     implementation(Dependencies.lifecycleExtensions)
 
     // Dependency Injection
-    kapt(Dependencies.hiltCompiler)
     implementation(Dependencies.hilt)
+    kapt(Dependencies.hiltCompiler)
 
     testImplementation(TestDependencies.mockk)
     testImplementation(TestDependencies.junit)

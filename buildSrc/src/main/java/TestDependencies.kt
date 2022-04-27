@@ -6,4 +6,5 @@ object TestDependencies {
     const val mockk = "io.mockk:mockk:${Versions.MOCKK}"
     const val kotlinxCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.KOTLINX_COROUTINES}"
     const val okHttpMockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.OK_HTTP}"
+    const val orchestrator = "androidx.test:orchestrator:${Versions.ORCHESTRATOR}"
 }
