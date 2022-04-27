@@ -20,7 +20,11 @@ android {
         targetSdk = Config.TARGET_SDK_VERSION
         versionCode = Config.VERSION_CODE
         versionName = Config.VERSION_NAME
-        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.scene.ui_test.runner.HiltTestRunner"
+        // The following argument makes the Android Test Orchestrator run its
+        // "pm clear" command after each test invocation. This command ensures
+        // that the app's state is completely cleared between tests.
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
     }
     signingConfigs {
         named("debug").configure {
@@ -48,6 +52,11 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    testOptions {
+        // https://developer.android.com/training/testing/instrumented-tests/androidx-test-libraries/runner#use-android
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
 
     kotlinOptions {
@@ -80,6 +89,7 @@ androidExtensions {
 
 dependencies {
     implementation(project(":common:remote"))
+    implementation(project(":common:base"))
     implementation(project(":feature:home:home-presentation"))
     implementation(project(":feature:home:home-data"))
     implementation(project(":feature:home:home-domain"))
@@ -92,6 +102,28 @@ dependencies {
 
     // Firebase
     implementation(Dependencies.firebase)
+
+    // Test
+    kaptAndroidTest(Dependencies.hiltCompiler)
+    androidTestImplementation(TestDependencies.hiltTest)
+    androidTestImplementation(TestDependencies.testRunner)
+    androidTestImplementation(TestDependencies.junitKtx)
+    androidTestImplementation(TestDependencies.testCoreKtx)
+    androidTestImplementation(TestDependencies.mockk)
+    androidTestImplementation(TestDependencies.junit)
+    androidTestImplementation(TestDependencies.assertJ)
+    androidTestImplementation(TestDependencies.archCoreTesting)
+    androidTestImplementation(TestDependencies.espressoCore)
+    androidTestImplementation(TestDependencies.espressoContrib) {
+        because("Without this library it does not start application")
+    }
+    androidTestUtil(TestDependencies.orchestrator)
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.objenesis:objenesis:3.2")
+    }
 }
 
 kapt {
