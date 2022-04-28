@@ -30,6 +30,7 @@ configurations.all {
 }
 
 dependencies {
+    implementation(project(":app"))
     implementation(project(":common:remote"))
     implementation(project(":common:base"))
     implementation(project(":common:util"))
@@ -52,6 +53,8 @@ dependencies {
     implementation(TestDependencies.junit)
     implementation(TestDependencies.assertJ)
     implementation(TestDependencies.archCoreTesting)
+    implementation("androidx.test.espresso:espresso-core:3.3.0")
+    implementation("androidx.test.espresso:espresso-contrib:3.3.0")
     implementation("androidx.test:core-ktx:1.4.0")
     debugImplementation("androidx.fragment:fragment-testing:1.4.1")
 }
