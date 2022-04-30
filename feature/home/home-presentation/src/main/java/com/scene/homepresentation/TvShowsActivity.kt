@@ -1,10 +1,11 @@
 package com.scene.homepresentation
 
 import android.os.Bundle
+import com.scene.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TvShowsActivity : com.scene.base.BaseActivity() {
+class TvShowsActivity : BaseActivity() {
 
     override val fragmentContainerId: Int
         get() = R.id.fragmentContainerView

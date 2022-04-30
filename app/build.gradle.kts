@@ -20,6 +20,7 @@ android {
         targetSdk = Config.TARGET_SDK_VERSION
         versionCode = Config.VERSION_CODE
         versionName = Config.VERSION_NAME
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         named("debug").configure {
@@ -84,6 +85,7 @@ dependencies {
     implementation(project(":feature:home:home-domain"))
     implementation(project(":feature:scene-detail"))
     implementation(project(":feature:scene-search"))
+    implementation(project(":common:base"))
 
     // Dependency Injection
     kapt(Dependencies.hiltCompiler)
@@ -91,6 +93,28 @@ dependencies {
 
     // Firebase
     implementation(Dependencies.firebase)
+
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.41")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:2.41")
+
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
+
+    androidTestUtil(TestDependencies.orchestrator)
+    androidTestImplementation(TestDependencies.mockk)
+    androidTestImplementation(TestDependencies.junit)
+    androidTestImplementation(TestDependencies.assertJ)
+    androidTestImplementation(TestDependencies.archCoreTesting)
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.4.0")
+    androidTestImplementation("androidx.test:core-ktx:1.4.0")
+    debugImplementation("androidx.fragment:fragment-testing:1.4.1")
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.objenesis:objenesis:3.2")
+    }
 }
 
 kapt {

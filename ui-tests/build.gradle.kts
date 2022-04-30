@@ -5,13 +5,15 @@ plugins {
 }
 
 android {
-    targetProjectPath(":app")
-    testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
     compileSdk = Config.COMPILE_SDK_VERSION
+    targetProjectPath(":app")
+    buildFeatures.buildConfig = false
+    testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
     defaultConfig {
         minSdk = Config.MIN_SDK_VERSION
         targetSdk = Config.TARGET_SDK_VERSION
 
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
         testInstrumentationRunner = "com.scene.ui_tests.runner.HiltTestRunner"
     }
     compileOptions {
@@ -53,10 +55,12 @@ dependencies {
     implementation(TestDependencies.junit)
     implementation(TestDependencies.assertJ)
     implementation(TestDependencies.archCoreTesting)
-    implementation("androidx.test.espresso:espresso-core:3.3.0")
-    implementation("androidx.test.espresso:espresso-contrib:3.3.0")
+    implementation("androidx.test.espresso:espresso-core:3.4.0")
+    implementation("androidx.test.espresso:espresso-contrib:3.4.0")
     implementation("androidx.test:core-ktx:1.4.0")
     debugImplementation("androidx.fragment:fragment-testing:1.4.1")
+    implementation("org.robolectric:robolectric:4.7.3")
+    implementation("androidx.arch.core:core-testing:2.1.0")
 }
 
 kapt {
