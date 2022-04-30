@@ -20,7 +20,11 @@ android {
         targetSdk = Config.TARGET_SDK_VERSION
         versionCode = Config.VERSION_CODE
         versionName = Config.VERSION_NAME
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.scene.ui_test.runner.HiltTestRunner"
+        // The following argument makes the Android Test Orchestrator run its
+        // "pm clear" command after each test invocation. This command ensures
+        // that the app's state is completely cleared between tests.
+        testInstrumentationRunnerArguments["clearPackageData"] =  "true"
     }
     signingConfigs {
         named("debug").configure {
@@ -48,6 +52,11 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    testOptions {
+        // https://developer.android.com/training/testing/instrumented-tests/androidx-test-libraries/runner#use-android
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
 
     kotlinOptions {
@@ -97,8 +106,15 @@ dependencies {
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.41")
     kaptAndroidTest("com.google.dagger:hilt-compiler:2.41")
 
-    androidTestImplementation("androidx.test:runner:1.4.0")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
+    androidTestImplementation("androidx.test:runner:1.4.0") {
+        because("Contains AndroidJUnitRunner")
+    }
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3") {
+        because("Contains activityScenarioRule<> that starts activity")
+    }
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.4.0") {
+        because("Without this library it does not start application")
+    }
 
     androidTestUtil(TestDependencies.orchestrator)
     androidTestImplementation(TestDependencies.mockk)
@@ -106,9 +122,7 @@ dependencies {
     androidTestImplementation(TestDependencies.assertJ)
     androidTestImplementation(TestDependencies.archCoreTesting)
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.4.0")
     androidTestImplementation("androidx.test:core-ktx:1.4.0")
-    debugImplementation("androidx.fragment:fragment-testing:1.4.1")
 }
 
 configurations.all {
