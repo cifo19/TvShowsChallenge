@@ -1,4 +1,4 @@
-package com.scene.ui_test.runner
+package com.scene.uitest.runner
 
 import android.app.Application
 import android.content.Context

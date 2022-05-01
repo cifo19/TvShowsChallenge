@@ -12,7 +12,7 @@ android {
         minSdk = Config.MIN_SDK_VERSION
         targetSdk = Config.TARGET_SDK_VERSION
 
-        testInstrumentationRunner = "com.scene.ui_test.runner.HiltTestRunner"
+        testInstrumentationRunner = "com.scene.uitest.runner.HiltTestRunner"
         // The following argument makes the Android Test Orchestrator run its
         // "pm clear" command after each test invocation. This command ensures
         // that the app's state is completely cleared between tests.

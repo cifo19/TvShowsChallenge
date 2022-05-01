@@ -1,4 +1,4 @@
-package com.scene.ui_test
+package com.scene.uitest
 
 import androidx.test.ext.junit.rules.activityScenarioRule
 import com.scene.homepresentation.TvShowsActivity
@@ -18,7 +18,7 @@ class TvShowsActivityTest {
     var tvShowsActivityScenarioRule = activityScenarioRule<TvShowsActivity>()
 
     @Test
-    fun test_activity() {
+    fun testActivity() {
         assertThat(true).isTrue
     }
 }
