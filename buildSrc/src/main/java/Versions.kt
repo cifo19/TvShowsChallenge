@@ -2,7 +2,7 @@ object Versions {
     const val KOTLIN = "1.4.10"
     const val KOTLINX_COROUTINES = "1.3.8"
     const val HILT = "2.41"
-    const val ANDROID_GRADLE_PLUGIN = "7.1.2"
+    const val ANDROID_GRADLE_PLUGIN = "7.1.3"
 
     const val APPCOMPAT = "1.1.0-alpha02"
     const val ACTIVITY = "1.0.0-alpha05"
@@ -35,4 +35,8 @@ object Versions {
     const val HAMCREST = "1.3"
     const val MOCKK = "1.10.0"
     const val ARCH_CORE_TESTING = "2.0.0"
+    const val ORCHESTRATOR = "1.4.1"
+    const val ESPRESSO = "3.4.0"
+    const val ANDROIDX_JUNIT = "1.1.3"
+    const val ANDROIDX_TEST = "1.4.0"
 }
