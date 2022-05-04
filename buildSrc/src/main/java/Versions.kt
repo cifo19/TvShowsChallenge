@@ -33,7 +33,7 @@ object Versions {
     const val JUNIT = "4.12"
     const val ASSERTJ = "3.11.1"
     const val HAMCREST = "1.3"
-    const val MOCKK = "1.10.0"
+    const val MOCKK = "1.12.3"
     const val ARCH_CORE_TESTING = "2.0.0"
     const val ORCHESTRATOR = "1.4.1"
     const val ESPRESSO = "3.4.0"
