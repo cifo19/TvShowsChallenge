@@ -2,8 +2,8 @@ package com.scene.uitest.home
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import androidx.test.espresso.matcher.ViewMatchers.*
 import com.scene.app.R
 import com.scene.homedata.remote.HomeRemoteDataModule
 import com.scene.homedata.remote.response.TvShowsResponse
@@ -51,7 +51,11 @@ class TvShowsFragmentTest {
         launchFragmentInHiltContainer<TvShowsFragment>()
 
         // Then
-        onView(withId(R.id.tvShowsRecyclerView)).check(matches(isDisplayed()))
+        val nameOfFirstMovie = popularTvShowsSuccessResponse.tvShows.first().name
+        onView(withId(R.id.tvShowsRecyclerView))
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.tvShowsRecyclerView))
+            .check(matches(hasDescendant(withText(nameOfFirstMovie))))
     }
 
     @Module
