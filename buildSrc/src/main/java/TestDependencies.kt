@@ -11,6 +11,7 @@ object TestDependencies {
     const val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.ESPRESSO}"
     const val hiltTest = "com.google.dagger:hilt-android-testing:${Versions.HILT}"
     const val androidXJUnit = "androidx.test.ext:junit:${Versions.ANDROIDX_JUNIT}"
+    const val fragmentTest = "androidx.fragment:fragment-testing:${Versions.ANDROIDX_TEST}"
 
     // Contains activityScenarioRule<> that starts activity
     const val junitKtx = "androidx.test.ext:junit-ktx:${Versions.ANDROIDX_JUNIT}"

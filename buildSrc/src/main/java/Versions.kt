@@ -38,5 +38,5 @@ object Versions {
     const val ORCHESTRATOR = "1.4.1"
     const val ESPRESSO = "3.4.0"
     const val ANDROIDX_JUNIT = "1.1.3"
-    const val ANDROIDX_TEST = "1.4.0"
+    const val ANDROIDX_TEST = "1.4.1"
 }

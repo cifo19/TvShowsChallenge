@@ -1,8 +1,7 @@
-package com.scene.uitest.util
+package com.scene.app
 
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HiltTestActivity : AppCompatActivity() {
-}
+class HiltTestActivity : AppCompatActivity()

@@ -114,8 +114,14 @@ dependencies {
     androidTestImplementation(TestDependencies.assertJ)
     androidTestImplementation(TestDependencies.archCoreTesting)
     androidTestImplementation(TestDependencies.espressoCore)
+    implementation(TestDependencies.fragmentTest) {
+        because("Not added via androidTestImplementation since https://issuetracker.google.com/issues/127986458")
+    }
     androidTestImplementation(TestDependencies.espressoContrib) {
         because("Without this library it does not start application")
+    }
+    debugImplementation(Dependencies.appcompat) {
+        because("It requires to create HiltTestActivity")
     }
     androidTestUtil(TestDependencies.orchestrator)
 }

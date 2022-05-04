@@ -1,4 +1,4 @@
-package com.scene.uitest
+package com.scene.uitest.home
 
 import androidx.test.ext.junit.rules.activityScenarioRule
 import com.scene.homepresentation.TvShowsActivity
