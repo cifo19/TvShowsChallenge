@@ -6,6 +6,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.scene.base.BaseFragment
 import com.scene.scenedetail.TvShowDetailFragment
 import com.scene.scenedetail.TvShowDetailFragment.Companion.ARG_TV_SHOW_ID
 import com.scene.scenesearch.TvShowsSearchFragment
@@ -14,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tv_shows.*
 
 @AndroidEntryPoint
-class TvShowsFragment : com.scene.base.BaseFragment(R.layout.fragment_tv_shows) {
+class TvShowsFragment : BaseFragment(R.layout.fragment_tv_shows) {
 
     private lateinit var tvShowsListAdapter: TvShowsListAdapter
 

@@ -1,5 +1,10 @@
 package com.scene.uitest.home
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import com.scene.app.R
 import com.scene.homedata.remote.HomeRemoteDataModule
 import com.scene.homedata.remote.response.TvShowsResponse
 import com.scene.homedata.remote.service.MovieDbService
@@ -44,6 +49,9 @@ class TvShowsFragmentTest {
 
         // When
         launchFragmentInHiltContainer<TvShowsFragment>()
+
+        // Then
+        onView(withId(R.id.tvShowsRecyclerView)).check(matches(isDisplayed()))
     }
 
     @Module
