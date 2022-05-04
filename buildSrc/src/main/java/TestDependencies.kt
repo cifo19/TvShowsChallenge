@@ -4,6 +4,7 @@ object TestDependencies {
     const val assertJ = "org.assertj:assertj-core:${Versions.ASSERTJ}"
     const val hamcrest = "org.hamcrest:hamcrest-all:${Versions.HAMCREST}"
     const val mockk = "io.mockk:mockk:${Versions.MOCKK}"
+    const val mockkAndroid = "io.mockk:mockk-android:${Versions.MOCKK}"
     const val kotlinxCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.KOTLINX_COROUTINES}"
     const val okHttpMockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.OK_HTTP}"
     const val orchestrator = "androidx.test:orchestrator:${Versions.ORCHESTRATOR}"

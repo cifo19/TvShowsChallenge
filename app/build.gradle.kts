@@ -57,6 +57,13 @@ android {
     testOptions {
         // https://developer.android.com/training/testing/instrumented-tests/androidx-test-libraries/runner#use-android
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
+
+        // https://github.com/mockk/mockk/issues/297
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging = true
+            }
+        }
     }
 
     kotlinOptions {
@@ -109,7 +116,7 @@ dependencies {
     androidTestImplementation(TestDependencies.testRunner)
     androidTestImplementation(TestDependencies.junitKtx)
     androidTestImplementation(TestDependencies.testCoreKtx)
-    androidTestImplementation(TestDependencies.mockk)
+    androidTestImplementation(TestDependencies.mockkAndroid)
     androidTestImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.assertJ)
     androidTestImplementation(TestDependencies.archCoreTesting)

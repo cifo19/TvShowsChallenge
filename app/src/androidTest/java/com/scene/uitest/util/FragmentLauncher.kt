@@ -18,7 +18,7 @@ import com.scene.app.R
 inline fun <reified T : Fragment> launchFragmentInHiltContainer(
     fragmentArgs: Bundle? = null,
     @StyleRes themeResId: Int = R.style.FragmentScenarioEmptyFragmentActivityTheme,
-    crossinline action: Fragment.() -> Unit = {}
+    crossinline action: T.() -> Unit = {}
 ) {
     val startActivityIntent = Intent.makeMainActivity(
         ComponentName(
@@ -31,10 +31,10 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
     )
 
     ActivityScenario.launch<HiltTestActivity>(startActivityIntent).onActivity { activity ->
-        val fragment: Fragment = activity.supportFragmentManager.fragmentFactory.instantiate(
+        val fragment: T = activity.supportFragmentManager.fragmentFactory.instantiate(
             Preconditions.checkNotNull(T::class.java.classLoader),
             T::class.java.name
-        )
+        ) as T
         fragment.arguments = fragmentArgs
         activity.supportFragmentManager
             .beginTransaction()
