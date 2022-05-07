@@ -57,6 +57,17 @@ android {
     testOptions {
         // https://developer.android.com/training/testing/instrumented-tests/androidx-test-libraries/runner#use-android
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
+
+        // https://github.com/mockk/mockk/issues/297
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging = true
+            }
+        }
+    }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
     }
 
     kotlinOptions {
@@ -90,6 +101,7 @@ androidExtensions {
 dependencies {
     implementation(project(":common:remote"))
     implementation(project(":common:base"))
+    implementation(project(":common:util"))
     implementation(project(":feature:home:home-presentation"))
     implementation(project(":feature:home:home-data"))
     implementation(project(":feature:home:home-domain"))
@@ -109,13 +121,20 @@ dependencies {
     androidTestImplementation(TestDependencies.testRunner)
     androidTestImplementation(TestDependencies.junitKtx)
     androidTestImplementation(TestDependencies.testCoreKtx)
-    androidTestImplementation(TestDependencies.mockk)
+    androidTestImplementation(TestDependencies.mockkAndroid)
     androidTestImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.assertJ)
     androidTestImplementation(TestDependencies.archCoreTesting)
     androidTestImplementation(TestDependencies.espressoCore)
+    androidTestImplementation(TestDependencies.kotlinxCoroutinesTest)
+    implementation(TestDependencies.fragmentTest) {
+        because("Not added via androidTestImplementation since https://issuetracker.google.com/issues/127986458")
+    }
     androidTestImplementation(TestDependencies.espressoContrib) {
         because("Without this library it does not start application")
+    }
+    debugImplementation(Dependencies.appcompat) {
+        because("It requires to create HiltTestActivity")
     }
     androidTestUtil(TestDependencies.orchestrator)
 }

@@ -28,4 +28,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }

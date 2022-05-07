@@ -9,6 +9,8 @@ import com.scene.homedomain.entity.TvShowsResponseEntity
 import com.scene.homedomain.usecase.FetchPopularTvShowsUseCase
 import com.scene.homepresentation.adapteritem.LoadingAdapterItem
 import com.scene.homepresentation.mapper.TvShowAdapterItemMapper
+import com.scene.util.AdapterItem
+import com.scene.util.espresso.wrapEspressoIdlingResource
 import com.scene.util.modifyValue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -30,15 +32,19 @@ class TvShowsViewModel @Inject constructor(
 
     @VisibleForTesting
     @Suppress("PropertyName", "VariableNaming")
-    val _showTvShowsLiveData = MutableLiveData<MutableList<com.scene.util.AdapterItem>>()
-    val showTvShows: LiveData<MutableList<com.scene.util.AdapterItem>> = _showTvShowsLiveData
+    val _showTvShowsLiveData = MutableLiveData<MutableList<AdapterItem>>()
+    val showTvShows: LiveData<MutableList<AdapterItem>> = _showTvShowsLiveData
 
     fun getTvShows(loadMore: Boolean = false) {
         if (loadMore) pageIndex++
 
         _showTvShowsLiveData.modifyValue { add(LoadingAdapterItem) }
         viewModelScope.launch {
-            runCatching { fetchPopularTvShowsUseCase(pageIndex) }
+            runCatching {
+                wrapEspressoIdlingResource {
+                    fetchPopularTvShowsUseCase(pageIndex)
+                }
+            }
                 .onSuccess(::onTvShowsFetched)
                 .onFailure(::onTvShowsFailed)
         }

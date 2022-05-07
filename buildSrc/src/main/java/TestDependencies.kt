@@ -4,13 +4,16 @@ object TestDependencies {
     const val assertJ = "org.assertj:assertj-core:${Versions.ASSERTJ}"
     const val hamcrest = "org.hamcrest:hamcrest-all:${Versions.HAMCREST}"
     const val mockk = "io.mockk:mockk:${Versions.MOCKK}"
+    const val mockkAndroid = "io.mockk:mockk-android:${Versions.MOCKK}"
     const val kotlinxCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.KOTLINX_COROUTINES}"
     const val okHttpMockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.OK_HTTP}"
     const val orchestrator = "androidx.test:orchestrator:${Versions.ORCHESTRATOR}"
     const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.ESPRESSO}"
     const val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.ESPRESSO}"
+    const val espressoIdlingResource = "androidx.test.espresso:espresso-idling-resource:${Versions.ESPRESSO}"
     const val hiltTest = "com.google.dagger:hilt-android-testing:${Versions.HILT}"
     const val androidXJUnit = "androidx.test.ext:junit:${Versions.ANDROIDX_JUNIT}"
+    const val fragmentTest = "androidx.fragment:fragment-testing:${Versions.ANDROIDX_TEST}"
 
     // Contains activityScenarioRule<> that starts activity
     const val junitKtx = "androidx.test.ext:junit-ktx:${Versions.ANDROIDX_JUNIT}"

@@ -17,6 +17,7 @@ dependencies {
 
     implementation(Dependencies.coroutinesCore)
     implementation(Dependencies.coroutinesAndroid)
+    implementation(TestDependencies.espressoIdlingResource)
 
     kapt(Dependencies.hiltCompiler)
     implementation(Dependencies.hilt)
