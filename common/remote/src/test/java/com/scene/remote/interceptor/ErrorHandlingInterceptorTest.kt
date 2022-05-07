@@ -1,6 +1,7 @@
 package com.scene.remote.interceptor
 
 import com.google.gson.Gson
+import com.scene.remote.errorhandler.ErrorHandlerFactory
 import com.scene.remote.errorhandler.ServiceException
 import com.scene.remote.errorhandler.moviedb.MovieDbErrorHandler
 import com.scene.remote.errorhandler.moviedb.MovieDbServiceErrorModel
@@ -23,7 +24,7 @@ import java.net.HttpURLConnection.HTTP_NOT_FOUND
 class ErrorHandlingInterceptorTest {
 
     @MockK
-    private lateinit var errorHandlerFactor: com.scene.remote.errorhandler.ErrorHandlerFactory
+    private lateinit var errorHandlerFactor: ErrorHandlerFactory
 
     private lateinit var errorHandlingInterceptor: ErrorHandlingInterceptor
 
