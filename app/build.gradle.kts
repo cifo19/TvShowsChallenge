@@ -105,7 +105,9 @@ dependencies {
     implementation(project(":feature:home:home-presentation"))
     implementation(project(":feature:home:home-data"))
     implementation(project(":feature:home:home-domain"))
-    implementation(project(":feature:scene-detail"))
+    implementation(project(":feature:scene-detail:scene-detail-data"))
+    implementation(project(":feature:scene-detail:scene-detail-domain"))
+    implementation(project(":feature:scene-detail:scene-detail-presentation"))
     implementation(project(":feature:scene-search"))
 
     // Dependency Injection

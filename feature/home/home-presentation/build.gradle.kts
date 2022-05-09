@@ -15,7 +15,7 @@ dependencies {
     implementation(project(":common:util"))
     implementation(project(":common:base"))
     implementation(project(":feature:home:home-domain"))
-    implementation(project(":feature:scene-detail"))
+    implementation(project(":feature:scene-detail:scene-detail-presentation"))
     implementation(project(":feature:scene-search"))
 
     implementation(Dependencies.picasso)
