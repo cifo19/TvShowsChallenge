@@ -6,9 +6,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.presentation.scenedetailpresentation.TvShowDetailFragment
+import com.presentation.scenedetailpresentation.TvShowDetailFragment.Companion.ARG_TV_SHOW_ID
 import com.scene.base.BaseFragment
-import com.scene.scenedetail.TvShowDetailFragment
-import com.scene.scenedetail.TvShowDetailFragment.Companion.ARG_TV_SHOW_ID
 import com.scene.scenesearch.TvShowsSearchFragment
 import com.scene.util.PagingScrollListener
 import dagger.hilt.android.AndroidEntryPoint

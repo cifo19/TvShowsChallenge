@@ -8,8 +8,14 @@ plugins {
 dependencies {
     implementation(project(":common:util"))
     implementation(project(":common:base"))
+    implementation(project(":feature:scene-detail:scene-detail-domain"))
 
     implementation(Dependencies.constraintLayout)
+
+    // ktx
+    implementation(Dependencies.fragmentKtx)
+    implementation(Dependencies.coreKtx)
+    implementation(Dependencies.lifecycleViewModelKtx)
 
     // Dependency Injection
     kapt(Dependencies.hiltCompiler)
