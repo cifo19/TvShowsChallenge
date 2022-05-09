@@ -1,4 +1,4 @@
-package com.presentation.scenedetaildata.remote
+package com.scene.scenedetaildata.remote
 
 import dagger.Module
 import dagger.Provides

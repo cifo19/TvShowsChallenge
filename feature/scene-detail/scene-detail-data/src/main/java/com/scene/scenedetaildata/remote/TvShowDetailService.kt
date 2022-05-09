@@ -1,6 +1,6 @@
-package com.presentation.scenedetaildata.remote
+package com.scene.scenedetaildata.remote
 
-import com.presentation.scenedetaildata.remote.response.TvShowDetailResponse
+import com.scene.scenedetaildata.remote.response.TvShowDetailResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

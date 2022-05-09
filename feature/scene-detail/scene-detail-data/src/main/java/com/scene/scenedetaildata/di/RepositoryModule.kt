@@ -1,7 +1,7 @@
-package com.presentation.scenedetaildata.di
+package com.scene.scenedetaildata.di
 
-import com.presentation.scenedetaildata.repository.TvShowDetailRepositoryImpl
-import com.presentation.scenedetaildomain.repository.TvShowDetailRepository
+import com.scene.scenedetaildata.repository.TvShowDetailRepositoryImpl
+import com.scene.scenedetaildomain.repository.TvShowDetailRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

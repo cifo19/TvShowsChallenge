@@ -1,4 +1,4 @@
-package com.presentation.scenedetailpresentation
+package com.scene.scenedetailpresentation
 
 import android.os.Bundle
 import android.view.View

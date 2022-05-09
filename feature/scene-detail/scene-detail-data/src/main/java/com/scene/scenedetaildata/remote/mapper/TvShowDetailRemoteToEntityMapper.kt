@@ -1,7 +1,7 @@
-package com.presentation.scenedetaildata.remote.mapper
+package com.scene.scenedetaildata.remote.mapper
 
-import com.presentation.scenedetaildata.remote.response.TvShowDetailResponse
-import com.presentation.scenedetaildomain.entity.TvShowDetailResponseEntity
+import com.scene.scenedetaildata.remote.response.TvShowDetailResponse
+import com.scene.scenedetaildomain.entity.TvShowDetailResponseEntity
 import javax.inject.Inject
 
 class TvShowDetailRemoteToEntityMapper @Inject constructor() {

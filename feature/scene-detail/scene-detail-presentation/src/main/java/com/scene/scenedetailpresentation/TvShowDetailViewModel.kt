@@ -1,10 +1,10 @@
-package com.presentation.scenedetailpresentation
+package com.scene.scenedetailpresentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.presentation.scenedetaildomain.usecase.FetchTvShowDetailUseCase
+import com.scene.scenedetaildomain.usecase.FetchTvShowDetailUseCase
 import com.scene.util.espresso.wrapEspressoIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

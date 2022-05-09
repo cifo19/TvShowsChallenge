@@ -1,9 +1,9 @@
-package com.presentation.scenedetaildata.repository
+package com.scene.scenedetaildata.repository
 
-import com.presentation.scenedetaildata.remote.TvShowDetailService
-import com.presentation.scenedetaildata.remote.mapper.TvShowDetailRemoteToEntityMapper
-import com.presentation.scenedetaildomain.entity.TvShowDetailResponseEntity
-import com.presentation.scenedetaildomain.repository.TvShowDetailRepository
+import com.scene.scenedetaildata.remote.TvShowDetailService
+import com.scene.scenedetaildata.remote.mapper.TvShowDetailRemoteToEntityMapper
+import com.scene.scenedetaildomain.entity.TvShowDetailResponseEntity
+import com.scene.scenedetaildomain.repository.TvShowDetailRepository
 import javax.inject.Inject
 
 class TvShowDetailRepositoryImpl @Inject constructor(
